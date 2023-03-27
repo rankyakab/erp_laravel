@@ -15,6 +15,7 @@ class Processes extends Migration
     {
         Schema::create('processes', function (Blueprint $table) {
             $table->id();
+            $table->string("process");
             $table->timestamps();
         });
     }

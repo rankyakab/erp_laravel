@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Memoreactions extends Migration
+class Circular extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,13 @@ class Memoreactions extends Migration
      */
     public function up()
     {
-        Schema::create('memoreactions', function (Blueprint $table) {
+        Schema::create('circular', function (Blueprint $table) {
             $table->id();
+            $table->string("sentform");
+            $table->string("sendto");
+            $table->string("title");
+            $table->string("body");
+            $table->string("attachment");
             $table->timestamps();
         });
     }
@@ -26,6 +31,6 @@ class Memoreactions extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('memoreactions');
+        Schema::dropIfExists('circular');
     }
 }

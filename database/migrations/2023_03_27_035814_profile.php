@@ -15,6 +15,23 @@ class Profile extends Migration
     {
         Schema::create('profile', function (Blueprint $table) {
             $table->id();
+            $table->string("userid")->nullable();
+            $table->string("staffid")->nullable();
+            $table->string("surname");
+            $table->string("firstname");
+            $table->string("othername")->nullable();
+            $table->string("email");
+            $table->string("phone");
+            $table->string("dob");
+            $table->string("doe");
+            $table->string("department");
+            $table->string("designation");
+            $table->string("office");
+            $table->string("gender");
+            $table->string("cv")->nullable();
+            $table->string("bio")->nullable();
+            $table->string("image")->nullable();
+            $table->string("signature")->nullable();
             $table->timestamps();
         });
     }

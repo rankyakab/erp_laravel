@@ -15,6 +15,9 @@ class Privileges extends Migration
     {
         Schema::create('privileges', function (Blueprint $table) {
             $table->id();
+            $table->string("role");
+            $table->string("privilege");
+            $table->string("action");
             $table->timestamps();
         });
     }

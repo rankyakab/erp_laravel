@@ -15,6 +15,20 @@ class Pv extends Migration
     {
         Schema::create('pv', function (Blueprint $table) {
             $table->id();
+            $table->string("sentform");
+            $table->string("title");
+            $table->string("body", 1000);
+            $table->string("attachment")->nullable();
+            $table->string("status");
+            $table->string("sendto");
+            $table->string("copies")->nullable();
+            $table->double("totalprice");
+            $table->double("totalamount");
+            $table->double("totalgross");
+            $table->double("totalnet");
+            $table->string("accountno");
+            $table->string("accountname");
+            $table->string("bank");
             $table->timestamps();
         });
     }

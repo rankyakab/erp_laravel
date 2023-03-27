@@ -15,6 +15,13 @@ class Memo extends Migration
     {
         Schema::create('memo', function (Blueprint $table) {
             $table->id();
+            $table->string("sentform");
+            $table->string("title");
+            $table->string("body", 1000);
+            $table->string("attachment")->nullable();
+            $table->string("status");
+            $table->string("sendto");
+            $table->string("copies")->nullable();
             $table->timestamps();
         });
     }

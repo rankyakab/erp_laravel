@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Pvstatus extends Migration
+class Offices extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class Pvstatus extends Migration
      */
     public function up()
     {
-        Schema::create('pvstatus', function (Blueprint $table) {
+        Schema::create('offices', function (Blueprint $table) {
             $table->id();
+            $table->string("offices");
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ class Pvstatus extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pvstatus');
+        Schema::dropIfExists('offices');
     }
 }
