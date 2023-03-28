@@ -17,4 +17,19 @@ class MemoController extends Controller
 
         return view('memodetails');
     }
+
+    public function memoinbox(){
+
+        return view('memoinbox');
+    }
+
+    public function sentmemo(){
+
+        return view('sentmemo');
+    }
+
+    public function allmemo(){
+
+        return view('allmemo');
+    }
 }

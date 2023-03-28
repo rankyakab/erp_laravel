@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MemoController;
+use App\Http\Controllers\PVController;
+use App\Http\Controllers\CircularController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -46,3 +49,34 @@ Route::get('/staffprofile', [ProfileController::class, 'staffprofile']);
 Route::get('/creatememo', [MemoController::class, 'creatememo']);
 
 Route::get('/memodetails', [MemoController::class, 'memodetails']);
+
+Route::get('/memoinbox', [MemoController::class, 'memoinbox']);
+
+Route::get('/sentmemo', [MemoController::class, 'sentmemo']);
+
+Route::get('/allmemo', [MemoController::class, 'allmemo']);
+
+
+/**************************** PV Controller **************************************/
+
+Route::get('/paymentvoucher', [PVController::class, 'paymentvoucher']);
+
+Route::get('/pvdetails', [PVController::class, 'pvdetails']);
+
+Route::get('/allpvs', [PVController::class, 'allpvs']);
+
+
+/*************************** Circular Controller *********************************/
+
+Route::get('/createcircular', [CircularController::class, 'createcircular']);
+
+Route::get('/circulardetails', [CircularController::class, 'circulardetails']);
+
+Route::get('/listcirculars', [CircularController::class, 'listcirculars']);
+
+
+
+
+
+
+

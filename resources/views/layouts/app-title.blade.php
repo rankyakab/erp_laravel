@@ -22,12 +22,53 @@
 	<link href="{{ asset('assets/css/app.css') }}" rel="stylesheet">
 	<link href="{{ asset('assets/css/icons.css') }}" rel="stylesheet">
 	<link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet'>
-	
+
 	<!-- Theme Style CSS -->
 	<link rel="stylesheet" href="{{ asset('assets/css/semi-dark.css') }}" />
 	<title>Relia Energy ERP</title>
 
 	<style>
+
+		/* PV table definition */
+		.tdsn{
+			width: 5%;
+		}
+		.tdds{
+			width: 20%;
+		}
+		.tdqt{
+			width: 5%;
+		}
+		.tdpr{
+			width: 10%;
+		}
+		.tdam{
+			width: 10%;
+		}
+		.tdva{
+			width: 5%;
+		}
+		.tdvt{
+			width: 10%;
+		}
+		.tdgr{
+			width: 10%;
+		}
+		.tdwh{
+			width: 5%;
+		}
+		.tdwt{
+			width: 10%;
+		}
+		.tdnt{
+			width: 10%;
+		}
+
+		.vouchericon:hover{
+			cursor: pointer;
+		}
+
+
 		/*# sourceMappingURL=bootstrap-select.css.map */
 
 		.btn-file {
