@@ -40,9 +40,35 @@ Route::get('/designations', [ProfileController::class, 'designations']);
 
 Route::get('/departments', [ProfileController::class, 'departments']);
 
+Route::post('/submitdepartment', [ProfileController::class, 'submitdepartment']);
+
 Route::get('/offices', [ProfileController::class, 'offices']);
 
+Route::get('/banks', [ProfileController::class, 'banks']);
+
 Route::get('/staffprofile', [ProfileController::class, 'staffprofile']);
+
+Route::post('/submitdesignation', [ProfileController::class, 'submitdesignation']);
+
+Route::post('/submitoffices', [ProfileController::class, 'submitoffices']);
+
+Route::post('/submitbank', [ProfileController::class, 'submitbank']);
+
+Route::post('/submitstaff', [ProfileController::class, 'submitstaff']);
+
+Route::post('/submitpics', [ProfileController::class, 'submitpics']);
+
+Route::post('/submitsignature', [ProfileController::class, 'submitsignature']);
+
+Route::get('/editstaff', [ProfileController::class, 'editstaff']);
+
+Route::get('/convertuser', [ProfileController::class, 'convertuser']);
+
+Route::post('/submiteditstaff', [ProfileController::class, 'submiteditstaff']);
+
+Route::get('/stafftable', [ProfileController::class, 'stafftable']);
+
+
 
 /*************************** Memo Controller *************************************/
 

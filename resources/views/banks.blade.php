@@ -11,17 +11,17 @@
 				<div class="card-header">
 					<div class="d-flex align-items-center">
 						<div>
-							<h4 class="mb-0">Add New Department</h4>
+							<h4 class="mb-0">Add New Bank</h4>
 						</div>
 					</div>
 				</div>
 				  <div class="card-body">
 				  	<div class="form-body">
-					 <form class="row g-2" method="POST" action="submitdepartment" id="submitdepartment">
+					 <form class="row g-2" method="POST" action="submitbank" id="submitbank">
 					 	@csrf
 					 	<div class="col-sm-8">
 
-					 		<input type="text" name="departments" id="departments" class="form-control" placeholder="Enter Department">
+					 		<input type="text" name="banks" id="banks" class="form-control" placeholder="Enter Bank Name">
 						
 					 	</div>
 					 	<div class="col-sm-4">
@@ -38,7 +38,7 @@
 		<div class="card">
 					<div class="card-body">
 						<div class="card-title">
-							<h4 class="mb-0">Available Departments</h4>
+							<h4 class="mb-0">Available Banks</h4>
 						</div>
 						<hr/>
 						<div class="table-responsive">
@@ -46,17 +46,17 @@
 								<thead>
 									<tr>
 										<th>SN</th>
-										<th>Departments</th>
+										<th>Banks</th>
 										<th>Created At</th>
 									</tr>
 								</thead>
 								<tbody>
 									@php $i=1 @endphp
-									@foreach($departments as $department)
+									@foreach($banks as $bank)
 									<tr>
 										<td>{{ $i++ }}</td>
-										<td>{{ $department->departments }}</td>
-										<td>{{ $department->created_at }}</td>
+										<td>{{ $bank->banks }}</td>
+										<td>{{ $bank->created_at }}</td>
 									</tr>
 									@endforeach
 								</tbody>

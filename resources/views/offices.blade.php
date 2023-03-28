@@ -5,26 +5,28 @@
 <!--start page wrapper -->
 <div class="page-wrapper">
 	<div class="page-content">
-		<div class="row">
+		<div class="card">
 		       <div class="col-12 col-lg-12">
-		          <div class="card radius-10">
+		          <div class=" radius-10">
 				<div class="card-header">
 					<div class="d-flex align-items-center">
 						<div>
-							<h4 class="mb-0">Add New Department</h4>
+							<h4 class="mb-0">Add New Office</h4>
 						</div>
 					</div>
 				</div>
 				  <div class="card-body">
 				  	<div class="form-body">
-					 <form class="row g-2">
+					 <form class="row g-2" method="POST" action="submitoffices" id="submitoffices">
+					 	@csrf
 					 	<div class="col-sm-8">
 
-					 		<input type="text" name="departments" id="departments" class="form-control" placeholder="Enter Designation">
+					 		<input type="text" name="offices" id="offices" class="form-control" placeholder="Enter Office">
 						
 					 	</div>
 					 	<div class="col-sm-4">
-								<button class="btn btn-info" type="submit">Submit</button>
+								<button class="btn btn-info" type="submit" id="button">Submit</button>
+								<img src="{{ asset('assets/images/processing.gif') }}" width="50px;" id="processing" class="processing" style="display: none;">
 						</div>
 					 </form>
 					 </div>
@@ -36,55 +38,27 @@
 		<div class="card">
 					<div class="card-body">
 						<div class="card-title">
-							<h4 class="mb-0">Available Departments</h4>
+							<h4 class="mb-0">Available Offices</h4>
 						</div>
 						<hr/>
 						<div class="table-responsive">
 							<table class="table">
 								<thead>
 									<tr>
-										<th>Breakpoint</th>
-										<th>Class infix</th>
-										<th>Dimensions</th>
+										<th>SN</th>
+										<th>Departments</th>
+										<th>Created At</th>
 									</tr>
 								</thead>
 								<tbody>
+									@php $i=1 @endphp
+									@foreach($offices as $office)
 									<tr>
-										<td>X-Small</td>
-										<td><em>None</em>
-										</td>
-										<td>&lt;576px</td>
+										<td>{{ $i++ }}</td>
+										<td>{{ $office->offices }}</td>
+										<td>{{ $office->created_at }}</td>
 									</tr>
-									<tr>
-										<td>Small</td>
-										<td><code>sm</code>
-										</td>
-										<td>≥576px</td>
-									</tr>
-									<tr>
-										<td>Medium</td>
-										<td><code>md</code>
-										</td>
-										<td>≥768px</td>
-									</tr>
-									<tr>
-										<td>Large</td>
-										<td><code>lg</code>
-										</td>
-										<td>≥992px</td>
-									</tr>
-									<tr>
-										<td>Extra large</td>
-										<td><code>xl</code>
-										</td>
-										<td>≥1200px</td>
-									</tr>
-									<tr>
-										<td>Extra extra large</td>
-										<td><code>xxl</code>
-										</td>
-										<td>≥1400px</td>
-									</tr>
+									@endforeach
 								</tbody>
 							</table>
 						</div>
@@ -94,3 +68,4 @@
 </div>
 <!--end page wrapper -->
 @include("layouts.app-footer")
+@include("process.components")

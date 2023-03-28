@@ -25,6 +25,7 @@
 
 	<!-- Theme Style CSS -->
 	<link rel="stylesheet" href="{{ asset('assets/css/semi-dark.css') }}" />
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<title>Relia Energy ERP</title>
 
 	<style>
@@ -145,10 +146,6 @@
 
 		.form-control .fileinput-filename {
 		  vertical-align: bottom;
-		}
-
-		.fileinput.input-group {
-		  display: table;
 		}
 
 		.fileinput.input-group>* {

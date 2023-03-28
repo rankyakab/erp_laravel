@@ -25,18 +25,23 @@
 				<div class="card-header">
 					<div class="d-flex align-items-center">
 						<div>
-							<h6 class="mb-0">Profile of staff name</h6>
+							<h6 class="mb-0">Staff Profile</h6>
 						</div>
 						<div class="dropdown ms-auto">
 							<a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
 							</a>
 							<ul class="dropdown-menu">
-								<li><a class="dropdown-item" href="javascript:;">Edit Profile</a>
+								<li><a class="dropdown-item" href="{{ url('editstaff?id='.$_GET['id']) }}">Edit Profile</a>
 								</li>
 								<li>
 									<hr class="dropdown-divider">
 								</li>
-								<li><a class="dropdown-item" href="javascript:;">Back to Dashboard</a>
+								<li><a class="dropdown-item" href="{{ url('convertuser?id='.$_GET['id']) }}">Convert to User</a>
+								</li>
+								<li>
+									<hr class="dropdown-divider">
+								</li>
+								<li><a class="dropdown-item" href="{{ url('dashboard?id='.$_GET['id']) }}">Back to Dashboard</a>
 								</li>
 							</ul>
 						</div>
@@ -53,10 +58,10 @@
 					 		<!--image upload starts here--->
 	                <div class="fileinput fileinput-new text-center" data-provides="fileinput">
 	                    <div class="fileinput-new  avatar border-gray">
-	                      <img src="{{ asset('assets/images/default-avatar.png') }}" width="250px" alt="...">
+	                      <img src="{{ asset($staff[0]->image) ?? asset('assets/images/default-avatar.png') }}" width="250px" alt="...">
 	                    </div>
 	                    <div class="fileinput-preview fileinput-exists avatar border-gray">
-	                      <img src="{{ asset('assets/images/default-avatar.png') }}" width="250px" alt="...">
+	                      <img src="{{ asset($staff[0]->image) ?? asset('assets/images/default-avatar.png') }}" width="250px" alt="...">
 	                    </div>
 	                    <div>
 	                    	
@@ -76,13 +81,13 @@
 
 	                  <div class="fileinput fileinput-new text-center" data-provides="fileinput">
 	                    <div class="fileinput-new  border-gray">
-	                      <img src="{{ asset('assets/images/signature.jpg') }}" width="250px" alt="...">
+	                      <img src="{{ asset($staff[0]->signature) ?? asset('assets/images/signature.jpg') }}" width="250px" alt="...">
 	                    </div>
 	                    <div class="fileinput-preview fileinput-exists  border-gray">
-	                      <img src="{{ asset('assets/images/signature.jpg') }}" width="250px" alt="...">
+	                      <img src="{{ asset($staff[0]->signature) ?? asset('assets/images/signature.jpg') }}" width="250px" alt="...">
 	                    </div>
 	                    <div>
-	                    	<!--<label>Signature</label>
+	                    <!--<label>Signature</label>
 	                      <span class="btn btn-round btn-rose btn-file">
 	                        <span class="fileinput-new">Add Photo</span>
 	                        <span class="fileinput-exists">Change</span>
@@ -102,70 +107,70 @@
 					 	<div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">First Name</label>
-								<p class="form-control" id="fname">First Name</p>
+								<p class="form-control" id="fname">{{ $staff[0]->firstname }}</p>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Staff ID</label>
-								<p class="form-control" id="staffid">Staff ID</p>
+								<p class="form-control" id="staffid">{{ $staff[0]->staffid }}</p>
 							</div>
 						</div><br />
 						<div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Other Names</label>
-								<p class="form-control" id="onames">Other Names</p>
+								<p class="form-control" id="onames">{{ $staff[0]->othername }}</p>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Date of Employment</label>
-								<p class="form-control" id="doe">Date of Employment</p>
+								<p class="form-control" id="doe">{{ $staff[0]->doe }}</p>
 							</div>
 						</div><br />
 						<div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Surname</label>
-								<p class="form-control" id="sname">Surname</p>
+								<p class="form-control" id="sname">{{ $staff[0]->surname }}</p>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Department</label>
-								<p class="form-control" id="department">Department</p>
+								<p class="form-control" id="department">{{ $staff[0]->department }}</p>
 							</div>
 						</div>
 						<br />
 						<div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Gender</label>
-								<p class="form-control" id="gender">Gender</p>
+								<p class="form-control" id="gender">{{ $staff[0]->gender }}</p>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Designation</label>
-								<p class="form-control" id="designation">Designation</p>
+								<p class="form-control" id="designation">{{ $staff[0]->designation }}</p>
 							</div>
 						</div><br />
 						<div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Date of Birth</label>
-								<p class="form-control" id="dob">Date of Birth</p>
+								<p class="form-control" id="dob">{{ $staff[0]->dob }}</p>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Office</label>
-								<p class="form-control" id="offices">Offices</p>
+								<p class="form-control" id="offices">{{ $staff[0]->office }}</p>
 							</div>
 						</div><br /><div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Email Address</label>
-								<p class="form-control" id="email">Email Address</p>
+								<p class="form-control" id="email">{{ $staff[0]->email }}</p>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Account Number</label>
-								<p class="form-control" id="accountnumber">Account Number</p>
+								<p class="form-control" id="accountnumber">{{ $staff[0]->accountno }}</p>
 							</div>
 						</div><br /><div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Phone Number</label>
-								<p class="form-control" id="phone">Phone Number</p>
+								<p class="form-control" id="phone">{{ $staff[0]->phone }}</p>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Bank Name</label>
-								<p class="form-control" id="bank">Bank Name</p>
+								<p class="form-control" id="bank">{{ $staff[0]->bankname }}</p>
 							</div>
 						</div><br />
 						</div>

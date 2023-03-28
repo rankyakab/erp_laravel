@@ -22,6 +22,13 @@
 	<script src="{{ asset('assets/plugins/chartjs/js/Chart.min.js') }}"></script>
 	<script src="{{ asset('assets/js/index.js') }}"></script>
 	<script src="{{ asset('assets/js/plugins/jasny-bootstrap.min.js') }}"></script>
+	<script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+	<script src="assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('#example').DataTable();
+		  } );
+	</script>
 	<!--app JS-->
 	<script src="assets/js/app.js"></script>
 

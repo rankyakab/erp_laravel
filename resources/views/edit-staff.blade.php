@@ -46,9 +46,10 @@
 				</div>
 				  <div class="card-body" style="padding-top: 40px;">
 				  	<div class="form-body">
-					 <form class="row g-3" action="submitstaff" id="submitstaff" method="post">
+					 <form class="row g-3" action="submiteditstaff" id="submiteditstaff" method="post">
 					 	@csrf
 					 	<div class="col-sm-4">
+					 		<input type="hidden" name="id" value="{{ $_GET['id'] }}">
 					 	<center>
 
 
@@ -56,10 +57,10 @@
 					 		<!--image upload starts here--->
 	                <div class="fileinput fileinput-new text-center" data-provides="fileinput">
 	                    <div class="fileinput-new  avatar border-gray">
-	                      <img src="{{ asset('assets/images/default-avatar.png') }}" width="250px" alt="...">
+	                      <a href="{{ url('profilepics?id='.$staff[0]->id) }}"><img src="{{ asset($staff[0]->image) ?? asset('assets/images/default-avatar.png') }}" width="250px" alt="..."></a>
 	                    </div>
 	                    <div class="fileinput-preview fileinput-exists avatar border-gray">
-	                      <img src="{{ asset('assets/images/default-avatar.png') }}" width="250px" alt="...">
+	                      <img src="{{ asset($staff[0]->image) ?? asset('assets/images/default-avatar.png') }}" width="250px" alt="...">
 	                    </div>
 	                    <div>
 	                    	
@@ -79,10 +80,10 @@
 
 	                  <div class="fileinput fileinput-new text-center" data-provides="fileinput">
 	                    <div class="fileinput-new  border-gray">
-	                      <img src="{{ asset('assets/images/signature.jpg') }}" width="250px" alt="...">
+	                      <a href="{{ url('addsignature?id='.$staff[0]->id) }}"><img src="{{ asset($staff[0]->signature) ?? asset('assets/images/signature.jpg') }}" width="250px" alt="..."></a>
 	                    </div>
 	                    <div class="fileinput-preview fileinput-exists  border-gray">
-	                      <img src="{{ asset('assets/images/signature.jpg') }}" width="250px" alt="...">
+	                      <img src="{{ asset($staff[0]->signature) ?? asset('assets/images/signature.jpg') }}" width="250px" alt="...">
 	                    </div>
 	                    <div>
 	                    	<!--<label>Signature</label>
@@ -105,32 +106,32 @@
 					 	<div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">First Name</label>
-								<input type="text" class="form-control" id="fname" name="fname" placeholder="First Name">
+								<input type="text" class="form-control" id="fname" name="fname" value="{{ $staff[0]->firstname }}" placeholder="First Name">
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Staff ID</label>
-								<input type="text" class="form-control" id="staffid" name="staffid" placeholder="Staff ID">
+								<input type="text" class="form-control" id="staffid" name="staffid" value="{{ $staff[0]->staffid }}" placeholder="Staff ID">
 							</div>
 						</div><br />
 						<div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Other Names</label>
-								<input type="text" class="form-control" id="onames" name="onames" placeholder="Other Names">
+								<input type="text" class="form-control" id="onames" name="onames" value="{{ $staff[0]->othername }}" placeholder="Other Names">
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Date of Employment</label>
-								<input type="date" class="form-control" id="doe" name="doe" placeholder="Date of Employment" max="{{ date('Y-m-d') }}">
+								<input type="date" class="form-control" id="doe" name="doe" value="{{ $staff[0]->doe }}" placeholder="Date of Employment" max="{{ date('Y-m-d') }}">
 							</div>
 						</div><br />
 						<div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Surname</label>
-								<input type="text" class="form-control" id="sname" name="sname" placeholder="Surname">
+								<input type="text" class="form-control" id="sname" name="sname" value="{{ $staff[0]->surname }}" placeholder="Surname">
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Department</label>
 								<select class="form-control" id="department" name="department">
-									<option value="">Select Department</option>
+									<option>{{ $staff[0]->department }}</option>
 									@foreach($departments as $department)
 									<option>{{ $department->departments }}</option>
 									@endforeach
@@ -142,7 +143,7 @@
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Gender</label>
 								<select class="form-control" id="gender" name="gender">
-									<option value="">Select Gender</option>
+									<option>{{ $staff[0]->gender }}</option>
 									<option>Male</option>
 									<option>Female</option>
 								</select>
@@ -150,7 +151,7 @@
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Designation</label>
 								<select class="form-control" id="designation" name="designation">
-									<option value="">Select Designation</option>
+									<option>{{ $staff[0]->designation }}</option>
 									@foreach($designations as $designation)
 									<option>{{ $designation->designations }}</option>
 									@endforeach
@@ -162,12 +163,12 @@
 								<label for="inputFirstName" class="form-label">Date of Birth</label>
 								@php $today = date('Y-m-d') @endphp
 								@php $date = strtotime($today.' -15 year') @endphp
-								<input type="date" class="form-control" id="dob" name="dob" max="{{ date('Y-m-d', $date) }}">
+								<input type="date" class="form-control" id="dob" name="dob" value="{{ $staff[0]->dob }}" max="{{ date('Y-m-d', $date) }}">
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Office</label>
 								<select class="form-control" id="office" name="office">
-									<option value="">Select Office</option>
+									<option>{{ $staff[0]->office }}</option>
 									@foreach($offices as $office)
 									<option>{{ $office->offices }}</option>
 									@endforeach
@@ -176,21 +177,21 @@
 						</div><br /><div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Email Address</label>
-								<input type="email" class="form-control" id="email" name="email" placeholder="Email Address" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+								<input type="email" class="form-control" id="email" value="{{ $staff[0]->email }}" name="email" placeholder="Email Address" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Account Number</label>
-								<input type="number" class="form-control" id="accountno" name="accountno" maxlength="10" min="0" placeholder="Account Number">
+								<input type="number" class="form-control" id="accountno" name="accountno" value="{{ $staff[0]->accountno }}" maxlength="10" min="0" placeholder="Account Number">
 							</div>
 						</div><br /><div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Phone Number</label>
-								<input type="text" class="form-control" id="phone" name="phone" placeholder="Phone Number">
+								<input type="text" class="form-control" id="phone" name="phone" value="{{ $staff[0]->phone }}" placeholder="Phone Number">
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Bank Name</label>
 								<select class="form-control" id="bank" name="bank">
-									<option value="">Select Office</option>
+									<option>{{ $staff[0]->bankname }}</option>
 									@foreach($banks as $bank)
 									<option>{{ $bank->banks }}</option>
 									@endforeach

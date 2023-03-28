@@ -16,7 +16,7 @@ class Profile extends Migration
         Schema::create('profile', function (Blueprint $table) {
             $table->id();
             $table->string("userid")->nullable();
-            $table->string("staffid")->nullable();
+            $table->string("staffid");
             $table->string("surname");
             $table->string("firstname");
             $table->string("othername")->nullable();
@@ -28,8 +28,8 @@ class Profile extends Migration
             $table->string("designation");
             $table->string("office");
             $table->string("gender");
-            $table->string("cv")->nullable();
-            $table->string("bio")->nullable();
+            $table->string("accountno")->nullable();
+            $table->string("bankname")->nullable();
             $table->string("image")->nullable();
             $table->string("signature")->nullable();
             $table->timestamps();

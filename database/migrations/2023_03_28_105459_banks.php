@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Designations extends Migration
+class Banks extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class Designations extends Migration
      */
     public function up()
     {
-        Schema::create('designations', function (Blueprint $table) {
+        Schema::create('banks', function (Blueprint $table) {
             $table->id();
-            $table->string("designations");
+            $table->string('banks');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ class Designations extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('designations');
+        Schema::dropIfExists('banks');
     }
 }
