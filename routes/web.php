@@ -25,3 +25,15 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 Route::get('/createstaff', [ProfileController::class, 'createstaff']);
+
+Route::get('/profilepics', [ProfileController::class, 'profilepics']);
+
+Route::get('/addsignature', [ProfileController::class, 'addsignature']);
+
+Route::get('/designations', [ProfileController::class, 'designations']);
+
+Route::get('/departments', [ProfileController::class, 'departments']);
+
+Route::get('/offices', [ProfileController::class, 'offices']);
+
+Route::get('/staffprofile', [ProfileController::class, 'staffprofile']);

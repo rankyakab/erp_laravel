@@ -13,7 +13,7 @@
 							<ol class="breadcrumb mb-0 p-0" style="background-color: transparent;">
 								<li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-user"></i></a>
 								</li>
-								<li class="breadcrumb-item active" aria-current="page">Add New Staff</li>
+								<li class="breadcrumb-item active" aria-current="page">Staff Profile</li>
 							</ol>
 						</nav>
 					</div>
@@ -25,20 +25,18 @@
 				<div class="card-header">
 					<div class="d-flex align-items-center">
 						<div>
-							<h6 class="mb-0">Add New Staff</h6>
+							<h6 class="mb-0">Profile of staff name</h6>
 						</div>
 						<div class="dropdown ms-auto">
 							<a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
 							</a>
 							<ul class="dropdown-menu">
-								<li><a class="dropdown-item" href="javascript:;">Action</a>
-								</li>
-								<li><a class="dropdown-item" href="javascript:;">Another action</a>
+								<li><a class="dropdown-item" href="javascript:;">Edit Profile</a>
 								</li>
 								<li>
 									<hr class="dropdown-divider">
 								</li>
-								<li><a class="dropdown-item" href="javascript:;">Something else here</a>
+								<li><a class="dropdown-item" href="javascript:;">Back to Dashboard</a>
 								</li>
 							</ul>
 						</div>
@@ -104,94 +102,70 @@
 					 	<div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">First Name</label>
-								<input type="text" class="form-control" id="fname" name="fname" placeholder="First Name">
+								<p class="form-control" id="fname">First Name</p>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Staff ID</label>
-								<input type="text" class="form-control" id="stafid" name="staffid" placeholder="Staff ID">
+								<p class="form-control" id="staffid">Staff ID</p>
 							</div>
 						</div><br />
 						<div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Other Names</label>
-								<input type="text" class="form-control" id="onames" name="onames" placeholder="Other Names">
+								<p class="form-control" id="onames">Other Names</p>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Date of Employment</label>
-								<input type="date" class="form-control" id="doe" name="doe" placeholder="Date of Employment">
+								<p class="form-control" id="doe">Date of Employment</p>
 							</div>
 						</div><br />
 						<div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Surname</label>
-								<input type="text" class="form-control" id="sname" name="sname" placeholder="Surname">
+								<p class="form-control" id="sname">Surname</p>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Department</label>
-								<select class="form-control" id="department" name="department">
-									<option value="">Select Department</option>
-									<option>Male</option>
-									<option>Female</option>
-								</select>
+								<p class="form-control" id="department">Department</p>
 							</div>
 						</div>
 						<br />
 						<div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Gender</label>
-								<select class="form-control" id="gender" name="gender">
-									<option value="">Select Gender</option>
-									<option>Male</option>
-									<option>Female</option>
-								</select>
+								<p class="form-control" id="gender">Gender</p>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Designation</label>
-								<select class="form-control" id="designation" name="designation">
-									<option value="">Select Designation</option>
-									<option>Male</option>
-									<option>Female</option>
-								</select>
+								<p class="form-control" id="designation">Designation</p>
 							</div>
 						</div><br />
 						<div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Date of Birth</label>
-								<input type="date" class="form-control" id="dob" name="dob">
+								<p class="form-control" id="dob">Date of Birth</p>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Office</label>
-								<select class="form-control" id="designation" name="designation">
-									<option value="">Select Office</option>
-									<option>Male</option>
-									<option>Female</option>
-								</select>
+								<p class="form-control" id="offices">Offices</p>
 							</div>
 						</div><br /><div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Email Address</label>
-								<input type="email" class="form-control" id="inputFirstName" placeholder="Email Address">
+								<p class="form-control" id="email">Email Address</p>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Account Number</label>
-								<input type="number" class="form-control" id="accountnumber" placeholder="Account Number">
+								<p class="form-control" id="accountnumber">Account Number</p>
 							</div>
 						</div><br /><div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Phone Number</label>
-								<input type="text" class="form-control" id="phonenumber" placeholder="Phone Number">
+								<p class="form-control" id="phone">Phone Number</p>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Bank Name</label>
-								<input type="bankname" class="form-control" id="bankname" placeholder="Bank Name">
-							</div>
-						</div><br />
-						<div class="row">
-						 	<div class="col-sm-6">
-								
-							</div>
-						 	<div class="col-sm-6 text-right float-right">
-								<button class="btn btn-info" type="submit">Submit</button>
+								<p class="form-control" id="bank">Bank Name</p>
 							</div>
 						</div><br />
 						</div>
