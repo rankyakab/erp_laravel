@@ -22,6 +22,7 @@
 	<link href="{{ asset('assets/css/app.css') }}" rel="stylesheet">
 	<link href="{{ asset('assets/css/icons.css') }}" rel="stylesheet">
 	<link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet'>
+	
 	<!-- Theme Style CSS -->
 	<link rel="stylesheet" href="{{ asset('assets/css/semi-dark.css') }}" />
 	<title>Relia Energy ERP</title>

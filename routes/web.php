@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\MemoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,8 @@ Route::get('/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
+/*************************** Profile Controller ********************************/
+
 Route::get('/createstaff', [ProfileController::class, 'createstaff']);
 
 Route::get('/profilepics', [ProfileController::class, 'profilepics']);
@@ -37,3 +40,9 @@ Route::get('/departments', [ProfileController::class, 'departments']);
 Route::get('/offices', [ProfileController::class, 'offices']);
 
 Route::get('/staffprofile', [ProfileController::class, 'staffprofile']);
+
+/*************************** Memo Controller *************************************/
+
+Route::get('/creatememo', [MemoController::class, 'creatememo']);
+
+Route::get('/memodetails', [MemoController::class, 'memodetails']);
