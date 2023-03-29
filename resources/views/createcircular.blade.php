@@ -46,25 +46,21 @@
 				</div>
 				  <div class="card-body" style="padding-top: 30px;">
 				  	<div class="form-body">
-					 <form class="row g-3">
+					 <form class="row g-3" action="submitcircular" method="post" id="submitcirculars" enctype="multipart/form-data">
+					 	@csrf
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">Circular Title</label>
-							<input type="text" class="form-control" id="title" name="title" placeholder="Memo Title">
+							<input type="text" class="form-control" id="title" name="title" placeholder="Circular Title">
 					 	</div><br />
 					 	<div class="col-sm-12">
 					 	<div class="row g-3">
 						 	<div class="col-sm-12">
 								<label for="inputFirstName" class="form-label">Recipient</label>
-								<select data-placeholder="Begin typing a name to filter..." multiple class=" form-control" name="test">
+								<select data-placeholder="Begin typing a name to filter..." multiple class=" form-control" name="recipient[]">
 								    <option>All Staff</option>
-								    <option>American Black Bear</option>
-								    <option>Asiatic Black Bear</option>
-								    <option>Brown Bear</option>
-								    <option>Giant Panda</option>
-								    <option>Sloth Bear</option>
-								    <option>Sun Bear</option>
-								    <option>Polar Bear</option>
-								    <option>Spectacled Bear</option>
+								    @foreach($staffs as $staff)
+								    <option value="{{ $staff->id }}">{{ $staff->firstname.' '.$staff->surname.' '.$staff->othername }}</option>
+								    @endforeach
 								  </select>
 							</div>
 						</div>
@@ -76,9 +72,9 @@
 								<link rel="stylesheet" href="{{ asset('assets/richtexteditor/rte_theme_default.css') }}" />
 								<script type="text/javascript" src="{{ asset('assets/richtexteditor/rte.js') }}"></script>
 								<script type="text/javascript" src="{{ asset('assets/richtexteditor/plugins/all_plugins.js') }}"></script>
-								<div id="div_editor1">
+								<textarea name="body" id="div_editor1">
 									
-								</div>
+								</textarea>
 
 								<script>
 									var editor1 = new RichTextEditor("#div_editor1");
@@ -92,7 +88,8 @@
 								<input type="file" name="attachment" class="form-control" accept=".pdf" placeholder="Select Attachment">
 							</div>
 						 	<div class="col-sm-6 text-right float-right">
-								<button class="btn btn-info" type="submit">Create</button>
+								<button class="btn btn-info" type="submit" id="button">Submit</button>
+								<img src="{{ asset('assets/images/processing.gif') }}" width="50px;" id="processing" class="processing" style="display: none;">
 							</div>
 						</div>
 					</div><br /><br />

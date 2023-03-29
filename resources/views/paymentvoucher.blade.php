@@ -137,21 +137,21 @@
 							<tbody id="sheetdata">
 								<tr>
 									<td><p id="sn">1</p></td>
-									<td><input type="text" class="form-control" id="description[]" name="description[]" placeholder="Description"></td>
-									<td><input type="text" class="form-control" id="qty[]" name="qty[]" placeholder="0"></td>
-									<td><input type="text" class="form-control" id="price[]" name="price[]" placeholder="0.00"></td>
-									<td><p class="form-control" id="amount[]">0.00</p>
-						 			<input type="hidden" class="form-control" id="amounts[]" name="amounts[]" placeholder="0.00"></td>
-									<td><input type="text" class="form-control" id="vatp[]" name="vatp[]" placeholder="0.00"></td>
-									<td><p class="form-control" id="amount[]">0.00</p>
-						 			<input type="hidden" class="form-control" id="vata[]" name="vata[]" placeholder="0.00"></td>
-									<td><p class="form-control" id="amount[]">0.00</p>
-						 			<input type="hidden" class="form-control" id="gross[]" name="gross[]" placeholder="0.00"></td>
-									<td><input type="text" class="form-control" id="whtp[]" name="whtp[]" placeholder="0.00"></td>
-									<td><p class="form-control" id="amount[]">0.00</p>
-						 			<input type="hidden" class="form-control" id="whta[]" name="whta[]" placeholder="0.00"></td>
-									<td><p class="form-control" id="amount[]">0.00</p>
-						 			<input type="hidden" class="form-control" id="net[]" name="net[]" placeholder="0.00"></td>
+									<td><input type="text" class="form-control" id="description1" name="description[]" placeholder="Description"></td>
+									<td><input type="text" class="form-control" id="qty1" name="qty[]" placeholder="0"></td>
+									<td><input type="text" class="form-control" id="price1" name="price[]" placeholder="0.00"></td>
+									<td><p class="form-control" id="amount1">0.00</p>
+						 			<input type="hidden" class="form-control" id="amounts1" name="amounts[]" placeholder="0.00"></td>
+									<td><input type="text" class="form-control" id="vatp1" name="vatp[]" placeholder="0.00"></td>
+									<td><p class="form-control" id="vatamount1">0.00</p>
+						 			<input type="hidden" class="form-control" id="vata1" name="vata[]" placeholder="0.00"></td>
+									<td><p class="form-control" id="grossamount1">0.00</p>
+						 			<input type="hidden" class="form-control" id="gross1" name="gross[]" placeholder="0.00"></td>
+									<td><input type="text" class="form-control" id="whtp1" name="whtp[]" placeholder="0.00"></td>
+									<td><p class="form-control" id="whtamount1">0.00</p>
+						 			<input type="hidden" class="form-control" id="whta1" name="whta[]" placeholder="0.00"></td>
+									<td><p class="form-control" id="netamount1">0.00</p>
+						 			<input type="hidden" class="form-control" id="net1" name="net[]" placeholder="0.00"></td>
 								</tr>
 
 							</tbody>
@@ -171,6 +171,7 @@
 							</tfoot>
 						</table>
 					</div>
+					<input type="hidden" name="counter" id="counter" value="1">
 						</div>
 						<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">Net Amount in Words</label>

@@ -67,7 +67,7 @@
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Memo CC</label>
-								<select data-placeholder="Begin typing a name to filter..." multiple class=" form-control" name="copies">
+								<select data-placeholder="Begin typing a name to filter..." multiple class=" form-control" name="copies[]">
 									<option value=""></option>
 								    @foreach($staffs as $staff)
 								    @if(Auth::user()->name != $staff->firstname.' '.$staff->surname.' '.$staff->othername)
@@ -102,7 +102,8 @@
 								<input type="file" name="attachment" class="form-control" accept=".pdf" placeholder="Select Attachment">
 							</div>
 						 	<div class="col-sm-6 text-right float-right">
-								<button class="btn btn-info" type="submit">Submit</button>
+								<button class="btn btn-info" type="submit" id="button">Submit</button>
+								<img src="{{ asset('assets/images/processing.gif') }}" width="50px;" id="processing" class="processing" style="display: none;">
 							</div>
 						</div>
 					</div><br /><br />

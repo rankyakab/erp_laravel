@@ -47,28 +47,40 @@
 					 <form class="row g-3">
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">Circular Title</label>
-							<p class="form-control" name="title">Circular Title</p>
+							<p class="form-control" name="title">{{ $circular[0]->title }}</p>
 					 	</div><br />
 					 	<div class="col-sm-12">
 					 	<div class="row g-3">
 						 	<div class="col-sm-12">
 								<label for="inputFirstName" class="form-label">Circular Recipient</label>
-								<p class="form-control" name="title">Circular Recipient</p>
+
+								@php $recipients = explode( ",", $circular[0]->sendto) @endphp
+								@php $count = count($recipients) @endphp
+								{{ $count }}
+								<p class="form-control" name="title">
+									@for($i=0; $i<$count; $i++)
+									{{ app\Http\Controllers\Controller::staffname($recipients[$i]) }},
+									@endfor
+								</p>
 							</div>
 						</div>
 					</div>
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">Circular Body</label>
-							<p class="form-control" name="title">Circular Body</p>
+							<p class="form-control" name="title">{{ $circular[0]->body }}</p>
 								
 					 	</div>
+					 	@if(!empty( $circular[0]->attachment ))
 					 	<div class="col-sm-12">
-						 	<iframe src="{{ asset('assets/attachments/Adoption, Implementation and Application of IPSAS in Nigeria-1.pdf') }}" width="100%" height="1000px"></iframe>
-						</div><br /><br />
+						 	<iframe src="{{ asset($circular[0]->attachment) }}" width="100%" height="1000px"></iframe>
+						</div>
+
+						@endif
+						<br /><br />
 						<div class="col-sm-12" style="margin-top: 50px;">
 					 		
-							<p id="signature">signature</p>
-							<p id="sender"><b>Memo Sender</b></p>
+							<p id="signature"><img src="{{ asset(app\Http\Controllers\Controller::staffsignature($circular[0]->sentform)) }}" width="150px"></p>
+							<p id="sender"><b>@php echo app\Http\Controllers\Controller::staffname($circular[0]->sentform) @endphp</b></p>
 								
 					 	</div>
 					 </form>

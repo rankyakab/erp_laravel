@@ -19,7 +19,7 @@ class Circular extends Migration
             $table->string("sendto");
             $table->string("title");
             $table->string("body");
-            $table->string("attachment");
+            $table->string("attachment")->nullable();
             $table->timestamps();
         });
     }

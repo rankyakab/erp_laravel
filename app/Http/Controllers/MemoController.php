@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use DB;
 use Auth;
+use Mail;
 
 class MemoController extends Controller
 {
@@ -254,6 +255,8 @@ class MemoController extends Controller
 
         }
 
+    }
+
 
 
         public function editmemo(Request $request){
@@ -265,7 +268,7 @@ class MemoController extends Controller
         }
 
 
-    }
+    
 
 
     public function submiteditmemo(Request $request){
@@ -358,9 +361,9 @@ class MemoController extends Controller
         return response()->json([
             'message' => 'success',
             'info' => 'Memo successfully updated'
-        ]);
+        ]); 
 
-        
+
 
     }
 }

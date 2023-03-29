@@ -17,7 +17,7 @@ class Memotrail extends Migration
             $table->id();
             $table->string("memoid");
             $table->string("title")->nullable();
-            $table->string("body", 20000)->nullable();
+            $table->string("body", 2000)->nullable();
             $table->string("attachment")->nullable();
             $table->string("status")->nullable();
             $table->string("remark")->nullable();

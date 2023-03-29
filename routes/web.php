@@ -19,7 +19,7 @@ use App\Http\Controllers\ProfileController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::get('/dashboard', function () {
@@ -127,6 +127,8 @@ Route::get('/createcircular', [CircularController::class, 'createcircular']);
 Route::get('/circulardetails', [CircularController::class, 'circulardetails']);
 
 Route::get('/listcirculars', [CircularController::class, 'listcirculars']);
+
+Route::post('submitcircular', [CircularController::class, 'submitcircular']);
 
 
 

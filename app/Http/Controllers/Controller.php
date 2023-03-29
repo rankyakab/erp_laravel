@@ -57,7 +57,7 @@ class Controller extends BaseController
 
     public static function profileemail($staff){
 
-        $staff = DB::table('profile')->where('id', $user)->get();
+        $staff = DB::table('profile')->where('id', $staff)->get();
 
         return $staff[0]->email;
     }
@@ -95,6 +95,17 @@ class Controller extends BaseController
         return $createlogs = DB::table('logs')->insert($logs);
 
 
+    }
+
+
+    public static function staffdesignation($staff){
+
+        return DB::table('profile')->where('id', $staff)->value('designation');
+    }
+
+    public static function staffimage($staff){
+
+        return DB::table('profile')->where('id', $staff)->value('image');
     }
 
 }

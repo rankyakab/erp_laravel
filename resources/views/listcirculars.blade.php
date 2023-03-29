@@ -27,19 +27,15 @@
 							<h4 class="mb-0">Circulars</h4>
 						</div>
 						<hr/>
-					<div class="col">
-								<div class="shadow p-4 border-5 border text-center rounded bg-light">
-									<h4><b>Circular title</b></h4>
-									<p>Prepared By</p>
-									<p>Published By</p>
-								</div>
-							</div><br /><br />
-						<div class="col">
-								<div class="shadow p-4 rounded">Regular shadow</div>
-							</div><br /><br />
-							<div class="col">
-								<div class="shadow p-4 rounded">Regular shadow</div>
-							</div>
+
+					
+						@foreach($circluars as $circluar)
+							<a href="{{ url('circulardetails?id='.$circluar->id) }}"><div class="col">
+								<div class="shadow p-4 rounded">{{ $circluar->title }}</div>
+								<small>{{ $circluar->created_at }}</small>
+							</div></a><br /><br />
+						@endforeach
+							
 					</div>
 				</div>
 
