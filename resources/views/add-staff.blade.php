@@ -190,7 +190,7 @@
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Bank Name</label>
 								<select class="form-control" id="bank" name="bank">
-									<option value="">Select Office</option>
+									<option value="">Select Bank</option>
 									@foreach($banks as $bank)
 									<option>{{ $bank->banks }}</option>
 									@endforeach

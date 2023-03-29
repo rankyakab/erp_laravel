@@ -15003,10 +15003,10 @@ be a descendant of the grid when it is being dragged.
 					 		<!--image upload starts here--->
 	                	<div class="fileinput fileinput-new text-center" data-provides="fileinput">
 	                    <div class="fileinput-new  avatar border-gray">
-	                      <img src="{{ asset(app\Http\Controllers\Controller::staffpics($_GET['id'])) ?? asset('assets/images/default-avatar.png') }}" width="250px" alt="...">
+	                      <img src="@if(!is_null(app\Http\Controllers\Controller::staffpics($_GET['id']))) {{ asset(app\Http\Controllers\Controller::staffpics($_GET['id'])) }} @else {{ asset('assets/images/default-avatar.png') }} @endif" width="250px" alt="...">
 	                    </div>
 	                    <div class="fileinput-preview fileinput-exists avatar border-gray">
-	                      <img src="{{ asset(app\Http\Controllers\Controller::staffpics($_GET['id'])) ?? asset('assets/images/default-avatar.png') }}" width="250px" alt="...">
+	                      <img src="@if(!is_null(app\Http\Controllers\Controller::staffpics($_GET['id']))) {{ asset(app\Http\Controllers\Controller::staffpics($_GET['id'])) }} @else {{ asset('assets/images/default-avatar.png') }} @endif" width="250px" alt="...">
 	                    </div>
 	                    <div>
 	                    	

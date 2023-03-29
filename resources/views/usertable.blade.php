@@ -40,24 +40,22 @@
 								<thead>
 									<tr>
 										<th>Name</th>
-										<th>Department</th>
-										<th>Designation</th>
-										<th>Office</th>
-										<th>Start date</th>
-										<th>System Status</th>
+										<th>Email</th>
+										<th>Role</th>
+										<th>Account Status</th>
+										<th>Date Converted</th>
 										<th>Action</th>
 									</tr>
 								</thead>
 								<tbody>
-									@foreach($staffs as $staff)
+									@foreach($users as $user)
 									<tr>
-										<td>{{ $staff->firstname.' '.$staff->surname.' '.$staff->othername}}</td>
-										<td>{{ $staff->department }}</td>
-										<td>{{ $staff->designation }}</td>
-										<td>{{ $staff->office }}</td>
-										<td>{{ $staff->doe }}</td>
-										<td>@if(app\Http\Controllers\Controller::checkuser($staff->id)[0]->status != 'Active') <button class="btn btn-warning px-5">Suspended</button> @elseif(app\Http\Controllers\Controller::checkuser($staff->id)->count() == 1) <button href="{{ url('staffprofile?id='.$staff->id) }}" class="btn btn-primary px-5">User</button> @else <button class="btn btn-danger px-5 convertuser" id="{{ $staff->id }}">Convert User</button> @endif</td>
-										<td><a href="{{ url('staffprofile?id='.$staff->id) }}" class="btn btn-dark px-5">View Details</a></td>
+										<td>{{ $user->name }}</td>
+										<td>{{ $user->email }}</td>
+										<td>{{ $user->role }}</td>
+										<td>@if($user->status == 'Active') <button type="button" class="btn btn-success">{{ $user->status }}</button> @else<button type="button" class="btn btn-danger">{{ $user->status }}</button>@endif </td>
+										<td>{{ $user->created_at }}</td>
+										<td><a href="{{ url('userprofile?id='.$user->id) }}" class="btn btn-dark px-5">View Details</a></td>
 									</tr>
 									@endforeach
 								</tbody>

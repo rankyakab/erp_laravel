@@ -1,10 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MemoController;
 use App\Http\Controllers\PVController;
 use App\Http\Controllers\CircularController;
+use App\Http\Controllers\ProfileController;
 
 
 /*
@@ -68,7 +68,27 @@ Route::post('/submiteditstaff', [ProfileController::class, 'submiteditstaff']);
 
 Route::get('/stafftable', [ProfileController::class, 'stafftable']);
 
+Route::get('/usertable', [ProfileController::class, 'usertable']);
 
+Route::get('/userprofile', [ProfileController::class, 'userprofile']);
+
+Route::post('/submitedituser', [ProfileController::class, 'submitedituser']);
+
+Route::get('/updateprofile', [ProfileController::class, 'updateprofile']);
+
+Route::post('/submitupdateprofile', [ProfileController::class, 'submitupdateprofile']);
+
+Route::get('/uploadmypics', [ProfileController::class, 'uploadmypics']);
+
+Route::get('/uploadmysignature', [ProfileController::class, 'uploadmysignature']);
+
+Route::post('/submitmypics', [ProfileController::class, 'submitmypics']);
+
+Route::post('/submitmysignature', [ProfileController::class, 'submitmysignature']);
+
+Route::get('/changepassword', [ProfileController::class, 'changepassword']);
+
+Route::post('/submitpassword', [ProfileController::class, 'submitpassword']);
 
 /*************************** Memo Controller *************************************/
 

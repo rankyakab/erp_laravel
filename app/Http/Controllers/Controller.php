@@ -49,4 +49,10 @@ class Controller extends BaseController
         return $token;
     }
 
+
+    public static function checkuser($user){
+
+        return DB::table('users')->where('profileid', $user)->get();
+    }
+
 }

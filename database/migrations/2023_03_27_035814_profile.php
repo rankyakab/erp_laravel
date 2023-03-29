@@ -28,6 +28,8 @@ class Profile extends Migration
             $table->string("designation");
             $table->string("office");
             $table->string("gender");
+            $table->string("employmentstatus");
+            $table->date("datechanged");
             $table->string("accountno")->nullable();
             $table->string("bankname")->nullable();
             $table->string("image")->nullable();

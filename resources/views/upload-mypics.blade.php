@@ -14971,7 +14971,7 @@ be a descendant of the grid when it is being dragged.
 				<div class="card-header">
 					<div class="d-flex align-items-center">
 						<div>
-							<h5 class="mb-0"><b>@php echo app\Http\Controllers\Controller::staffname($_GET['id']) @endphp Signature</b></h5>
+							<h5 class="mb-0"><b>@php echo app\Http\Controllers\Controller::staffname(Auth::user()->profileid) @endphp Profile Pics</b></h5>
 						</div>
 						<div class="dropdown ms-auto">
 							<a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
@@ -14992,9 +14992,8 @@ be a descendant of the grid when it is being dragged.
 				</div>
 				  <div class="card-body">
 				  	<div class="form-body">
-					 <form class="row" action="submitsignature" id="submitsignature" method="post" enctype="multipart/form-data">
-            @csrf
-            <input type="hidden" name="user" value="{{ $_GET['id'] }}">
+					 <form class="row" action="submitmypics" id="submitmypics" method="post" enctype="multipart/form-data">
+					 	@csrf
 					 	<div class="col-sm-12">
 					 	<center>
 
@@ -15002,11 +15001,11 @@ be a descendant of the grid when it is being dragged.
 
 					 		<!--image upload starts here--->
 	                	<div class="fileinput fileinput-new text-center" data-provides="fileinput">
-	                    <div class="fileinput-new border-gray">
-	                      <img src="@if(!is_null(app\Http\Controllers\Controller::staffsignature($_GET['id']))) {{ asset(app\Http\Controllers\Controller::staffsignature($_GET['id'])) }} @else {{ asset('assets/images/signature.png') }} @endif" width="250px" alt="...">
+	                    <div class="fileinput-new  avatar border-gray">
+	                      <img src="@if(!is_null(app\Http\Controllers\Controller::staffpics(Auth::user()->profileid))) {{ asset(app\Http\Controllers\Controller::staffpics(Auth::user()->profileid)) }} @else {{ asset('assets/images/default-avatar.png') }} @endif" width="250px" alt="...">
 	                    </div>
-	                    <div class="fileinput-preview fileinput-exists border-gray">
-	                      <img src="@if(!is_null(app\Http\Controllers\Controller::staffsignature($_GET['id']))) {{ asset(app\Http\Controllers\Controller::staffsignature($_GET['id'])) }} @else {{ asset('assets/images/signature.png') }} @endif" width="250px" alt="...">
+	                    <div class="fileinput-preview fileinput-exists avatar border-gray">
+	                      <img src="@if(!is_null(app\Http\Controllers\Controller::staffpics(Auth::user()->profileid))) {{ asset(app\Http\Controllers\Controller::staffpics(Auth::user()->profileid)) }} @else {{ asset('assets/images/default-avatar.png') }} @endif" width="250px" alt="...">
 	                    </div>
 	                    <div>
 	                    	
@@ -15023,7 +15022,7 @@ be a descendant of the grid when it is being dragged.
 
 
 	                  	<button type="submit" class="btn btn-info btn-round" id="button">Submit</button>
-                      <img src="{{ asset('assets/images/processing.gif') }}" width="50px;" id="processing" class="processing" style="display: none;">
+	                  	<img src="{{ asset('assets/images/processing.gif') }}" width="50px;" id="processing" class="processing" style="display: none;">
 
 					 		
 						</center>

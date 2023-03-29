@@ -25,7 +25,7 @@
 				<div class="card-header">
 					<div class="d-flex align-items-center">
 						<div>
-							<h6 class="mb-0">Add New Staff</h6>
+							<h6 class="mb-0">Edit Staff Data</h6>
 						</div>
 						<div class="dropdown ms-auto">
 							<a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
@@ -57,10 +57,10 @@
 					 		<!--image upload starts here--->
 	                <div class="fileinput fileinput-new text-center" data-provides="fileinput">
 	                    <div class="fileinput-new  avatar border-gray">
-	                      <a href="{{ url('profilepics?id='.$staff[0]->id) }}"><img src="{{ asset($staff[0]->image) ?? asset('assets/images/default-avatar.png') }}" width="250px" alt="..."></a>
+	                      <a href="{{ url('profilepics?id='.$staff[0]->id) }}"><img src="@if(!is_null($staff[0]->image)) {{ asset($staff[0]->image) }} @else {{ asset('assets/images/default-avatar.png') }} @endif" width="250px" alt="..."></a>
 	                    </div>
 	                    <div class="fileinput-preview fileinput-exists avatar border-gray">
-	                      <img src="{{ asset($staff[0]->image) ?? asset('assets/images/default-avatar.png') }}" width="250px" alt="...">
+	                      <img src="@if(!is_null($staff[0]->image)) {{ asset($staff[0]->image) }} @else {{ asset('assets/images/default-avatar.png') }} @endif" width="250px" alt="...">
 	                    </div>
 	                    <div>
 	                    	
@@ -80,10 +80,10 @@
 
 	                  <div class="fileinput fileinput-new text-center" data-provides="fileinput">
 	                    <div class="fileinput-new  border-gray">
-	                      <a href="{{ url('addsignature?id='.$staff[0]->id) }}"><img src="{{ asset($staff[0]->signature) ?? asset('assets/images/signature.jpg') }}" width="250px" alt="..."></a>
+	                      <a href="{{ url('addsignature?id='.$staff[0]->id) }}"><img src="@if(!is_null(asset($staff[0]->signature))) {{ asset($staff[0]->signature) }} @else {{ asset('assets/images/signature.jpg') }} @endif" width="250px" alt="..."></a>
 	                    </div>
 	                    <div class="fileinput-preview fileinput-exists  border-gray">
-	                      <img src="{{ asset($staff[0]->signature) ?? asset('assets/images/signature.jpg') }}" width="250px" alt="...">
+	                      <img src="@if(!is_null(asset($staff[0]->signature))) {{ asset($staff[0]->signature) }} @else {{ asset('assets/images/signature.jpg') }} @endif" width="250px" alt="...">
 	                    </div>
 	                    <div>
 	                    	<!--<label>Signature</label>
@@ -196,6 +196,22 @@
 									<option>{{ $bank->banks }}</option>
 									@endforeach
 								</select>
+							</div>
+						</div><br /><div class="row">
+						 	<div class="col-sm-6">
+								<label for="inputFirstName" class="form-label">Employment Status</label>
+								<select class="form-control" id="employmentstatus" name="employmentstatus">
+									<option>{{ $staff[0]->employmentstatus }}</option>
+									<option>Active Employment</option>
+									<option>Resigned</option>
+									<option>Retired</option>
+									<option>Suspended</option>
+									<option>Sacked</option>
+								</select>
+							</div>
+						 	<div class="col-sm-6">
+								<label for="inputFirstName" class="form-label">Employment Status Since</label>
+								<input type="date" class="form-control" id="datechanged" name="datechanged" value="{{ $staff[0]->datechanged }}">
 							</div>
 						</div><br />
 						<div class="row">

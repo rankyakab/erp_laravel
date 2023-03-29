@@ -475,6 +475,9 @@ class ProfileController extends Controller
         $data['gender'] = $gender;
         $data['accountno'] = $accountno;
         $data['bankname'] = $bank;
+        $data['employmentstatus'] = 'Active Employment';
+        $data['datechanged'] = $doe;
+        $data['created_at'] = date('Y-m-d H:i:s');
 
 
         $create = DB::table('profile')->insertGetId($data);
@@ -679,7 +682,7 @@ class ProfileController extends Controller
         $data = array();
 
         $data['profileid'] = $staff[0]->id;
-        $data['name'] = $staff[0]->firstname.' '.staff[0]->surname.'  '.staff[0]->othername;
+        $data['name'] = $staff[0]->firstname.' '.$staff[0]->surname.'  '.$staff[0]->othername;
         $data['email'] = $staff[0]->email;
         $data['role'] = DB::table('role')->where('role', 'Staff')->value('id');
         $data['status'] = 'Active';
@@ -687,7 +690,7 @@ class ProfileController extends Controller
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
 
-        $convert = DB::table('user')->insertGetId($data);
+        $convert = DB::table('users')->insertGetId($data);
 
 
         if($convert){
@@ -697,7 +700,7 @@ class ProfileController extends Controller
 
 
             //Email user login credentials
-            $username = $$staff[0]->firstname;
+            $username = $staff[0]->firstname;
             $useremail = $staff[0]->email;
             
             try{
@@ -723,7 +726,8 @@ class ProfileController extends Controller
             $createlogs = DB::table('logs')->insert($logs);
 
             return response()->json([
-                'message' => 'success'
+                'message' => 'success',
+                'info' => 'Staff successfully converted to user'
             ]);
 
         }else{
@@ -741,7 +745,8 @@ class ProfileController extends Controller
 
 
             return response()->json([
-                'message' => 'error'
+                'message' => 'error',
+                'info' => 'Staff successfully converted to user'
             ]);
         }
         
@@ -765,6 +770,8 @@ class ProfileController extends Controller
         $accountno = $request->accountno;
         $phone = $request->phone;
         $bank = $request->bank;
+        $employmentstatus = $request->employmentstatus;
+        $datechanged = $request->datechanged;
 
         //check if the email provided is already in use
         $checkemail = DB::table('profile')->where([['email', $email],['id', '!=', $request->id]])->count();
@@ -834,6 +841,9 @@ class ProfileController extends Controller
         $data['gender'] = $gender;
         $data['accountno'] = $accountno;
         $data['bankname'] = $bank;
+        $data['employmentstatus'] = $employmentstatus;
+        $data['datechanged'] = $datechanged;
+        $data['updated_at'] = date('Y-m-d H:i:s');
 
         $update = DB::table('profile')->where('id', $request->id)->update($data);
 
@@ -890,7 +900,7 @@ class ProfileController extends Controller
             $logs = array();
 
             $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to add update staff profile for staff with ".$staffid." and email ".$email." to the database, but failed";
+            $logs['action'] = "Attempted to update staff profile for staff with ".$staffid." and email ".$email." to the database, but failed";
             $logs['created_at'] = date('Y-m-d H:i:s');
             $logs['updated_at'] = date('Y-m-d H:i:s');
 
@@ -909,9 +919,470 @@ class ProfileController extends Controller
 
     public function stafftable(){
 
-        $staffs = DB::table('profile')->get();
+        $staffs = DB::table('profile')->orderBy('firstname')->get();
 
         return view('stafftable', ['staffs' => $staffs]);
+    }
+
+
+    public function usertable(){
+
+        $users = DB::table('users')->orderBy('name')->get();
+
+        return view('usertable', ['users' => $users]);
+    }
+
+
+    public function userprofile(Request $request){
+
+
+        $user = DB::table('users')->where('id', $request->id)->get();
+
+        $roles = DB::table('role')->orderBy('role', 'asc')->get();
+
+        return view('edit-user', ['user' => $user, 'roles' => $roles]);
+
+    }
+
+
+    public function submitedituser(Request $request){
+
+        $role = $request->role;
+        $status = $request->status;
+
+        $data = array();
+
+        $data['role'] = $role;
+        $data['status'] = $status;
+        $data['updated_at'] = date('Y-m-d H:i:s');
+
+        $update = DB::table('users')->where('id', $request->id)->update($data);
+
+        if($update){
+
+            //log the event
+
+            $logs = array();
+
+            $logs['user'] = Auth::user()->id;
+            $logs['action'] = "Updated user data of user with user id ".$request->id;
+            $logs['created_at'] = date('Y-m-d H:i:s');
+            $logs['updated_at'] = date('Y-m-d H:i:s');
+
+            $createlogs = DB::table('logs')->insert($logs);
+
+
+            return response()->json([
+                'message' => 'success',
+                'info' => 'User data successfully updated'
+            ]);
+
+        }else{
+
+            //log the event
+
+            $logs = array();
+
+            $logs['user'] = Auth::user()->id;
+            $logs['action'] = "Attempted to update user data for user with user id ".$staffid." to the database, but failed";
+            $logs['created_at'] = date('Y-m-d H:i:s');
+            $logs['updated_at'] = date('Y-m-d H:i:s');
+
+            $createlogs = DB::table('logs')->insert($logs);
+
+
+            return response()->json([
+                'message' => 'error',
+                'info' => 'User update could not be completed at the moment, please try again'
+            ]);
+
+        }
+    }
+
+
+    public function updateprofile(){
+
+        $staff = DB::table('profile')->where('userid', Auth::user()->id)->get();
+
+        $banks = DB::table('banks')->orderBy('banks', 'asc')->get();
+
+        return view('update-profile', ['banks' => $banks, 'staff' => $staff]);
+    }
+
+
+    public function submitupdateprofile(Request $request){
+
+
+        $fname = $request->fname;
+        $staffid = $request->staffid;
+        $onames = $request->onames;
+        $sname = $request->sname;
+        $doe = $request->doe;
+        $department = $request->department;
+        $gender = $request->gender;
+        $designation = $request->designation;
+        $dob = $request->dob;
+        $office = $request->office;
+        $email = $request->email;
+        $accountno = $request->accountno;
+        $phone = $request->phone;
+        $bank = $request->bank;
+        $employmentstatus = $request->employmentstatus;
+        $datechanged = $request->datechanged;
+
+        //check if the email provided is already in use
+        $checkemail = DB::table('profile')->where([['email', $email],['id', '!=', Auth::user()->profileid]])->count();
+
+        if($checkemail == 1){
+
+            //log the event
+
+            $logs = array();
+
+            $logs['user'] = Auth::user()->id;
+            $logs['action'] = "Attempted update staff profile with email ".$email." to the database, but failed because the email is already in use by another staff";
+            $logs['created_at'] = date('Y-m-d H:i:s');
+            $logs['updated_at'] = date('Y-m-d H:i:s');
+
+            $createlogs = DB::table('logs')->insert($logs);
+
+
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Email address provided is currently in use by another staff'
+            ]);
+
+            }else{
+
+            //check if the staff already exist using staff id
+            $checkemail = DB::table('profile')->where([['staffid', $staffid],['id', '!=', Auth::user()->profileid]])->count();
+
+
+            if($checkemail == 1){
+
+            //log the event
+
+            $logs = array();
+
+            $logs['user'] = Auth::user()->id;
+            $logs['action'] = "Attempted to update staff with staff id ".$staffid." to the database, but failed because the staff id is already in use by another staff";
+            $logs['created_at'] = date('Y-m-d H:i:s');
+            $logs['updated_at'] = date('Y-m-d H:i:s');
+
+            $createlogs = DB::table('logs')->insert($logs);
+
+
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Staff ID provided is currently in use by another staff'
+            ]);
+            
+            }
+
+        }
+
+
+        $data = array();
+
+        $data['staffid'] = $staffid;
+        $data['surname'] = $sname;
+        $data['firstname'] = $fname;
+        $data['othername'] = $onames;
+        $data['email'] = $email;
+        $data['phone'] = $phone;
+        $data['dob'] = $dob;
+        $data['doe'] = $doe;
+        $data['department'] = $department;
+        $data['designation'] = $designation;
+        $data['office'] = $office;
+        $data['gender'] = $gender;
+        $data['accountno'] = $accountno;
+        $data['bankname'] = $bank;
+        $data['employmentstatus'] = $employmentstatus;
+        $data['datechanged'] = $datechanged;
+        $data['updated_at'] = date('Y-m-d H:i:s');
+
+        $update = DB::table('profile')->where('id', Auth::user()->profileid)->update($data);
+
+
+        if($update){
+
+            //update user table name and email incase it changed
+
+            $userdata = array();
+
+            $userdata['name'] = $fname.' '.$sname.' '.$onames;
+            $userdata['email'] = $email;
+
+            $updateuser = DB::table('users')->where('profileid', Auth::user()->profileid)->update($userdata);
+
+            //log the event
+
+            $logs = array();
+
+            $logs['user'] = Auth::user()->id;
+            $logs['action'] = "Updated staff data of staff with staff id ".$staffid." and email ".$email." to the database";
+            $logs['created_at'] = date('Y-m-d H:i:s');
+            $logs['updated_at'] = date('Y-m-d H:i:s');
+
+            $createlogs = DB::table('logs')->insert($logs);
+
+
+            //send email to the staff
+
+            //send password and public key to admin email
+            $username = $fname;
+            $useremail = $email;
+            
+            try{
+                //send email to the person concerned
+                Mail::send('emails.editprofileemail', ['username' => $username, 'useremail' => $useremail], function ($message) use ($username, $useremail) {
+                $message->to($useremail, $username)->subject('Your profile was updated at Relia Energy ERP');
+                $message->from('erp@reliaenergy.com', 'ERP');
+                });
+            }catch(\Exception $e){
+                
+            }
+
+            return response()->json([
+                'message' => 'success',
+                'id' => $request->id,
+                'info' => 'Staff profile successfully updated'
+            ]);
+
+        }else{
+
+            //log the event
+
+            $logs = array();
+
+            $logs['user'] = Auth::user()->id;
+            $logs['action'] = "Attempted to update staff profile for staff with ".$staffid." and email ".$email." to the database, but failed";
+            $logs['created_at'] = date('Y-m-d H:i:s');
+            $logs['updated_at'] = date('Y-m-d H:i:s');
+
+            $createlogs = DB::table('logs')->insert($logs);
+
+
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Staff update could not be completed at the moment, please try again'
+            ]);
+
+        }
+
+    }
+
+
+    //upload staff profile pics
+
+    public function submitmypics(Request $request){
+
+        $pics = $request->file('pics');
+        $user = Auth::user()->profileid;
+
+        $email = DB::table('profile')->where('id', $user)->value('email');
+
+        $picsurl = $pics->store('assets/profile');
+
+        $update = DB::table('profile')->where('id', $user)->update(['image' => $picsurl]);
+
+        if($update){
+
+            //log the event
+
+            $logs = array();
+
+            $logs['user'] = Auth::user()->id;
+            $logs['action'] = "Successfully updated the profile image of the staff  with the email ".$email." in the database";
+            $logs['created_at'] = date('Y-m-d H:i:s');
+            $logs['updated_at'] = date('Y-m-d H:i:s');
+
+            $createlogs = DB::table('logs')->insert($logs);
+
+            return response()->json([
+                'message' => 'success',
+                'id' => $user
+            ]);
+
+        }else{
+
+            //log the event
+
+            $logs = array();
+
+            $logs['user'] = Auth::user()->id;
+            $logs['action'] = "Attempted to update the profile image of the staff with the email ".$email." to the database, but failed";
+            $logs['created_at'] = date('Y-m-d H:i:s');
+            $logs['updated_at'] = date('Y-m-d H:i:s');
+
+            $createlogs = DB::table('logs')->insert($logs);
+
+
+            return response()->json([
+                'message' => 'error'
+            ]);
+
+        }
+    }
+
+
+    //upload staff signature
+
+    public function submitmysignature(Request $request){
+
+        $pics = $request->file('pics');
+        $user = Auth::user()->profileid;
+
+        $email = DB::table('profile')->where('id', $user)->value('email');
+
+        $picsurl = $pics->store('assets/profile');
+
+        $update = DB::table('profile')->where('id', $user)->update(['signature' => $picsurl]);
+
+        if($update){
+
+            //log the event
+
+            $logs = array();
+
+            $logs['user'] = Auth::user()->id;
+            $logs['action'] = "Successfully updated the signature of the staff  with the email ".$email." in the database";
+            $logs['created_at'] = date('Y-m-d H:i:s');
+            $logs['updated_at'] = date('Y-m-d H:i:s');
+
+            $createlogs = DB::table('logs')->insert($logs);
+
+            return response()->json([
+                'message' => 'success',
+                'id' => $user
+            ]);
+
+        }else{
+
+            //log the event
+
+            $logs = array();
+
+            $logs['user'] = Auth::user()->id;
+            $logs['action'] = "Attempted to update the signature of the staff with the email ".$email." to the database, but failed";
+            $logs['created_at'] = date('Y-m-d H:i:s');
+            $logs['updated_at'] = date('Y-m-d H:i:s');
+
+            $createlogs = DB::table('logs')->insert($logs);
+
+
+            return response()->json([
+                'message' => 'error'
+            ]);
+
+        }
+    }
+
+
+    public function uploadmysignature(){
+
+        return view('upload-mysignature');
+    }
+
+
+    public function uploadmypics(){
+
+        return view('upload-mypics');
+    }
+
+    public function changepassword(){
+
+        return view('changepassword');
+    }
+
+
+    public function submitpassword(Request $request){
+
+        $currentpassword = $request->currentpassword;
+        $newpasswrod = $request->newpassword;
+        $newpasswordagain = $request->newpasswordagain;
+
+        $systempassword = DB::table('users')->where('id', Auth::user()->id)->value('password');
+
+        if($newpasswrod != $newpasswordagain){
+
+            //log the event
+
+            $logs = array();
+
+            $logs['user'] = Auth::user()->id;
+            $logs['action'] = "Attempted to change password but could not complete the process because new password did not match";
+            $logs['created_at'] = date('Y-m-d H:i:s');
+            $logs['updated_at'] = date('Y-m-d H:i:s');
+
+            $createlogs = DB::table('logs')->insert($logs);
+
+
+            return response()->json([
+                'message' => 'error',
+                'info' => 'New password did not match'
+            ]);
+
+        }else if(!Hash::check($currentpassword, $systempassword)){
+
+            //log the event
+
+            $logs = array();
+
+            $logs['user'] = Auth::user()->id;
+            $logs['action'] = "Attempted to change password but could not complete the process because the current password provided did not match the database password";
+            $logs['created_at'] = date('Y-m-d H:i:s');
+            $logs['updated_at'] = date('Y-m-d H:i:s');
+
+            $createlogs = DB::table('logs')->insert($logs);
+
+
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Current password provided did not match the password stored for this user in the database'
+            ]);
+
+        }else{
+
+            $update = DB::table('users')->where('id', Auth::user()->id)->update(['password' => Hash::make($newpasswrod), 'updated_at' => date('Y-m-d H:i:s')]);
+
+
+            if($update){
+
+            //log the event
+
+            $logs = array();
+
+            $logs['user'] = Auth::user()->id;
+            $logs['action'] = "User successfully updated their password";
+            $logs['created_at'] = date('Y-m-d H:i:s');
+            $logs['updated_at'] = date('Y-m-d H:i:s');
+
+            $createlogs = DB::table('logs')->insert($logs);
+
+
+            //send email to the staff
+            $username = Auth::user()->name;
+            $useremail = Auth::user()->email;
+            
+            try{
+                //send email to the person concerned
+                Mail::send('emails.passwordchangeemail', ['username' => $username, 'useremail' => $useremail], function ($message) use ($username, $useremail) {
+                $message->to($useremail, $username)->subject('Your password at the Relia Energy ERP was successly chaged.');
+                $message->from('erp@reliaenergy.com', 'ERP');
+                });
+            }catch(\Exception $e){
+                
+            }
+
+            return response()->json([
+                'message' => 'success',
+                'info' => 'Password successfully changed'
+            ]);
+            }
+
+        }
     }
 
     

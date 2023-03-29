@@ -13,7 +13,7 @@
 							<ol class="breadcrumb mb-0 p-0" style="background-color: transparent;">
 								<li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-user"></i></a>
 								</li>
-								<li class="breadcrumb-item active" aria-current="page">Staff Profile</li>
+								<li class="breadcrumb-item active" aria-current="page">Add New Staff</li>
 							</ol>
 						</nav>
 					</div>
@@ -25,35 +25,31 @@
 				<div class="card-header">
 					<div class="d-flex align-items-center">
 						<div>
-							<h6 class="mb-0" id="button">Staff Profile</h6>
+							<h6 class="mb-0">Edit Staff Data</h6>
 						</div>
-						<img src="{{ asset('assets/images/processing.gif') }}" width="50px;" id="processing" class="processing" style="display: none;">
 						<div class="dropdown ms-auto">
 							<a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
 							</a>
 							<ul class="dropdown-menu">
-								<li><a class="dropdown-item" href="{{ url('editstaff?id='.$_GET['id']) }}">Edit Profile</a>
+								<li><a class="dropdown-item" href="javascript:;">Action</a>
 								</li>
-								@if(app\Http\Controllers\Controller::checkuser($_GET['id'])->count() == 0)
+								<li><a class="dropdown-item" href="javascript:;">Another action</a>
+								</li>
 								<li>
 									<hr class="dropdown-divider">
 								</li>
-								<li><a class="dropdown-item convertuser" id="{{ $_GET['id'] }}" href="{{ url('convertuser?id='.$_GET['id']) }}">Convert to User</a>
-								</li>
-								@endif
-								<li>
-									<hr class="dropdown-divider">
-								</li>
-								<li><a class="dropdown-item" href="{{ url('dashboard?id='.$_GET['id']) }}">Back to Dashboard</a>
+								<li><a class="dropdown-item" href="javascript:;">Something else here</a>
 								</li>
 							</ul>
 						</div>
 					</div>
 				</div>
-				  <div class="card-body">
+				  <div class="card-body" style="padding-top: 40px;">
 				  	<div class="form-body">
-					 <form class="row g-3">
+					 <form class="row g-3" action="submitupdateprofile" id="submitupdateprofile" method="post">
+					 	@csrf
 					 	<div class="col-sm-4">
+					 		
 					 	<center>
 
 
@@ -61,7 +57,7 @@
 					 		<!--image upload starts here--->
 	                <div class="fileinput fileinput-new text-center" data-provides="fileinput">
 	                    <div class="fileinput-new  avatar border-gray">
-	                      <img src="@if(!is_null($staff[0]->image)) {{ asset($staff[0]->image) }} @else {{ asset('assets/images/default-avatar.png') }} @endif" width="250px" alt="...">
+	                      <a href="{{ url('uploadmypics?id='.$staff[0]->id) }}"><img src="@if(!is_null($staff[0]->image)) {{ asset($staff[0]->image) }} @else {{ asset('assets/images/default-avatar.png') }} @endif" width="250px" alt="..."></a>
 	                    </div>
 	                    <div class="fileinput-preview fileinput-exists avatar border-gray">
 	                      <img src="@if(!is_null($staff[0]->image)) {{ asset($staff[0]->image) }} @else {{ asset('assets/images/default-avatar.png') }} @endif" width="250px" alt="...">
@@ -84,13 +80,13 @@
 
 	                  <div class="fileinput fileinput-new text-center" data-provides="fileinput">
 	                    <div class="fileinput-new  border-gray">
-	                      <img src="@if(!is_null($staff[0]->signature)) {{ asset($staff[0]->signature) }} @else {{ asset('assets/images/signature.jpg') }} @endif" width="250px" alt="...">
+	                      <a href="{{ url('uploadmysignature?id='.$staff[0]->id) }}"><img src="@if(!is_null(asset($staff[0]->signature))) {{ asset($staff[0]->signature) }} @else {{ asset('assets/images/signature.jpg') }} @endif" width="250px" alt="..."></a>
 	                    </div>
 	                    <div class="fileinput-preview fileinput-exists  border-gray">
-	                      <img src="@if(!is_null($staff[0]->signature)) {{ asset($staff[0]->signature) }} @else {{ asset('assets/images/signature.jpg') }} @endif" width="250px" alt="...">
+	                      <img src="@if(!is_null(asset($staff[0]->signature))) {{ asset($staff[0]->signature) }} @else {{ asset('assets/images/signature.jpg') }} @endif" width="250px" alt="...">
 	                    </div>
 	                    <div>
-	                    <!--<label>Signature</label>
+	                    	<!--<label>Signature</label>
 	                      <span class="btn btn-round btn-rose btn-file">
 	                        <span class="fileinput-new">Add Photo</span>
 	                        <span class="fileinput-exists">Change</span>
@@ -110,80 +106,111 @@
 					 	<div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">First Name</label>
-								<p class="form-control" id="fname">{{ $staff[0]->firstname }}</p>
+								<input type="text" class="form-control" id="fname" name="fname" value="{{ $staff[0]->firstname }}" placeholder="First Name">
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Staff ID</label>
-								<p class="form-control" id="staffid">{{ $staff[0]->staffid }}</p>
+								<input type="text" class="form-control" id="staffid" name="staffid" value="{{ $staff[0]->staffid }}" placeholder="Staff ID">
 							</div>
 						</div><br />
 						<div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Other Names</label>
-								<p class="form-control" id="onames">{{ $staff[0]->othername }}</p>
+								<input type="text" class="form-control" id="onames" name="onames" value="{{ $staff[0]->othername }}" placeholder="Other Names">
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Date of Employment</label>
-								<p class="form-control" id="doe">{{ $staff[0]->doe }}</p>
+								<input type="date" class="form-control" id="doe" name="doe" value="{{ $staff[0]->doe }}" placeholder="Date of Employment" max="{{ date('Y-m-d') }}">
 							</div>
 						</div><br />
 						<div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Surname</label>
-								<p class="form-control" id="sname">{{ $staff[0]->surname }}</p>
+								<input type="text" class="form-control" id="sname" name="sname" value="{{ $staff[0]->surname }}" placeholder="Surname">
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Department</label>
-								<p class="form-control" id="department">{{ $staff[0]->department }}</p>
+								<select class="form-control" id="department" name="department">
+									<option>{{ $staff[0]->department }}</option>
+									
+								</select>
 							</div>
 						</div>
 						<br />
 						<div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Gender</label>
-								<p class="form-control" id="gender">{{ $staff[0]->gender }}</p>
+								<select class="form-control" id="gender" name="gender">
+									<option>{{ $staff[0]->gender }}</option>
+									<option>Male</option>
+									<option>Female</option>
+								</select>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Designation</label>
-								<p class="form-control" id="designation">{{ $staff[0]->designation }}</p>
+								<select class="form-control" id="designation" name="designation">
+									<option>{{ $staff[0]->designation }}</option>
+									
+								</select>
 							</div>
 						</div><br />
 						<div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Date of Birth</label>
-								<p class="form-control" id="dob">{{ $staff[0]->dob }}</p>
+								@php $today = date('Y-m-d') @endphp
+								@php $date = strtotime($today.' -15 year') @endphp
+								<input type="date" class="form-control" id="dob" name="dob" value="{{ $staff[0]->dob }}" max="{{ date('Y-m-d', $date) }}">
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Office</label>
-								<p class="form-control" id="offices">{{ $staff[0]->office }}</p>
+								<select class="form-control" id="office" name="office">
+									<option>{{ $staff[0]->office }}</option>
+									
+								</select>
 							</div>
 						</div><br /><div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Email Address</label>
-								<p class="form-control" id="email">{{ $staff[0]->email }}</p>
+								<input type="email" class="form-control" id="email" value="{{ $staff[0]->email }}" name="email" placeholder="Email Address" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Account Number</label>
-								<p class="form-control" id="accountnumber">{{ $staff[0]->accountno }}</p>
+								<input type="number" class="form-control" id="accountno" name="accountno" value="{{ $staff[0]->accountno }}" maxlength="10" min="0" placeholder="Account Number">
 							</div>
 						</div><br /><div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Phone Number</label>
-								<p class="form-control" id="phone">{{ $staff[0]->phone }}</p>
+								<input type="text" class="form-control" id="phone" name="phone" value="{{ $staff[0]->phone }}" placeholder="Phone Number">
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Bank Name</label>
-								<p class="form-control" id="bank">{{ $staff[0]->bankname }}</p>
+								<select class="form-control" id="bank" name="bank">
+									<option>{{ $staff[0]->bankname }}</option>
+									@foreach($banks as $bank)
+									<option>{{ $bank->banks }}</option>
+									@endforeach
+								</select>
+							</div>
+						</div><br /><div class="row">
+						 	<div class="col-sm-6">
+								<label for="inputFirstName" class="form-label">Employment Status</label>
+								<select class="form-control" id="employmentstatus" name="employmentstatus" readonly>
+									<option>{{ $staff[0]->employmentstatus }}</option>
+									
+								</select>
+							</div>
+						 	<div class="col-sm-6">
+								<label for="inputFirstName" class="form-label">Employment Status Since</label>
+								<input type="date" class="form-control" id="datechanged" name="datechanged" value="{{ $staff[0]->datechanged }}" readonly>
 							</div>
 						</div><br />
 						<div class="row">
 						 	<div class="col-sm-6">
-								<label for="inputFirstName" class="form-label">Employment Status</label>
-								<p class="form-control" id="phone">{{ $staff[0]->employmentstatus }}</p>
+								
 							</div>
-						 	<div class="col-sm-6">
-								<label for="inputFirstName" class="form-label">Employment Status Since</label>
-								<p class="form-control" id="bank">{{ $staff[0]->datechanged }}</p>
+						 	<div class="col-sm-6 text-right float-right">
+								<button class="btn btn-info" type="submit" id="button">Submit</button>
+								<img src="{{ asset('assets/images/processing.gif') }}" width="50px;" id="processing" class="processing" style="display: none;">
 							</div>
 						</div><br />
 						</div>
