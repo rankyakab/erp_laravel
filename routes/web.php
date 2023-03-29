@@ -102,6 +102,14 @@ Route::get('/sentmemo', [MemoController::class, 'sentmemo']);
 
 Route::get('/allmemo', [MemoController::class, 'allmemo']);
 
+Route::post('/submitmemo', [MemoController::class, 'submitmemo']);
+
+Route::post('/memoreaction', [MemoController::class, 'memoreaction']);
+
+Route::post('/submiteditmemo', [MemoController::class, 'submiteditmemo']);
+
+Route::get('/editmemo', [MemoController::class, 'editmemo']);
+
 
 /**************************** PV Controller **************************************/
 

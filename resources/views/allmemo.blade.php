@@ -5,86 +5,41 @@
 <!--start page wrapper -->
 <div class="page-wrapper">
 	<div class="page-content">
-		<div class="row">
-		       <div class="col-12 col-lg-12">
-		          <div class="card radius-10">
-				<div class="card-header">
-					<div class="d-flex align-items-center">
-						<div>
-							<h4 class="mb-0">Add New Department</h4>
-						</div>
-					</div>
-				</div>
-				  <div class="card-body">
-				  	<div class="form-body">
-					 <form class="row g-2">
-					 	<div class="col-sm-8">
-
-					 		<input type="text" name="departments" id="departments" class="form-control" placeholder="Enter Designation">
-						
-					 	</div>
-					 	<div class="col-sm-4">
-								<button class="btn btn-info" type="submit">Submit</button>
-						</div>
-					 </form>
-					 </div>
-				  </div>
-			  </div>
-		   </div>
-		</div>
+		
 
 		<div class="card">
 					<div class="card-body">
 						<div class="card-title">
-							<h4 class="mb-0">Available Departments</h4>
+							<h4 class="mb-0">All Memos</h4>
 						</div>
 						<hr/>
 						<div class="table-responsive">
-							<table class="table">
+							<table id="example" class="table table-striped table-bordered" style="width:100%">
 								<thead>
 									<tr>
-										<th>Breakpoint</th>
-										<th>Class infix</th>
-										<th>Dimensions</th>
+										<th>Date</th>
+										<th>Title</th>
+										<th>Sender</th>
+										<th>Recipient</th>
+										<th>CCs</th>
+										<th>Status</th>
+										<th>Action</th>
 									</tr>
 								</thead>
 								<tbody>
+									@foreach($memos as $memo)
 									<tr>
-										<td>X-Small</td>
-										<td><em>None</em>
-										</td>
-										<td>&lt;576px</td>
+										<td>{{ $memo->created_at }}</td>
+										<td>{{ $memo->title }} @if(!empty($memo->attachment)) <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15"><path fill="currentColor" d="M0 4.5V0h1v4.5a1.5 1.5 0 1 0 3 0v-3a.5.5 0 0 0-1 0V5H2V1.5a1.5 1.5 0 1 1 3 0v3a2.5 2.5 0 0 1-5 0Z"/><path fill="currentColor" fill-rule="evenodd" d="M12.5 0H6v4.5A3.5 3.5 0 0 1 2.5 8H1v5.5A1.5 1.5 0 0 0 2.5 15h10a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 0ZM11 4H7v1h4V4Zm0 3H7v1h4V7Zm-7 3h7v1H4v-1Z" clip-rule="evenodd"/></svg> @endif</td>
+										<td>{{ $memo->sentform }}</td>
+										<td>{{ $memo->sendto }}</td>
+										<td>{{ $memo->copies }}</td>
+										<td>@if($memo->status != 'Pending Approval') <button class="btn btn-warning px-5">{{ $memo->status }}</button> @elseif($memo->status != 'Approved') <button class="btn btn-success px-5">{{ $memo->status }}</button> @elseif($memo->status != 'Rejected') <button class="btn btn-danger px-5">{{ $memo->status }}</button> 
+										@else <button class="btn btn-primary px-5 convertuser">{{ $memo->status }}</button> 
+										@endif</td>
+										<td><a href="{{ url('memodetails?id='.$memo->id) }}" class="btn btn-dark px-5">View Details</a></td>
 									</tr>
-									<tr>
-										<td>Small</td>
-										<td><code>sm</code>
-										</td>
-										<td>≥576px</td>
-									</tr>
-									<tr>
-										<td>Medium</td>
-										<td><code>md</code>
-										</td>
-										<td>≥768px</td>
-									</tr>
-									<tr>
-										<td>Large</td>
-										<td><code>lg</code>
-										</td>
-										<td>≥992px</td>
-									</tr>
-									<tr>
-										<td>Extra large</td>
-										<td><code>xl</code>
-										</td>
-										<td>≥1200px</td>
-									</tr>
-									<tr>
-										<td>Extra extra large</td>
-										<td><code>xxl</code>
-										</td>
-										<td>≥1400px</td>
-									</tr>
+									@endforeach
 								</tbody>
 							</table>
 						</div>

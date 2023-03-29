@@ -46,38 +46,24 @@
 				</div>
 				  <div class="card-body" style="padding-top: 30px;">
 				  	<div class="form-body">
-					 <form class="row g-3" action="submitmemo" id="submitmemo" method="post" enctype="multipart/form-data">
+					 <form class="row g-3" action="submiteditmemo" id="submiteditmemo" method="post" enctype="multipart/form-data">
 					 	@csrf
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">Memo Title</label>
-							<input type="text" class="form-control" id="title" name="title" placeholder="Memo Title">
+							<input type="text" class="form-control" id="title" name="title" placeholder="Memo Title" value="{{ $memo[0]->title }}">
 					 	</div><br />
 					 	<div class="col-sm-12">
 					 	<div class="row g-3">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Memo Recipient</label>
-								<select name="sendto" id="recipient" class="form-control">
-									<option value="">Select Recipient</option>
-									@foreach($staffs as $staff)
-								    @if(Auth::user()->name != $staff->firstname.' '.$staff->surname.' '.$staff->othername)
-								    <option value="{{ $staff->id }}">{{ $staff->firstname.' '.$staff->surname.' '.$staff->othername }}</option>
-								    @endif
-								    @endforeach
-								</select>
+								<p class="form-control" name="title">{{ memo[0]->sendto }}</p>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Memo CC</label>
-								<select data-placeholder="Begin typing a name to filter..." multiple class=" form-control" name="copies">
-									<option value=""></option>
-								    @foreach($staffs as $staff)
-								    @if(Auth::user()->name != $staff->firstname.' '.$staff->surname.' '.$staff->othername)
-								    <option value="{{ $staff->id }}">{{ $staff->firstname.' '.$staff->surname.' '.$staff->othername }}</option>
-								    @endif
-								    @endforeach
-								  </select>
+								<p class="form-control" name="title">{{ memo[0]->copies }}</p>
 							</div>
 						</div>
-					</div>
+						</div>
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">Memo Body</label>
 							<!--<textarea class="form-control" id="body" name="body" placeholder="Memo Body" style="height: 200px;"></textarea>-->
@@ -91,11 +77,16 @@
 
 								<script>
 									var editor1 = new RichTextEditor("#div_editor1");
-									//editor1.setHTMLCode("Use inline HTML or setHTMLCode to init the default content.");
+									editor1.setHTMLCode({{ $memo[0]->body }});
 								</script>
-								<input type="hidden" name="body">
+								
 								
 					 	</div>
+					 	@if(!empty($memo[0]->attachment))
+					 	<div class="col-sm-12">
+					 		<a href="{{ url($memo[0]->attachment) }}" class="btn btn-primary">View Attachment</a>
+					 	</div>
+					 	@endif
 					 	<div class="col-sm-12">
 						<div class="row g-3">
 						 	<div class="col-sm-6">

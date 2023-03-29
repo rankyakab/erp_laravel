@@ -44,56 +44,62 @@
 				</div>
 				  <div class="card-body">
 				  	<div class="form-body">
-					 <form class="row g-3">
+					 
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">Memo Title</label>
-							<p class="form-control" name="title">Memo Title</p>
+							<p class="form-control" name="title">{{ memo[0]->title }}</p>
 					 	</div><br />
 					 	<div class="col-sm-12">
 					 	<div class="row g-3">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Memo Recipient</label>
-								<p class="form-control" name="title">Memo Recipient</p>
+								<p class="form-control" name="title">{{ memo[0]->sendto }}</p>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Memo CC</label>
-								<p class="form-control" name="title">Memo CCs</p>
+								<p class="form-control" name="title">{{ memo[0]->copies }}</p>
 							</div>
 						</div>
 					</div>
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">Memo Body</label>
-							<p class="form-control" name="title">Memo Body</p>
+							<p class="form-control" name="title">{{ memo[0]->body }}</p>
 								
 					 	</div>
+					 	@if(!empty(memo[0]->attachment))
 					 	<div class="col-sm-12">
-						 	<iframe src="{{ asset('assets/attachments/Adoption, Implementation and Application of IPSAS in Nigeria-1.pdf') }}" width="100%" height="1000px"></iframe>
-						</div><br /><br />
+						 	<iframe src="{{ asset(memo[0]->sendto) }}" width="100%" height="1000px"></iframe>
+						</div>
+						@endif<br /><br />
 						<div class="col-sm-12" style="margin-top: 50px;">
 					 		
-							<p id="signature">signature</p>
-							<p id="sender"><b>Memo Sender</b></p>
+							<p id="signature"><imp src="{{ asset(app\Http\Controllers\Controller::staffsignature(memo[0]->sentfrom)) }}" width="50px"></p>
+							<p id="sender"><b>@php echo app\Http\Controllers\Controller::staffname(memo[0]->sentfrom)) @endphp</b></p>
 								
 					 	</div>
-					 </form>
+					 
 					 </div>
 				  </div>
 			  </div>
 		   </div>
 		</div>
 
-
+		@if(memo[0]->sentfrom != Auth::user()->profileid)
+		<form class="row g-3" action="memoreaction" id="memoreaction" method="post">
 		<div class="card" style="padding-bottom: 30px;">
 					<div class="card-body">
 						<div class="card-header">
 							<h4 class="mb-0">Memo Status</h4>
 						</div>
 						<hr/>
+						<input type="hidden" name="id" value="{{ memo[0]->id }}">
+						<input type="hidden" name="sentfrom" value="{{ memo[0]->sentfrom }}">
+						<input type="hidden" name="title" value="{{ memo[0]->title }}">
 					<div class="col-sm-12">
 						<div class="row g-3">
 						 	<div class="col-sm-3">
 						 		<label for="inputFirstName" class="form-label">Status</label>
-								<select name="sendto" id="sendto" class="form-control">
+								<select name="sendto" id="status" class="form-control">
 									<option value="">Select Recipient</option>
 								</select>
 							</div>
@@ -109,6 +115,8 @@
 					</div><br /><br />
 					</div>
 				</div>
+		</form>
+		@endif
 
 		<div class="card" style="padding-bottom: 30px;">
 					<div class="card-body">
@@ -116,24 +124,40 @@
 							<h4 class="mb-0">Memo Trail</h4>
 						</div>
 						<hr/>
+				@foreach($memotrails as $memotrail)
+					@if($memotrail[0]->actor_type == "Sender")
 					<div class="col-sm-12">
 						<div class="row g-3">
-						 	<div class="col-sm-3">
-						 		<label for="inputFirstName" class="form-label">Status</label>
-								<select name="sendto" id="sendto" class="form-control">
-									<option value="">Select Recipient</option>
-								</select>
-							</div>
-							<div class="col-sm-8">
-						 		<label for="inputFirstName" class="form-label">Remark</label>
-								<input type="text" name="remark" class="form-control" placeholder="Remark">
-							</div>
-						 	<div class="col-sm-1 text-right float-right">
-						 		<label for="inputFirstName" class="form-label"><br /></label>
-								<button class="btn btn-info" type="submit">Submit</button>
+						 	<div class="col-sm-12">
+						 		<h5>{{ $memotrail[0]->title }}</h5>
+						 		<p>{{ $memotrail[0]->body }}</p>
+						 		@if(!empty($memotrail[0]->attachment))<a href="{{ $memotrail[0]->attachment }}" class="btn btn-primary"> Download Attachment</a>@endif
+						 		<br /><br />
+						 		<p id="signature"><imp src="{{ asset(app\Http\Controllers\Controller::staffsignature($memotrail[0]->actor)) }}" width="50px"></p>
+								<p id="sender"><b>@php echo app\Http\Controllers\Controller::staffname($memotrail[0]->actor)) @endphp</b></p>
+								<p>{{ $memotrail[0]->created_at }}</p>
 							</div>
 						</div>
-					</div><br /><br />
+					</div><br /><br /><hr /><br /><br />
+					@else
+					<div class="col-sm-12">
+						<div class="row g-3">
+						 	<div class="col-sm-12">
+						 		<h5>@if($memotrail[0]->status != 'Pending Approval') <button class="btn btn-warning px-5">{{ $memotrail[0]->status }}</button> @elseif($memotrail[0]->status != 'Approved') <button class="btn btn-success px-5">{{ $memotrail[0]->status }}</button> @elseif($memotrail[0]->status != 'Rejected') <button class="btn btn-danger px-5">{{ $memotrail[0]->status }}</button> 
+										@else <button class="btn btn-primary px-5 convertuser">{{ $memotrail[0]->status }}</button> 
+										@endif</h5>
+						 		<p>{{ $memotrail[0]->remark }}</p>
+						 		<br /><br />
+						 		<p id="signature"><imp src="{{ asset(app\Http\Controllers\Controller::staffsignature($memotrail[0]->actor)) }}" width="50px"></p>
+								<p id="sender"><b>@php echo app\Http\Controllers\Controller::staffname($memotrail[0]->actor)) @endphp</b></p>
+								<p>{{ $memotrail[0]->created_at }}</p>
+							</div>
+						</div>
+					</div><br /><br /><hr /><br /><br />
+					@endif
+					@endif
+				@endforeach
+					<br /><br />
 					</div>
 				</div>
 	</div>

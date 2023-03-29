@@ -55,4 +55,46 @@ class Controller extends BaseController
         return DB::table('users')->where('profileid', $user)->get();
     }
 
+    public static function profileemail($staff){
+
+        $staff = DB::table('profile')->where('id', $user)->get();
+
+        return $staff[0]->email;
+    }
+
+
+    //send notification on the system
+    public static function createnotification($staff, $type, $title, $status, $location){
+
+        $data = array();
+
+        $data['staff'] = $staff;
+        $data['type'] = $type;
+        $data['title'] = $title;
+        $data['status'] = $status;
+        $data['location'] = $location;
+
+        return DB::table('notifications')->insert($data);
+
+    }
+
+    
+    //log event
+    public static function logevent($action){
+
+
+        //log the event
+
+        $logs = array();
+
+        $logs['user'] = Auth::user()->id;
+        $logs['action'] = $action;
+        $logs['created_at'] = date('Y-m-d H:i:s');
+        $logs['updated_at'] = date('Y-m-d H:i:s');
+
+        return $createlogs = DB::table('logs')->insert($logs);
+
+
+    }
+
 }
