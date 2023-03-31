@@ -16,7 +16,6 @@ class Vouchersheet extends Migration
         Schema::create('vouchersheet', function (Blueprint $table) {
             $table->id();
             $table->string("pvid");
-            $table->string("class");
             $table->string("description");
             $table->integer("qty");
             $table->double("unitprice");

@@ -12,6 +12,12 @@ class MemoController extends Controller
 {
     //Memo backend here
 
+    //Authenticate user
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function creatememo(){
 
         $staffs = DB::table('profile')->orderBy('firstname')->get();
@@ -19,10 +25,7 @@ class MemoController extends Controller
         return view('creatememo', ['staffs' => $staffs]);
     }
 
-    public function memodetails(){
-
-        return view('memodetails');
-    }
+    
 
     public function memoinbox(){
 
@@ -118,7 +121,7 @@ class MemoController extends Controller
                 try{
                     //send email to the person concerned
                     Mail::send('emails.sentmemoemail', ['username' => $username, 'useremail' => $useremail], function ($message) use ($username, $useremail) {
-                    $message->to($useremail, $username)->subject('New memo requires your attenction.');
+                    $message->to($useremail, $username)->subject('New memo requires your attention.');
                     $message->from('erp@reliaenergy.com', 'ERP');
                     });
                 }catch(\Exception $e){
@@ -138,7 +141,7 @@ class MemoController extends Controller
                     try{
                         //send email to the person concerned
                         Mail::send('emails.sentmemoemail', ['username' => $username, 'useremail' => $useremail], function ($message) use ($username, $useremail) {
-                        $message->to($useremail, $username)->subject('New memo requires your attenction.');
+                        $message->to($useremail, $username)->subject('New memo requires your attention.');
                         $message->from('erp@reliaenergy.com', 'ERP');
                         });
                     }catch(\Exception $e){
@@ -268,9 +271,6 @@ class MemoController extends Controller
         }
 
 
-    
-
-
     public function submiteditmemo(Request $request){
 
 
@@ -366,4 +366,9 @@ class MemoController extends Controller
 
 
     }
+
+}
+
+
+    
 }

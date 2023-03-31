@@ -5,6 +5,8 @@ use App\Http\Controllers\MemoController;
 use App\Http\Controllers\PVController;
 use App\Http\Controllers\CircularController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AccessController;
 
 
 /*
@@ -22,9 +24,11 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::get('/dashboard', function () {
+/*Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+})->middleware(['auth'])->name('dashboard');*/
+
+Route::get('/dashboard', [HomeController::class, 'dashboard']);
 
 require __DIR__.'/auth.php';
 
@@ -119,6 +123,14 @@ Route::get('/pvdetails', [PVController::class, 'pvdetails']);
 
 Route::get('/allpvs', [PVController::class, 'allpvs']);
 
+Route::post('submitpv', [PVController::class, 'submitpv']);
+
+Route::post('submiteditpv', [PVController::class, 'submiteditpv']);
+
+Route::post('submitpvstatus', [PVController::class, 'submitpvstatus']);
+
+Route::get('editpv', [PVController::class, 'editpv']);
+
 
 /*************************** Circular Controller *********************************/
 
@@ -129,6 +141,27 @@ Route::get('/circulardetails', [CircularController::class, 'circulardetails']);
 Route::get('/listcirculars', [CircularController::class, 'listcirculars']);
 
 Route::post('submitcircular', [CircularController::class, 'submitcircular']);
+
+
+/**************************** Role Privileges *************************************/
+
+Route::get('/actions', [AccessController::class, 'actions']);
+
+Route::post('/submiaction', [AccessController::class, 'submiaction']);
+
+Route::get('/process', [AccessController::class, 'process']);
+
+Route::post('/submitprocess', [AccessController::class, 'submitprocess']);
+
+Route::get('/roles', [AccessController::class, 'roles']);
+
+Route::post('/submitrole', [AccessController::class, 'submitrole']);
+
+Route::get('/privileges', [AccessController::class, 'privileges']);
+
+Route::post('/submitprivileges', [AccessController::class, 'submitprivileges']);
+
+
 
 
 

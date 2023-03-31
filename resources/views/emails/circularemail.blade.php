@@ -25,7 +25,7 @@
                                 </tr>
                                 <tr>
                                     <td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
-                                        New staff profile has been created for you at Relia Energy ERP.<br /><br />
+                                        A new circular has been sent which includes you as on the recipients, please log on to the platform to view details.<br /><br />
                                         <br /><br /><br />
                                         Regards,
                                         <br /><br />

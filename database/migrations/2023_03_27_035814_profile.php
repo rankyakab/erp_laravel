@@ -26,7 +26,7 @@ class Profile extends Migration
             $table->string("doe");
             $table->string("department");
             $table->string("designation");
-            $table->string("office");
+            $table->string("office")->nullable();
             $table->string("gender");
             $table->string("employmentstatus");
             $table->date("datechanged");

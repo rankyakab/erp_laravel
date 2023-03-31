@@ -104,12 +104,12 @@
 					 	<div class="col-sm-8">
 					 	<div class="row">
 						 	<div class="col-sm-6">
-								<label for="inputFirstName" class="form-label">First Name</label>
-								<input type="text" class="form-control" id="fname" name="fname" placeholder="First Name">
+								<label for="inputFirstName" class="form-label">First Name<small style="color:#ff0000">*</small></label>
+								<input type="text" class="form-control" id="fname" name="fname" placeholder="First Name" required>
 							</div>
 						 	<div class="col-sm-6">
-								<label for="inputFirstName" class="form-label">Staff ID</label>
-								<input type="text" class="form-control" id="staffid" name="staffid" placeholder="Staff ID">
+								<label for="inputFirstName" class="form-label">Staff ID<small style="color:#ff0000">*</small></label>
+								<input type="text" class="form-control" id="staffid" name="staffid" placeholder="Staff ID" required>
 							</div>
 						</div><br />
 						<div class="row">
@@ -118,18 +118,18 @@
 								<input type="text" class="form-control" id="onames" name="onames" placeholder="Other Names">
 							</div>
 						 	<div class="col-sm-6">
-								<label for="inputFirstName" class="form-label">Date of Employment</label>
-								<input type="date" class="form-control" id="doe" name="doe" placeholder="Date of Employment" max="{{ date('Y-m-d') }}">
+								<label for="inputFirstName" class="form-label">Date of Employment<small style="color:#ff0000">*</small></label>
+								<input type="date" class="form-control" required id="doe" name="doe" placeholder="Date of Employment" max="{{ date('Y-m-d') }}">
 							</div>
 						</div><br />
 						<div class="row">
 						 	<div class="col-sm-6">
-								<label for="inputFirstName" class="form-label">Surname</label>
-								<input type="text" class="form-control" id="sname" name="sname" placeholder="Surname">
+								<label for="inputFirstName" class="form-label">Surname<small style="color:#ff0000">*</small></label>
+								<input type="text" class="form-control" id="sname" required name="sname" placeholder="Surname">
 							</div>
 						 	<div class="col-sm-6">
-								<label for="inputFirstName" class="form-label">Department</label>
-								<select class="form-control" id="department" name="department">
+								<label for="inputFirstName" class="form-label">Department<small style="color:#ff0000">*</small></label>
+								<select class="form-control" id="department" required name="department">
 									<option value="">Select Department</option>
 									@foreach($departments as $department)
 									<option>{{ $department->departments }}</option>
@@ -140,16 +140,16 @@
 						<br />
 						<div class="row">
 						 	<div class="col-sm-6">
-								<label for="inputFirstName" class="form-label">Gender</label>
-								<select class="form-control" id="gender" name="gender">
+								<label for="inputFirstName" class="form-label">Gender<small style="color:#ff0000">*</small></label>
+								<select class="form-control" id="gender" required name="gender">
 									<option value="">Select Gender</option>
 									<option>Male</option>
 									<option>Female</option>
 								</select>
 							</div>
 						 	<div class="col-sm-6">
-								<label for="inputFirstName" class="form-label">Designation</label>
-								<select class="form-control" id="designation" name="designation">
+								<label for="inputFirstName" class="form-label">Designation<small style="color:#ff0000">*</small></label>
+								<select class="form-control" id="designation" required name="designation">
 									<option value="">Select Designation</option>
 									@foreach($designations as $designation)
 									<option>{{ $designation->designations }}</option>
@@ -159,10 +159,10 @@
 						</div><br />
 						<div class="row">
 						 	<div class="col-sm-6">
-								<label for="inputFirstName" class="form-label">Date of Birth</label>
+								<label for="inputFirstName" class="form-label">Date of Birth<small style="color:#ff0000">*</small></label>
 								@php $today = date('Y-m-d') @endphp
 								@php $date = strtotime($today.' -15 year') @endphp
-								<input type="date" class="form-control" id="dob" name="dob" max="{{ date('Y-m-d', $date) }}">
+								<input type="date" class="form-control" id="dob" name="dob" required max="{{ date('Y-m-d', $date) }}">
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Office</label>
@@ -175,8 +175,8 @@
 							</div>
 						</div><br /><div class="row">
 						 	<div class="col-sm-6">
-								<label for="inputFirstName" class="form-label">Email Address</label>
-								<input type="email" class="form-control" id="email" name="email" placeholder="Email Address" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+								<label for="inputFirstName" class="form-label">Email Address<small style="color:#ff0000">*</small></label>
+								<input type="email" class="form-control" id="email" name="email" required placeholder="Email Address" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Account Number</label>
@@ -184,8 +184,8 @@
 							</div>
 						</div><br /><div class="row">
 						 	<div class="col-sm-6">
-								<label for="inputFirstName" class="form-label">Phone Number</label>
-								<input type="text" class="form-control" id="phone" name="phone" placeholder="Phone Number">
+								<label for="inputFirstName" class="form-label">Phone Number<small style="color:#ff0000">*</small></label>
+								<input type="text" class="form-control" id="phone" name="phone" required placeholder="Phone Number">
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Bank Name</label>

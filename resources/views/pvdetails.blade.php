@@ -13,7 +13,7 @@
 							<ol class="breadcrumb mb-0 p-0" style="background-color: transparent;">
 								<li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-copy"></i></a>
 								</li>
-								<li class="breadcrumb-item active" aria-current="page">Create New Payment Voucher</li>
+								<li class="breadcrumb-item active" aria-current="page">Payment Voucher Details</li>
 							</ol>
 						</nav>
 					</div>
@@ -46,31 +46,31 @@
 				</div>
 				  <div class="card-body" style="padding-top: 30px;">
 				  	<div class="form-body">
-					 <form class="row g-3">
+					 
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">PV Title</label>
-							<p class="form-control" id="title">PV Title"</p>
+							<p class="form-control" id="title">{{ $pvs[0]->title }}</p>
 					 	</div><br />
 					 	<div class="col-sm-12">
 					 	<div class="row g-3">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">PV Recipient</label>
-								<p class="form-control" id="pvrecipient">PV Recipient"</p>
+								<p class="form-control" id="pvrecipient">{{ $pvs[0]->sendto }}</p>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">PV CC</label>
-								<p class="form-control" id="pvcc">PV CC"</p>
+								<p class="form-control" id="pvcc">{{ $pvs[0]->copies }}</p>
 							</div>
 						</div>
 					</div>
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">Memo Body</label>
-							<p class="form-control" id="pvrecipient">Memo Body"</p>
+							<p class="form-control" id="pvrecipient">{{ $pvs[0]->body }}</p>
 								
 					 	</div>
 
-					 	
-					 	<div class="col-sm-12" style="margin-top: 20px;">
+					 	@if(!empty(pvs[0]->attachment))
+					 	<div class="col-sm-12" style="margin-top: 20px;" id="attachbutton">
 						<div class="row g-3">
 						 	<div class="col-sm-6">
 								<a href="#" class="btn btn-primary">PV Attachment</a>
@@ -80,8 +80,14 @@
 							</div>
 						</div>
 					</div><br /><br />
+
+
+					 	<div class="col-sm-12" style="display: none;" id="showattachment">
+						 	<iframe src="{{ asset(memo[0]->sendto) }}" width="100%" height="1000px"></iframe>
+						</div>
+						@endif
 						
-					 </form>
+					 
 					 </div>
 				  </div>
 			  </div>
@@ -119,43 +125,54 @@
 							 		<th class="tdnt"><b>Net (&#8358;)</b></th>
 							</thead>
 							<tbody id="sheetdata">
+								@php $x=1 @endphp
+								@foreach($vsheets as $vsheet)
 								<tr>
-									<td><p id="sn">1</p></td>
-									<td><p id="description[]">Description</p></td>
-									<td><p id="qty[]">0</p></td>
-									<td><p id="price[]">0.00</p></td>
-									<td><p id="amount[]">0.00</p>
-									<td><p id="vatp[]">0.00</p></td>
-									<td><p id="amount[]">0.00</p></td>
-									<td><p id="amount[]">0.00</p></td>
-									<td><p id="whtp[]">0.00</p></td>
-									<td><p id="amount[]">0.00</p></td>
-									<td><p id="amount[]">0.00</p></td>
+									<td><p id="sn">{{ $x++ }}</p></td>
+									<td><p id="description[]">{{ $vsheet->description }}</p></td>
+									<td><p id="qty[]">{{ $vsheet->qty }}</p></td>
+									<td><p id="price[]">{{ $vsheet->unitprice }}</p></td>
+									<td><p id="amount[]">{{ $vsheet->amount }}</p>
+									<td><p id="vatp[]">{{ $vsheet->vatpercent }}</p></td>
+									<td><p id="amount[]">{{ $vsheet->vatamount }}</p></td>
+									<td><p id="amount[]">{{ $vsheet->grossamount }}</p></td>
+									<td><p id="whtp[]">{{ $vsheet->whtpercent }}</p></td>
+									<td><p id="amount[]">{{ $vsheet->whtamount }}</p></td>
+									<td><p id="amount[]">{{ $vsheet->netamount }}</p></td>
 								</tr>
-
+								@endforeach
 							</tbody>
 							<tfoot>
 								<tr>	
 							 		<th class="tdsn"><b></b></th>
 							 		<th class="tdds"><b>Total</b></th>
 							 		<th class="tdqt"><b></b></th>
-							 		<th class="tdpr"><b>0.00 </b></th>
-							 		<th class="tdam"><b>0.00 </b></th>
+							 		<th class="tdpr"><b>{{ $pvs[0]->totalprices }} </b></th>
+							 		<th class="tdam"><b>{{ $pvs[0]->totalamounts }} </b></th>
 							 		<th class="tdva"><b></b></th>
-							 		<th class="tdvt"><b>0.00</b></th>
-							 		<th class="tdgr"><b>0.00 </b></th>
+							 		<th class="tdvt"><b>{{ $pvs[0]->totalvats }}</b></th>
+							 		<th class="tdgr"><b>{{ $pvs[0]->totalgrosses }} </b></th>
 							 		<th class="tdwh"><b></b></th>
-							 		<th class="tdwt"><b>0.00 </b></th>
-							 		<th class="tdnt"><b>0.00 </b></th>
+							 		<th class="tdwt"><b>{{ $pvs[0]->totalwhts }} </b></th>
+							 		<th class="tdnt"><b>{{ $pvs[0]->totalnets }} </b></th>
+
+
 							</tfoot>
 						</table>
 					</div>
 						</div>
 						<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">Net Amount in Words</label>
-							<p class="form-control" id="title">Type Net Amount in Words</p>
+							<p class="form-control" id="title">{{ $pvs[0]->amountinwords }}</p>
 					 	</div><br />
 					</div>
+					<br /><br />
+						<div class="col-sm-12" style="margin-top: 50px;">
+					 		
+							<p id="signature"><imp src="{{ asset(app\Http\Controllers\Controller::staffsignature(pvs[0]->sentfrom)) }}" width="50px"></p>
+							<p id="sender"><b>@php echo app\Http\Controllers\Controller::staffname(pvs[0]->sentfrom)) @endphp</b></p>
+								
+					 	</div>
 				</div>
 
 	</div>
@@ -171,21 +188,25 @@
 						<div class="row g-3">
 						 	<div class="col-sm-4">
 						 		<label for="inputFirstName" class="form-label">Bank Name</label>
-								<p class="form-control" id="title">Bank Name</p>
+								<p class="form-control" id="title">{{ $pvs[0]->bankname }}</p>
 							</div>
 							<div class="col-sm-4">
 						 		<label for="inputFirstName" class="form-label">Account Number</label>
-								<p class="form-control" id="title">Account Number</p>
+								<p class="form-control" id="title">{{ $pvs[0]->accountnumber }}</p>
 							</div>
 							<div class="col-sm-4">
 						 		<label for="inputFirstName" class="form-label">Account Name</label>
-								<p class="form-control" id="title">Account Name</p>
+								<p class="form-control" id="title">{{ $pvs[0]->accountname }}</p>
 							</div>
 						</div>
 					</div><br /><br />
 					</div>
 				</div>
 
+				<form class="row g-3" action="submitpvstatus" id="submitpvstatus" method="post">
+					@csrf
+					<input type="hidden" name="pvid" value="{{ $pvs[0]->id }}">
+					<input type="hidden" name="sentfrom" value="{{ $pvs[0]->sentfrom }}">
 				<div class="card" style="padding-bottom: 30px;">
 					<div class="card-body">
 						<div class="card-header">
@@ -196,8 +217,8 @@
 						<div class="row g-3">
 						 	<div class="col-sm-3">
 						 		<label for="inputFirstName" class="form-label">Status</label>
-								<select name="sendto" id="sendto" class="form-control">
-									<option value="">Select Recipient</option>
+								<select name="status" id="status" class="form-control">
+									<option value="">Select Status</option>
 								</select>
 							</div>
 							<div class="col-sm-8">
@@ -206,12 +227,14 @@
 							</div>
 						 	<div class="col-sm-1 text-right float-right">
 						 		<label for="inputFirstName" class="form-label"><br /></label>
-								<button class="btn btn-info" type="submit">Submit</button>
+								<button class="btn btn-info" type="submit" id="button">Submit</button>
+								<img src="{{ asset('assets/images/processing.gif') }}" width="50px;" id="processing" class="processing" style="display: none;">
 							</div>
 						</div>
 					</div><br /><br />
 					</div>
 				</div>
+				</form>
 
 				<div class="card" style="padding-bottom: 30px;">
 					<div class="card-body">
@@ -219,24 +242,38 @@
 							<h4 class="mb-0">PV Trail</h4>
 						</div>
 						<hr/>
+					@foreach($pvtrails as $pvtrail)
 					<div class="col-sm-12">
 						<div class="row g-3">
-						 	<div class="col-sm-3">
+							<div class="col-sm-2">
+						 		<label for="inputFirstName" class="form-label">Date</label>
+								<p>{{ $pvtrail->created_at }}</p>
+							</div>
+						 	<div class="col-sm-2">
 						 		<label for="inputFirstName" class="form-label">Status</label>
-								<select name="sendto" id="sendto" class="form-control">
-									<option value="">Select Recipient</option>
-								</select>
+						 		@if($pvtrail->status == "Pending Approval")
+								<button type="button" class="btn btn-warning btn-sm">{{ $pvtrail->status }}</button>
+								@elseif($pvtrail->status == "Approved")
+								<button type="button" class="btn btn-primary btn-sm">{{ $pvtrail->status }}</button>
+								@elseif($pvtrail->status == "Paid")
+								<button type="button" class="btn btn-success btn-sm">{{ $pvtrail->status }}</button>
+								@elseid($pvtrail->status == "Rejected")
+								<button type="button" class="btn btn-danger btn-sm">{{ $pvtrail->status }}</button>
+								@else
+								<button type="button" class="btn btn-info btn-sm">{{ $pvtrail->status }}</button>
+								@endif
 							</div>
-							<div class="col-sm-8">
+							<div class="col-sm-6">
 						 		<label for="inputFirstName" class="form-label">Remark</label>
-								<input type="text" name="remark" class="form-control" placeholder="Remark">
+								<p>{{ $pvtrail->status }}</p>
 							</div>
-						 	<div class="col-sm-1 text-right float-right">
-						 		<label for="inputFirstName" class="form-label"><br /></label>
-								<button class="btn btn-info" type="submit">Submit</button>
+						 	<div class="col-sm-2 text-right float-right">
+						 		<p><p id="signature"><imp src="{{ asset(app\Http\Controllers\Controller::staffsignature($pvtrail->actor)) }}" width="50px"></p>
+							<p id="sender"><b>@php echo app\Http\Controllers\Controller::staffname($pvtrail->actor)) @endphp</b></p></p>
 							</div>
 						</div>
 					</div><br /><br />
+					@endforeach
 					</div>
 				</div>
 

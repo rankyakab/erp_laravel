@@ -46,30 +46,26 @@
 				</div>
 				  <div class="card-body" style="padding-top: 30px;">
 				  	<div class="form-body">
-					 <form class="row g-3" method="post" action="submitpv" enctype="multipart/form-data" id="submitpv">
+					 <form class="row g-3" method="post" action="submiteditpv" enctype="multipart/form-data" id="submiteditpv">
 					 	@csrf
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">PV Title</label>
-							<input type="text" class="form-control" id="title" name="title" placeholder="Memo Title">
+							<input type="text" class="form-control" id="title" name="title" value="{{ $pvs[0]->title }}">
+							<input type="hidden" class="form-control" id="id" name="id" value="{{ $pvs[0]->id }}">
 					 	</div><br />
 					 	<div class="col-sm-12">
 					 	<div class="row g-3">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">PV Recipient</label>
 								<select name="sendto" id="sendto" class="form-control">
-									<option value="">Select Recipient</option>
-									@foreach($staffs as $staff)
-								    @if(Auth::user()->name != $staff->firstname.' '.$staff->surname.' '.$staff->othername)
-								    <option value="{{ $staff->id }}">{{ $staff->firstname.' '.$staff->surname.' '.$staff->othername }}</option>
-								    @endif
-								    @endforeach
+									<option>{{ $pvs[0]->title }}</option>
 								</select>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">PV CC</label>
 								<select data-placeholder="Begin typing a name to filter..." multiple class=" form-control" name="copies[]">
 								    
-								    <option></option>
+								    <option>{{ $pvs[0]->title }}</option>
 								    @foreach($staffs as $staff)
 								    @if(Auth::user()->name != $staff->firstname.' '.$staff->surname.' '.$staff->othername)
 								    <option value="{{ $staff->id }}">{{ $staff->firstname.' '.$staff->surname.' '.$staff->othername }}</option>
@@ -81,21 +77,28 @@
 					</div>
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">PV Body</label>
-							<textarea class="form-control" id="body" name="body" placeholder="PV Body"></textarea>
+							<textarea class="form-control" id="body" name="body" placeholder="PV Body">{{ $pvs[0]->body }}</textarea>
 								
 					 	</div>
 
 					 	
-					 	<div class="col-sm-12" style="margin-top: 20px;">
+					 	@if(!empty(pvs[0]->attachment))
+					 	<div class="col-sm-12" style="margin-top: 20px;" id="attachbutton">
 						<div class="row g-3">
 						 	<div class="col-sm-6">
-								<input type="file" name="attachment" class="form-control" accept=".pdf" placeholder="Select Attachment">
+								<a href="#" class="btn btn-primary">PV Attachment</a>
 							</div>
 						 	<div class="col-sm-6 text-right float-right">
 								
 							</div>
 						</div>
 					</div><br /><br />
+
+
+					 	<div class="col-sm-12" style="display: none;" id="showattachment">
+						 	<iframe src="{{ asset(memo[0]->sendto) }}" width="100%" height="1000px"></iframe>
+						</div>
+						@endif
 						
 					 </form>
 					 </div>
@@ -154,45 +157,47 @@
 							 		<th class="tdnt"><b>Net (&#8358;)</b></th>
 							</thead>
 							<tbody id="sheetdata">
+								@php $x=1 @endphp
+								@foreach($vsheets as $vsheet)
 								<tr>
-									<td><p id="sn">1</p></td>
-									<td><input type="text" class="form-control" id="description1" name="description[]" placeholder="Description"></td>
-									<td><input type="text" class="form-control qty" id="qty1" name="qty[]" value="0"></td>
-									<td><input type="text" class="form-control prc" id="price1" name="price[]" value="0.00"></td>
-									<td><p class="form-control amt" id="amount1">0.00</p>
-						 			<input type="hidden" class="form-control" id="amounts1" name="amounts[]" value="0.00"></td>
-									<td><input type="text" class="form-control" id="vatp1" name="vatp[]" value="0.00"></td>
-									<td><p class="form-control" id="vatamount1">0.00</p>
-						 			<input type="hidden" class="form-control" id="vata1" name="vata[]" value="0.00"></td>
-									<td><p class="form-control" id="grossamount1">0.00</p>
-						 			<input type="hidden" class="form-control" id="gross1" name="gross[]" value="0.00"></td>
-									<td><input type="text" class="form-control" id="whtp1" name="whtp[]" value="0.00"></td>
-									<td><p class="form-control" id="whtamount1">0.00</p>
-						 			<input type="hidden" class="form-control" id="whta1" name="whta[]" value="0.00"></td>
-									<td><p class="form-control" id="netamount1">0.00</p>
-						 			<input type="hidden" class="form-control" id="net1" name="net[]" value="0.00"></td>
+									<td><p id="sn">{{ $x++ }}</p></td>
+									<td><input type="text" class="form-control" id="description1" name="description[]" value="{{ $vsheet->description }}"></td>
+									<td><input type="text" class="form-control qty" id="qty1" name="qty[]" value="{{ $vsheet->qty }}"></td>
+									<td><input type="text" class="form-control prc" id="price1" name="price[]" value="{{ $vsheet->unitprice }}"></td>
+									<td><p class="form-control amt" id="amount1">{{ $vsheet->amount }}</p>
+						 			<input type="hidden" class="form-control" id="amounts1" name="amounts[]" value="{{ $vsheet->amount }}"></td>
+									<td><input type="text" class="form-control" id="vatp1" name="vatp[]" value="{{ $vsheet->vatpercent }}"></td>
+									<td><p class="form-control" id="vatamount1">{{ $vsheet->vatamount }}</p>
+						 			<input type="hidden" class="form-control" id="vata1" name="vata[]" value="{{ $vsheet->vatamount }}"></td>
+									<td><p class="form-control" id="grossamount1">{{ $vsheet->grossamount }}</p>
+						 			<input type="hidden" class="form-control" id="gross1" name="gross[]" value="{{ $vsheet->grossamount }}"></td>
+									<td><input type="text" class="form-control" id="whtp1" name="whtp[]" value="{{ $vsheet->whtpercent }}"></td>
+									<td><p class="form-control" id="whtamount1">{{ $vsheet->whtamount }}</p>
+						 			<input type="hidden" class="form-control" id="whta1" name="whta[]" value="{{ $vsheet->whtamount }}"></td>
+									<td><p class="form-control" id="netamount1">{{ $vsheet->netamount }}</p>
+						 			<input type="hidden" class="form-control" id="net1" name="net[]" value="{{ $vsheet->netamount }}"></td>
 								</tr>
-
+								@endif
 							</tbody>
 							<tfoot>
 								<tr>	
 							 		<th class="tdsn"><b></b></th>
 							 		<th class="tdds"><b>Total</b></th>
 							 		<th class="tdqt"><b></b></th>
-							 		<th class="tdpr totalsum" id="totalprice">0.00</th>
-							 		<input type="hidden" name="totalprices" id="totalprices" value="0">
-							 		<th class="tdam totalsum" id="totalamount">0.00</th>
-							 		<input type="hidden" name="totalamounts" id="totalamounts" value="0">
+							 		<th class="tdpr totalsum" id="totalprice">{{ $pvs[0]->totalprices }}</th>
+							 		<input type="hidden" name="totalprices" id="totalprices" value="{{ $pvs[0]->totalprices }}">
+							 		<th class="tdam totalsum" id="totalamount">{{ $pvs[0]->totalamounts }}</th>
+							 		<input type="hidden" name="totalamounts" id="totalamounts" value="{{ $pvs[0]->totalamounts }}">
 							 		<th class="tdva"><b></b></th>
-							 		<th class="tdvt totalsum" id="totalvat"><b>0.00</b></th>
-							 		<input type="hidden" name="totalvats" id="totalvats" value="0">
-							 		<th class="tdgr totalsum" id="totalgross">0.00</th>
-							 		<input type="hidden" name="totalgrosses" id="totalgrosses" value="0">
+							 		<th class="tdvt totalsum" id="totalvat"><b>{{ $pvs[0]->totalvats }}</b></th>
+							 		<input type="hidden" name="totalvats" id="totalvats" value="{{ $pvs[0]->totalvats }}">
+							 		<th class="tdgr totalsum" id="totalgross">{{ $pvs[0]->totalgrosses }}</th>
+							 		<input type="hidden" name="totalgrosses" id="totalgrosses" value="{{ $pvs[0]->totalgrosses }}">
 							 		<th class="tdwh"><b></b></th>
-							 		<th class="tdwt totalsum" id="totalwht">0.00</th>
-							 		<input type="hidden" name="totalwhts" id="totalwhts" value="0">
-							 		<th class="tdnt totalsum" id="totalnet">0.00</th>
-							 		<input type="hidden" name="totalnets" id="totalnets" value="0">
+							 		<th class="tdwt totalsum" id="totalwht">{{ $pvs[0]->totalwhts }}</th>
+							 		<input type="hidden" name="totalwhts" id="totalwhts" value="{{ $pvs[0]->totalwhts }}">
+							 		<th class="tdnt totalsum" id="totalnet">{{ $pvs[0]->totalnets }}</th>
+							 		<input type="hidden" name="totalnets" id="totalnets" value="{{ $pvs[0]->totalnets }}">
 							</tfoot>
 						</table>
 					</div>
@@ -201,7 +206,7 @@
 						</div>
 						<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">Net Amount in Words</label>
-							<input type="text" class="form-control" id="amountinwords" name="amountinwords" placeholder="Type Net Amount in Words">
+							<input type="text" class="form-control" id="amountinwords" name="amountinwords" value="{{ $pvs[0]->amountinwords }}">
 					 	</div><br />
 					</div>
 				</div>
@@ -220,16 +225,16 @@
 						 	<div class="col-sm-3">
 						 		<label for="inputFirstName" class="form-label">Bank Name</label>
 								<select name="bankname" id="sendto" class="form-control">
-									<option value="">Select Bank</option>
+									<option value="">{{ $pvs[0]->bankname }}</option>
 								</select>
 							</div>
 							<div class="col-sm-3">
 						 		<label for="inputFirstName" class="form-label">Account Number</label>
-								<input type="text" name="accountnumber" maxlength="10" class="form-control" placeholder="Account Number">
+								<input type="text" name="accountnumber" maxlength="10" class="form-control" value="{{ $pvs[0]->accountnumber }}">
 							</div>
 							<div class="col-sm-4">
 						 		<label for="inputFirstName" class="form-label">Account Name</label>
-								<input type="text" name="accountname" class="form-control" placeholder="Account Number">
+								<input type="text" name="accountname" class="form-control" value="{{ $pvs[0]->accountname }}">
 							</div>
 						 	<div class="col-sm-2 text-right float-right" style="padding-top: 25px;">
 						 		<label for="inputFirstName" class="form-label"></label>

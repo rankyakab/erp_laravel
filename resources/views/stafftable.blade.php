@@ -7,13 +7,13 @@
 			<div class="page-content">
 				<!--breadcrumb-->
 				<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-					<div class="breadcrumb-title pe-3">Tables</div>
+					<div class="breadcrumb-title pe-3">Staff</div>
 					<div class="ps-3">
 						<nav aria-label="breadcrumb">
 							<ol class="breadcrumb mb-0 p-0">
 								<li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
 								</li>
-								<li class="breadcrumb-item active" aria-current="page">Data Table</li>
+								<li class="breadcrumb-item active" aria-current="page">Staff Records</li>
 							</ol>
 						</nav>
 					</div>
@@ -56,7 +56,8 @@
 										<td>{{ $staff->designation }}</td>
 										<td>{{ $staff->office }}</td>
 										<td>{{ $staff->doe }}</td>
-										<td>@if(app\Http\Controllers\Controller::checkuser($staff->id)[0]->status != 'Active') <button class="btn btn-warning px-5">Suspended</button> @elseif(app\Http\Controllers\Controller::checkuser($staff->id)->count() == 1) <button href="{{ url('staffprofile?id='.$staff->id) }}" class="btn btn-primary px-5">User</button> @else <button class="btn btn-danger px-5 convertuser" id="{{ $staff->id }}">Convert User</button> @endif</td>
+										<td>
+											@if(app\Http\Controllers\Controller::checkuser($staff->id)->count() == 0)<button class="btn btn-danger px-5 convertuser" id="{{ $staff->id }}">Convert User</button>@elseif(app\Http\Controllers\Controller::checkuser($staff->id)[0]->status != 'Active') <button class="btn btn-warning px-5">Suspended</button> @else <button href="{{ url('staffprofile?id='.$staff->id) }}" class="btn btn-primary px-5">User</button> @endif</td>
 										<td><a href="{{ url('staffprofile?id='.$staff->id) }}" class="btn btn-dark px-5">View Details</a></td>
 									</tr>
 									@endforeach

@@ -23,12 +23,15 @@ class Pv extends Migration
             $table->string("sendto");
             $table->string("copies")->nullable();
             $table->double("totalprice");
+            $table->double("totalvat");
             $table->double("totalamount");
             $table->double("totalgross");
+            $table->double("totalwht");
             $table->double("totalnet");
             $table->string("accountno");
             $table->string("accountname");
             $table->string("bank");
+            $table->string("amountinwords");
             $table->timestamps();
         });
     }

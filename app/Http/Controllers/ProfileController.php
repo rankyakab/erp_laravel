@@ -13,6 +13,12 @@ class ProfileController extends Controller
 {
     //Staff Profile Backend
 
+    //Authenticate user
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function createstaff(){
 
         $offices = DB::table('offices')->orderBy('offices', 'asc')->get();
@@ -920,6 +926,7 @@ class ProfileController extends Controller
     public function stafftable(){
 
         $staffs = DB::table('profile')->orderBy('firstname')->get();
+        //dd($staffs);
 
         return view('stafftable', ['staffs' => $staffs]);
     }
@@ -1002,7 +1009,7 @@ class ProfileController extends Controller
 
     public function updateprofile(){
 
-        $staff = DB::table('profile')->where('userid', Auth::user()->id)->get();
+        $staff = DB::table('profile')->where('id', Auth::user()->profileid)->get();
 
         $banks = DB::table('banks')->orderBy('banks', 'asc')->get();
 

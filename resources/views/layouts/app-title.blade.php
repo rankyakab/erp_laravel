@@ -69,6 +69,10 @@
 			cursor: pointer;
 		}
 
+		.totalsum{
+			font-weight: bold;
+		}
+
 
 		/*# sourceMappingURL=bootstrap-select.css.map */
 

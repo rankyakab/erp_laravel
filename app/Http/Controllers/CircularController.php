@@ -12,6 +12,12 @@ class CircularController extends Controller
 {
     //Circular Backend
 
+    //Authenticate user
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function createcircular(){
 
         $staffs = DB::table('profile')->orderBy('firstname')->get();

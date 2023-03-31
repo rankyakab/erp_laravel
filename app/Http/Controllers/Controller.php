@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 
 use DB;
+use Auth;
 
 class Controller extends BaseController
 {
@@ -106,6 +107,30 @@ class Controller extends BaseController
     public static function staffimage($staff){
 
         return DB::table('profile')->where('id', $staff)->value('image');
+    }
+
+
+    public static function getaction($action){
+
+        return DB::table('actions')->where('id', $action)->value('action');
+    }
+
+    public static function checkprocess($role, $process, $action){
+
+        if(DB::table('privileges')->where([['role', $role], ['privilege', $process], ['action', $action]])->count() == 1){
+
+            return "found";
+        }
+
+    }
+
+
+    public function checkrole($role, $process, $action){
+
+        if(DB::table('privileges')->where([['role', $role], ['privilege', $process], ['action', $action]])->count() == 1){
+
+            return "allow";
+        }
     }
 
 }

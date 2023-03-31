@@ -325,27 +325,37 @@
 					</div>
 					<div class="user-box dropdown">
 						<a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-							<img src="{{ asset(app\Http\Controllers\Controller::staffimage(Auth::user()->profileid)) }}" class="user-img" alt="user avatar">
+							<img src="@if(!is_null(app\Http\Controllers\Controller::staffimage(Auth::user()->profileid))){{ asset(app\Http\Controllers\Controller::staffimage(Auth::user()->profileid)) }} @else {{ asset('assets/images/default-avatar.png') }} @endif" class="user-img" alt="user avatar">
 							<div class="user-info ps-3">
 								<p class="user-name mb-0">{{ Auth::user()->name }}</p>
 								<p class="designattion mb-0">{{ app\Http\Controllers\Controller::staffdesignation(Auth::user()->profileid) }}</p>
 							</div>
 						</a>
 						<ul class="dropdown-menu dropdown-menu-end">
-							<li><a class="dropdown-item" href="javascript:;"><i class="bx bx-user"></i><span>Profile</span></a>
+							<li><a class="dropdown-item" href="{{ url('staffprofile') }}"><i class="bx bx-user"></i><span>Profile</span></a>
 							</li>
-							<li><a class="dropdown-item" href="javascript:;"><i class="bx bx-cog"></i><span>Settings</span></a>
+							<li><a class="dropdown-item" href="{{ url('changepassword') }}"><i class="bx bx-cog"></i><span>Change Password</span></a>
 							</li>
-							<li><a class="dropdown-item" href="javascript:;"><i class='bx bx-home-circle'></i><span>Dashboard</span></a>
+							<li><a class="dropdown-item" href="{{ url('dashboard') }}"><i class='bx bx-home-circle'></i><span>Dashboard</span></a>
 							</li>
-							<li><a class="dropdown-item" href="javascript:;"><i class='bx bx-dollar-circle'></i><span>Earnings</span></a>
+							<!--<li><a class="dropdown-item" href="javascript:;"><i class='bx bx-dollar-circle'></i><span>Earnings</span></a>
 							</li>
 							<li><a class="dropdown-item" href="javascript:;"><i class='bx bx-download'></i><span>Downloads</span></a>
-							</li>
+							</li>-->
 							<li>
 								<div class="dropdown-divider mb-0"></div>
 							</li>
-							<li><a class="dropdown-item" href="javascript:;"><i class='bx bx-log-out-circle'></i><span>Logout</span></a>
+							<li>
+								<form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <a class="dropdown-item" href="route('logout')"
+                                                onclick="event.preventDefault();
+                                                            this.closest('form').submit();">
+                                    
+                                            <i class='bx bx-log-out-circle'></i><span>{{ __('Log Out') }}</span>
+                                        </a>
+                                    </form>
+							
 							</li>
 						</ul>
 					</div>
