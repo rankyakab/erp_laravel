@@ -50,13 +50,13 @@
 					 	@csrf
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">PV Title</label>
-							<input type="text" class="form-control" id="title" name="title" placeholder="Memo Title">
+							<input type="text" class="form-control" id="title" name="title" placeholder="PV Title" required>
 					 	</div><br />
 					 	<div class="col-sm-12">
 					 	<div class="row g-3">
-						 	<div class="col-sm-6">
+							<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">PV Recipient</label>
-								<select name="sendto" id="sendto" class="form-control">
+								<select name="sendto" id="sendto" class="form-control" required>
 									<option value="">Select Recipient</option>
 									@foreach($staffs as $staff)
 								    @if(Auth::user()->name != $staff->firstname.' '.$staff->surname.' '.$staff->othername)
@@ -81,7 +81,7 @@
 					</div>
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">PV Body</label>
-							<textarea class="form-control" id="body" name="body" placeholder="PV Body"></textarea>
+							<textarea class="form-control" id="body" name="body" placeholder="PV Body" required></textarea>
 								
 					 	</div>
 
@@ -89,10 +89,15 @@
 					 	<div class="col-sm-12" style="margin-top: 20px;">
 						<div class="row g-3">
 						 	<div class="col-sm-6">
+						 		<label for="inputFirstName" class="form-label">Add Attachment</label>
 								<input type="file" name="attachment" class="form-control" accept=".pdf" placeholder="Select Attachment">
 							</div>
-						 	<div class="col-sm-6 text-right float-right">
-								
+						 	<div class="col-sm-6">
+								<label for="inputFirstName" class="form-label">Project</label>
+								<select name="project" id="project" class="form-control" required>
+									<option value="">Select Project</option>
+									<option>Not Applicable</option>
+								</select>
 							</div>
 						</div>
 					</div><br /><br />
@@ -156,9 +161,9 @@
 							<tbody id="sheetdata">
 								<tr>
 									<td><p id="sn">1</p></td>
-									<td><input type="text" class="form-control" id="description1" name="description[]" placeholder="Description"></td>
-									<td><input type="text" class="form-control qty" id="qty1" name="qty[]" value="0"></td>
-									<td><input type="text" class="form-control prc" id="price1" name="price[]" value="0.00"></td>
+									<td><input type="text" class="form-control" id="description1" name="description[]" placeholder="Description" required></td>
+									<td><input type="text" class="form-control qty" id="qty1" name="qty[]" value="0" required></td>
+									<td><input type="text" class="form-control prc" id="price1" name="price[]" value="0.00" required></td>
 									<td><p class="form-control amt" id="amount1">0.00</p>
 						 			<input type="hidden" class="form-control" id="amounts1" name="amounts[]" value="0.00"></td>
 									<td><input type="text" class="form-control" id="vatp1" name="vatp[]" value="0.00"></td>
@@ -201,7 +206,7 @@
 						</div>
 						<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">Net Amount in Words</label>
-							<input type="text" class="form-control" id="amountinwords" name="amountinwords" placeholder="Type Net Amount in Words">
+							<input type="text" class="form-control" id="amountinwords" name="amountinwords" placeholder="Type Net Amount in Words" required>
 					 	</div><br />
 					</div>
 				</div>
@@ -219,17 +224,17 @@
 						<div class="row g-3">
 						 	<div class="col-sm-3">
 						 		<label for="inputFirstName" class="form-label">Bank Name</label>
-								<select name="bankname" id="sendto" class="form-control">
+								<select name="bankname" id="sendto" class="form-control" required>
 									<option value="">Select Bank</option>
 								</select>
 							</div>
 							<div class="col-sm-3">
 						 		<label for="inputFirstName" class="form-label">Account Number</label>
-								<input type="text" name="accountnumber" maxlength="10" class="form-control" placeholder="Account Number">
+								<input type="text" name="accountnumber" maxlength="10" class="form-control" placeholder="Account Number" required>
 							</div>
 							<div class="col-sm-4">
 						 		<label for="inputFirstName" class="form-label">Account Name</label>
-								<input type="text" name="accountname" class="form-control" placeholder="Account Number">
+								<input type="text" name="accountname" class="form-control" placeholder="Account Number" required>
 							</div>
 						 	<div class="col-sm-2 text-right float-right" style="padding-top: 25px;">
 						 		<label for="inputFirstName" class="form-label"></label>

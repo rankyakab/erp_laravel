@@ -50,7 +50,7 @@
 					 	@csrf
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">PV Title</label>
-							<input type="text" class="form-control" id="title" name="title" value="{{ $pvs[0]->title }}">
+							<input type="text" class="form-control" id="title" name="title" value="{{ $pvs[0]->title }}" required>
 							<input type="hidden" class="form-control" id="id" name="id" value="{{ $pvs[0]->id }}">
 					 	</div><br />
 					 	<div class="col-sm-12">
@@ -58,14 +58,14 @@
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">PV Recipient</label>
 								<select name="sendto" id="sendto" class="form-control">
-									<option>{{ $pvs[0]->title }}</option>
+									<option>{{ $pvs[0]->sendto }}</option>
 								</select>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">PV CC</label>
 								<select data-placeholder="Begin typing a name to filter..." multiple class=" form-control" name="copies[]">
 								    
-								    <option>{{ $pvs[0]->title }}</option>
+								    <option>{{ $pvs[0]->copies }}</option>
 								    @foreach($staffs as $staff)
 								    @if(Auth::user()->name != $staff->firstname.' '.$staff->surname.' '.$staff->othername)
 								    <option value="{{ $staff->id }}">{{ $staff->firstname.' '.$staff->surname.' '.$staff->othername }}</option>
@@ -77,7 +77,7 @@
 					</div>
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">PV Body</label>
-							<textarea class="form-control" id="body" name="body" placeholder="PV Body">{{ $pvs[0]->body }}</textarea>
+							<textarea class="form-control" id="body" name="body" placeholder="PV Body" required>{{ $pvs[0]->body }}</textarea>
 								
 					 	</div>
 
@@ -88,8 +88,12 @@
 						 	<div class="col-sm-6">
 								<a href="#" class="btn btn-primary">PV Attachment</a>
 							</div>
-						 	<div class="col-sm-6 text-right float-right">
-								
+						 	<div class="col-sm-6">
+								<label for="inputFirstName" class="form-label">Project</label>
+								<select name="project" id="project" class="form-control" required>
+									<option value="">Select Project</option>
+									<option>Not Applicable</option>
+								</select>
 							</div>
 						</div>
 					</div><br /><br />
@@ -161,9 +165,9 @@
 								@foreach($vsheets as $vsheet)
 								<tr>
 									<td><p id="sn">{{ $x++ }}</p></td>
-									<td><input type="text" class="form-control" id="description1" name="description[]" value="{{ $vsheet->description }}"></td>
-									<td><input type="text" class="form-control qty" id="qty1" name="qty[]" value="{{ $vsheet->qty }}"></td>
-									<td><input type="text" class="form-control prc" id="price1" name="price[]" value="{{ $vsheet->unitprice }}"></td>
+									<td><input type="text" class="form-control" id="description1" name="description[]" value="{{ $vsheet->description }}" required></td>
+									<td><input type="text" class="form-control qty" id="qty1" name="qty[]" value="{{ $vsheet->qty }}" required></td>
+									<td><input type="text" class="form-control prc" id="price1" name="price[]" value="{{ $vsheet->unitprice }}" required></td>
 									<td><p class="form-control amt" id="amount1">{{ $vsheet->amount }}</p>
 						 			<input type="hidden" class="form-control" id="amounts1" name="amounts[]" value="{{ $vsheet->amount }}"></td>
 									<td><input type="text" class="form-control" id="vatp1" name="vatp[]" value="{{ $vsheet->vatpercent }}"></td>

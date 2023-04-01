@@ -21,7 +21,7 @@
 					 	@csrf
 					 	<div class="col-sm-8">
 
-					 		<input type="text" name="banks" id="banks" class="form-control" placeholder="Enter Bank Name">
+					 		<input type="text" name="banks" id="banks" class="form-control" placeholder="Enter Bank Name" required>
 						
 					 	</div>
 					 	<div class="col-sm-4">

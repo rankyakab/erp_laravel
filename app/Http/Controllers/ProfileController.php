@@ -95,14 +95,7 @@ class ProfileController extends Controller
 
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to add new department ".$departments." to the database, but failed because the event exist";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to add new department ".$departments." to the database, but failed because the event exist");
 
 
             return response()->json([
@@ -116,20 +109,25 @@ class ProfileController extends Controller
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
 
-        $create = DB::table('departments')->insert($data);
+        try {
+
+            $create = DB::table('departments')->insert($data);
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                ]);
+            }
 
         if($create){
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Added new department ".$departments." to the database";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Added new department ".$departments." to the database");
 
             return response()->json([
                 'message' => 'success'
@@ -137,16 +135,10 @@ class ProfileController extends Controller
 
         }else{
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to add new department ".$departments." to the database, but failed";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to add new department ".$departments." to the database, but failed");
 
 
             return response()->json([
@@ -172,16 +164,10 @@ class ProfileController extends Controller
 
         if($check == 1){
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to add new designation ".$designations." to the database, but failed because the event exist";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to add new designation ".$designations." to the database, but failed because the event exist");
 
 
             return response()->json([
@@ -195,20 +181,26 @@ class ProfileController extends Controller
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
 
-        $create = DB::table('designations')->insert($data);
+        
+        try {
+
+            $create = DB::table('designations')->insert($data);
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                ]);
+            }
 
         if($create){
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Added new designation ".$designations." to the database";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Added new designation ".$designations." to the database");
 
             return response()->json([
                 'message' => 'success'
@@ -216,16 +208,10 @@ class ProfileController extends Controller
 
         }else{
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to add new designation ".$designations." to the database, but failed";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to add new designation ".$designations." to the database, but failed");
 
 
             return response()->json([
@@ -251,16 +237,10 @@ class ProfileController extends Controller
 
         if($check == 1){
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to add new office ".$offices." to the database, but failed because the event exist";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to add new office ".$offices." to the database, but failed because the event exist");
 
 
             return response()->json([
@@ -274,20 +254,25 @@ class ProfileController extends Controller
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
 
-        $create = DB::table('offices')->insert($data);
+        try {
+
+            $create = DB::table('offices')->insert($data);
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                ]);
+            }
 
         if($create){
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Added new office ".$offices." to the database";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Added new office ".$offices." to the database");
 
             return response()->json([
                 'message' => 'success'
@@ -295,16 +280,10 @@ class ProfileController extends Controller
 
         }else{
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to add new office ".$offices." to the database, but failed";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to add new office ".$offices." to the database, but failed");
 
 
             return response()->json([
@@ -330,16 +309,10 @@ class ProfileController extends Controller
 
         if($check == 1){
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to add new bank ".$banks." to the database, but failed because the event exist";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to add new bank ".$banks." to the database, but failed because the event exist");
 
 
             return response()->json([
@@ -353,20 +326,26 @@ class ProfileController extends Controller
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
 
-        $create = DB::table('banks')->insert($data);
+        
+        try {
+
+            $create = DB::table('banks')->insert($data);
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                ]);
+            }
 
         if($create){
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Added new bank ".$banks." to the database";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Added new bank ".$banks." to the database");
 
             return response()->json([
                 'message' => 'success'
@@ -374,16 +353,10 @@ class ProfileController extends Controller
 
         }else{
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to add new bank ".$banks." to the database, but failed";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to add new bank ".$banks." to the database, but failed");
 
 
             return response()->json([
@@ -418,16 +391,10 @@ class ProfileController extends Controller
 
         if($checkemail == 1){
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to add new staff with email ".$email." to the database, but failed because the email is already in use";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to add new staff with email ".$email." to the database, but failed because the email is already in use");
 
 
             return response()->json([
@@ -443,16 +410,10 @@ class ProfileController extends Controller
 
             if($checkemail == 1){
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to add new staff with staff id ".$staffid." to the database, but failed because the staff id is already in use";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to add new staff with staff id ".$staffid." to the database, but failed because the staff id is already in use");
 
 
             return response()->json([
@@ -486,21 +447,27 @@ class ProfileController extends Controller
         $data['created_at'] = date('Y-m-d H:i:s');
 
 
-        $create = DB::table('profile')->insertGetId($data);
+        
+        try {
+
+            $create = DB::table('profile')->insertGetId($data);
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                ]);
+            }
 
 
         if($create){
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Added new staff with ".$staffid." and email ".$email." to the database";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Added new staff with ".$staffid." and email ".$email." to the database");
 
 
             //send email to the staff
@@ -527,16 +494,10 @@ class ProfileController extends Controller
 
         }else{
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to add new staff with ".$staffid." and email ".$email." to the database, but failed";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to add new staff with ".$staffid." and email ".$email." to the database, but failed");
 
 
             return response()->json([
@@ -564,20 +525,26 @@ class ProfileController extends Controller
 
         $picsurl = $pics->store('assets/profile');
 
-        $update = DB::table('profile')->where('id', $user)->update(['image' => $picsurl]);
+        
+        try {
+
+            $update = DB::table('profile')->where('id', $user)->update(['image' => $picsurl]);
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                ]);
+            }
 
         if($update){
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Successfully updated the profile image of the staff  with the email ".$email." in the database";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Successfully updated the profile image of the staff  with the email ".$email." in the database");
 
             return response()->json([
                 'message' => 'success',
@@ -586,16 +553,10 @@ class ProfileController extends Controller
 
         }else{
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to update the profile image of the staff with the email ".$email." to the database, but failed";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to update the profile image of the staff with the email ".$email." to the database, but failed");
 
 
             return response()->json([
@@ -617,20 +578,25 @@ class ProfileController extends Controller
 
         $picsurl = $pics->store('assets/profile');
 
-        $update = DB::table('profile')->where('id', $user)->update(['signature' => $picsurl]);
+        try {
+
+            $update = DB::table('profile')->where('id', $user)->update(['signature' => $picsurl]);
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                ]);
+            }
 
         if($update){
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Successfully updated the signature of the staff  with the email ".$email." in the database";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Successfully updated the signature of the staff  with the email ".$email." in the database");
 
             return response()->json([
                 'message' => 'success',
@@ -639,16 +605,10 @@ class ProfileController extends Controller
 
         }else{
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to update the signature of the staff with the email ".$email." to the database, but failed";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to update the signature of the staff with the email ".$email." to the database, but failed");
 
 
             return response()->json([
@@ -696,7 +656,19 @@ class ProfileController extends Controller
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
 
-        $convert = DB::table('users')->insertGetId($data);
+        
+        try {
+
+            $convert = DB::table('users')->insertGetId($data);
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                ]);
+            }
 
 
         if($convert){
@@ -720,16 +692,10 @@ class ProfileController extends Controller
             }
 
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Successfully converted the staff with the email ".$useremail." to a user";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Successfully converted the staff with the email ".$useremail." to a user");
 
             return response()->json([
                 'message' => 'success',
@@ -738,16 +704,10 @@ class ProfileController extends Controller
 
         }else{
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to convert the staff with the email ".$email." to a user, but failed";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to convert the staff with the email ".$email." to a user, but failed");
 
 
             return response()->json([
@@ -809,16 +769,10 @@ class ProfileController extends Controller
 
             if($checkemail == 1){
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to update staff with staff id ".$staffid." to the database, but failed because the staff id is already in use by another staff";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to update staff with staff id ".$staffid." to the database, but failed because the staff id is already in use by another staff");
 
 
             return response()->json([
@@ -851,7 +805,19 @@ class ProfileController extends Controller
         $data['datechanged'] = $datechanged;
         $data['updated_at'] = date('Y-m-d H:i:s');
 
-        $update = DB::table('profile')->where('id', $request->id)->update($data);
+        
+        try {
+
+            $update = DB::table('profile')->where('id', $request->id)->update($data);
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                ]);
+            }
 
 
         if($update){
@@ -865,16 +831,10 @@ class ProfileController extends Controller
 
             $updateuser = DB::table('users')->where('profileid', $request->id)->update($userdata);
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Updated staff data of staff with staff id ".$staffid." and email ".$email." to the database";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Updated staff data of staff with staff id ".$staffid." and email ".$email." to the database");
 
 
             //send email to the staff
@@ -901,16 +861,10 @@ class ProfileController extends Controller
 
         }else{
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to update staff profile for staff with ".$staffid." and email ".$email." to the database, but failed";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to update staff profile for staff with ".$staffid." and email ".$email." to the database, but failed");
 
 
             return response()->json([
@@ -963,20 +917,32 @@ class ProfileController extends Controller
         $data['status'] = $status;
         $data['updated_at'] = date('Y-m-d H:i:s');
 
-        $update = DB::table('users')->where('id', $request->id)->update($data);
+        
+        try {
+
+            $update = DB::table('users')->where('id', $request->id)->update($data);
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                ]);
+            }
 
         if($update){
 
+            
             //log the event
 
-            $logs = array();
+            $this->logevent("Updated user data of user with user id ".$request->id);
 
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Updated user data of user with user id ".$request->id;
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
 
-            $createlogs = DB::table('logs')->insert($logs);
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Staff update could not be completed at the moment, please try again'
+            ]);
 
 
             return response()->json([
@@ -986,16 +952,10 @@ class ProfileController extends Controller
 
         }else{
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to update user data for user with user id ".$staffid." to the database, but failed";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to update user data for user with user id ".$staffid." to the database, but failed");
 
 
             return response()->json([
@@ -1042,16 +1002,10 @@ class ProfileController extends Controller
 
         if($checkemail == 1){
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted update staff profile with email ".$email." to the database, but failed because the email is already in use by another staff";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted update staff profile with email ".$email." to the database, but failed because the email is already in use by another staff");
 
 
             return response()->json([
@@ -1067,16 +1021,10 @@ class ProfileController extends Controller
 
             if($checkemail == 1){
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to update staff with staff id ".$staffid." to the database, but failed because the staff id is already in use by another staff";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to update staff with staff id ".$staffid." to the database, but failed because the staff id is already in use by another staff");
 
 
             return response()->json([
@@ -1109,7 +1057,19 @@ class ProfileController extends Controller
         $data['datechanged'] = $datechanged;
         $data['updated_at'] = date('Y-m-d H:i:s');
 
-        $update = DB::table('profile')->where('id', Auth::user()->profileid)->update($data);
+        
+        try {
+
+            $update = DB::table('profile')->where('id', Auth::user()->profileid)->update($data);
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                ]);
+            }
 
 
         if($update){
@@ -1123,16 +1083,10 @@ class ProfileController extends Controller
 
             $updateuser = DB::table('users')->where('profileid', Auth::user()->profileid)->update($userdata);
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Updated staff data of staff with staff id ".$staffid." and email ".$email." to the database";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Updated staff data of staff with staff id ".$staffid." and email ".$email." to the database");
 
 
             //send email to the staff
@@ -1159,16 +1113,10 @@ class ProfileController extends Controller
 
         }else{
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to update staff profile for staff with ".$staffid." and email ".$email." to the database, but failed";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to update staff profile for staff with ".$staffid." and email ".$email." to the database, but failed");
 
 
             return response()->json([
@@ -1192,20 +1140,26 @@ class ProfileController extends Controller
 
         $picsurl = $pics->store('assets/profile');
 
-        $update = DB::table('profile')->where('id', $user)->update(['image' => $picsurl]);
+        
+        try {
+
+            $update = DB::table('profile')->where('id', $user)->update(['image' => $picsurl]);
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                ]);
+            }
 
         if($update){
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Successfully updated the profile image of the staff  with the email ".$email." in the database";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Successfully updated the profile image of the staff  with the email ".$email." in the database");
 
             return response()->json([
                 'message' => 'success',
@@ -1214,16 +1168,10 @@ class ProfileController extends Controller
 
         }else{
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to update the profile image of the staff with the email ".$email." to the database, but failed";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to update the profile image of the staff with the email ".$email." to the database, but failed");
 
 
             return response()->json([
@@ -1245,20 +1193,26 @@ class ProfileController extends Controller
 
         $picsurl = $pics->store('assets/profile');
 
-        $update = DB::table('profile')->where('id', $user)->update(['signature' => $picsurl]);
+        
+        try {
+
+            $update = DB::table('profile')->where('id', $user)->update(['signature' => $picsurl]);
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                ]);
+            }
 
         if($update){
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Successfully updated the signature of the staff  with the email ".$email." in the database";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Successfully updated the signature of the staff  with the email ".$email." in the database");
 
             return response()->json([
                 'message' => 'success',
@@ -1267,16 +1221,10 @@ class ProfileController extends Controller
 
         }else{
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to update the signature of the staff with the email ".$email." to the database, but failed";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to update the signature of the staff with the email ".$email." to the database, but failed");
 
 
             return response()->json([
@@ -1314,16 +1262,10 @@ class ProfileController extends Controller
 
         if($newpasswrod != $newpasswordagain){
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to change password but could not complete the process because new password did not match";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to change password but could not complete the process because new password did not match");
 
 
             return response()->json([
@@ -1333,16 +1275,10 @@ class ProfileController extends Controller
 
         }else if(!Hash::check($currentpassword, $systempassword)){
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to change password but could not complete the process because the current password provided did not match the database password";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to change password but could not complete the process because the current password provided did not match the database password");
 
 
             return response()->json([
@@ -1352,21 +1288,27 @@ class ProfileController extends Controller
 
         }else{
 
+            
+            try {
+
             $update = DB::table('users')->where('id', Auth::user()->id)->update(['password' => Hash::make($newpasswrod), 'updated_at' => date('Y-m-d H:i:s')]);
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                ]);
+            }
 
 
             if($update){
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "User successfully updated their password";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("User successfully updated their password");
 
 
             //send email to the staff

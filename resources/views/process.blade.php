@@ -21,7 +21,7 @@
 					 	@csrf
 					 	<div class="col-sm-5">
 
-					 		<input type="text" name="process" id="process" class="form-control" placeholder="Enter Process">
+					 		<input type="text" name="process" id="process" class="form-control" placeholder="Enter Process" required>
 						
 					 	</div>
 					 	<div class="col-sm-5">

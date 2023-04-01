@@ -50,13 +50,13 @@
 					 	@csrf
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">Memo Title</label>
-							<input type="text" class="form-control" id="title" name="title" placeholder="Memo Title">
+							<input type="text" class="form-control" id="title" name="title" placeholder="Memo Title" required>
 					 	</div><br />
 					 	<div class="col-sm-12">
 					 	<div class="row g-3">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Memo Recipient</label>
-								<select name="sendto" id="recipient" class="form-control">
+								<select name="sendto" id="recipient" class="form-control" required>
 									<option value="">Select Recipient</option>
 									@foreach($staffs as $staff)
 								    @if(Auth::user()->name != $staff->firstname.' '.$staff->surname.' '.$staff->othername)
@@ -67,7 +67,7 @@
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Memo CC</label>
-								<select data-placeholder="Begin typing a name to filter..." multiple class=" form-control" name="copies[]">
+								<select data-placeholder="Begin typing a name to filter..." multiple class=" form-control" name="copies[]" required>
 									<option value=""></option>
 								    @foreach($staffs as $staff)
 								    @if(Auth::user()->name != $staff->firstname.' '.$staff->surname.' '.$staff->othername)
@@ -85,7 +85,7 @@
 								<link rel="stylesheet" href="{{ asset('assets/richtexteditor/rte_theme_default.css') }}" />
 								<script type="text/javascript" src="{{ asset('assets/richtexteditor/rte.js') }}"></script>
 								<script type="text/javascript" src="{{ asset('assets/richtexteditor/plugins/all_plugins.js') }}"></script>
-								<textarea id="div_editor1" name="memobody">
+								<textarea id="div_editor1" name="memobody" required>
 									
 								</textarea>
 

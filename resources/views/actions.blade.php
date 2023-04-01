@@ -21,7 +21,7 @@
 					 	@csrf
 					 	<div class="col-sm-8">
 
-					 		<input type="text" name="action" id="action" class="form-control" placeholder="Enter Action Name">
+					 		<input type="text" name="action" id="action" class="form-control" placeholder="Enter Action Name" required>
 						
 					 	</div>
 					 	<div class="col-sm-4">

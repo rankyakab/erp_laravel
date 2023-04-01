@@ -36,16 +36,10 @@ class AccessController extends Controller
 
         if($check == 1){
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to add new action ".$action." to the database, but failed because the event exist";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to add new action ".$action." to the database, but failed because the event exist");
 
 
             return response()->json([
@@ -60,20 +54,25 @@ class AccessController extends Controller
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
 
+        try {
+
         $create = DB::table('actions')->insert($data);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+            ]);
+        }
 
         if($create){
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Added new action ".$action." to the database";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Added new action ".$action." to the database");
 
             return response()->json([
                 'message' => 'success',
@@ -125,16 +124,10 @@ class AccessController extends Controller
 
         if($check == 1){
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to add new process ".$process." to the database, but failed because the event exist";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to add new process ".$process." to the database, but failed because the event exist");
 
 
             return response()->json([
@@ -150,20 +143,25 @@ class AccessController extends Controller
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
 
+        try {
+
         $create = DB::table('processes')->insert($data);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+            ]);
+        }
 
         if($create){
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Added new process ".$process." to the database";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Added new process ".$process." to the database");
 
             return response()->json([
                 'message' => 'success',
@@ -172,16 +170,10 @@ class AccessController extends Controller
 
         }else{
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to add new process ".$process." to the database, but failed";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to add new process ".$process." to the database, but failed");
 
 
             return response()->json([
@@ -204,16 +196,10 @@ class AccessController extends Controller
 
         if($check == 1){
 
+            
             //log the event
 
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to add new role ".$role." to the database, but failed because the event exist";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to add new role ".$role." to the database, but failed because the event exist");
 
 
             return response()->json([
@@ -228,7 +214,18 @@ class AccessController extends Controller
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
 
+        try {
+
         $create = DB::table('role')->insert($data);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+            ]);
+        }
 
         if($create){
 
@@ -337,7 +334,19 @@ class AccessController extends Controller
             $data["action"] = $result[1];
             $data["created_at"] = date('Y-m-d H:i:s');
 
+            
+            try {
+
             $create = DB::table('privileges')->insert($data);
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                ]);
+            }
 
 
         }

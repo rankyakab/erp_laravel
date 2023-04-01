@@ -50,13 +50,13 @@
 					 	@csrf
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">Circular Title</label>
-							<input type="text" class="form-control" id="title" name="title" placeholder="Circular Title">
+							<input type="text" class="form-control" id="title" name="title" placeholder="Circular Title" required>
 					 	</div><br />
 					 	<div class="col-sm-12">
 					 	<div class="row g-3">
 						 	<div class="col-sm-12">
 								<label for="inputFirstName" class="form-label">Recipient</label>
-								<select data-placeholder="Begin typing a name to filter..." multiple class=" form-control" name="recipient[]">
+								<select data-placeholder="Begin typing a name to filter..." multiple class=" form-control" name="recipient[]" required>
 								    <option>All Staff</option>
 								    @foreach($staffs as $staff)
 								    <option value="{{ $staff->id }}">{{ $staff->firstname.' '.$staff->surname.' '.$staff->othername }}</option>
@@ -72,7 +72,7 @@
 								<link rel="stylesheet" href="{{ asset('assets/richtexteditor/rte_theme_default.css') }}" />
 								<script type="text/javascript" src="{{ asset('assets/richtexteditor/rte.js') }}"></script>
 								<script type="text/javascript" src="{{ asset('assets/richtexteditor/plugins/all_plugins.js') }}"></script>
-								<textarea name="body" id="div_editor1">
+								<textarea name="body" id="div_editor1" required>
 									
 								</textarea>
 

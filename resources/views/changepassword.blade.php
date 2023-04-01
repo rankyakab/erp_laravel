@@ -52,15 +52,15 @@
 					 	<div class="row g-3">
 					 		<div class="col-sm-4">
 								<label for="inputFirstName" class="form-label">Current Password</label>
-								<input type="password" placeholder="Enter Current Password" name="currentpassword" class="form-control">
+								<input type="password" placeholder="Enter Current Password" name="currentpassword" class="form-control" required>
 							</div>
 						 	<div class="col-sm-4">
 								<label for="inputFirstName" class="form-label">New Password</label>
-								<input type="password" placeholder="Enter New Password" name="newpassword" class="form-control">
+								<input type="password" placeholder="Enter New Password" name="newpassword" class="form-control" required>
 							</div>
 							<div class="col-sm-4">
 								<label for="inputFirstName" class="form-label">New Password Again</label>
-								<input type="password" placeholder="Re-enter Password" name="newpasswordagain" class="form-control">
+								<input type="password" placeholder="Re-enter Password" name="newpasswordagain" class="form-control" required>
 							</div>
 						</div><br />
 						<div class="row g-3">

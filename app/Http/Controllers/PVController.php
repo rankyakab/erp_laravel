@@ -64,6 +64,7 @@ class PVController extends Controller
         $accountnumber = $request->accountnumber;
         $accountname = $request->accountname;
         $amountinwords = $request->amountinwords;
+        $project = $request->project;
 
         $data = array();
 
@@ -89,10 +90,23 @@ class PVController extends Controller
         $data['totalwhts'] = $totalwhts;
         $data['totalnets'] = $totalnets;
         $data['amountinwords'] = $amountinwords;
+        $data['project'] = $project;
         $data['created_at'] = date('Y-m-d H:i:s');
 
 
-        $create = DB::table('pv')->insertGetId($data);
+        
+        try {
+
+            $create = DB::table('pv')->insertGetId($data);
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                ]);
+            }
 
         if($create){
 
@@ -126,7 +140,19 @@ class PVController extends Controller
                 $sdata['netamount'] = $net;
                 $sdata['created_at'] = date('Y-m-d H:i:s');
 
+                
+                try {
+
                 $addsheet = DB::table('vouchersheet')->insert($sdata);
+
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    // something went wrong
+                    return response()->json([
+                        'message' => 'error',
+                        'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                    ]);
+                }
 
             }
 
@@ -224,6 +250,7 @@ class PVController extends Controller
         $accountnumber = $request->accountnumber;
         $accountname = $request->accountname;
         $amountinwords = $request->amountinwords;
+        $project = $request->project;
 
         $data = array();
 
@@ -232,7 +259,6 @@ class PVController extends Controller
         $data['sendto'] = $sendto;
         $data['copies'] = $copies;
         $data['body'] = $body;
-        $data['status'] = 'Pending Approval';
 
         if(!empty($attachment)){
             $$attachmenturl = $$attachment->store('assets/attachment');
@@ -249,10 +275,23 @@ class PVController extends Controller
         $data['totalwhts'] = $totalwhts;
         $data['totalnets'] = $totalnets;
         $data['amountinwords'] = $amountinwords;
+        $data['project'] = $project;
         $data['updated_at'] = date('Y-m-d H:i:s');
 
 
-        $update = DB::table('pv')->where('id', $request->id)->update($data);
+        
+        try {
+
+                $update = DB::table('pv')->where('id', $request->id)->update($data);
+
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    // something went wrong
+                    return response()->json([
+                        'message' => 'error',
+                        'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                    ]);
+                }
 
         if($update){
 
@@ -288,7 +327,19 @@ class PVController extends Controller
                 $sdata['netamount'] = $net;
                 $sdata['created_at'] = date('Y-m-d H:i:s');
 
+                
+                try {
+
                 $addsheet = DB::table('vouchersheet')->insert($sdata);
+
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    // something went wrong
+                    return response()->json([
+                        'message' => 'error',
+                        'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                    ]);
+                }
 
             }
 
@@ -389,9 +440,24 @@ class PVController extends Controller
         $data['actor'] = Auth::user()->id;
         $data['created_at'] = date('Y-m-d H:i:s');
 
-        $update = DB::table('pvtrail')->insert($data);
+        
+        try {
+
+                $update = DB::table('pvtrail')->insert($data);
+
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    // something went wrong
+                    return response()->json([
+                        'message' => 'error',
+                        'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                    ]);
+                }
 
         if($update){
+
+            //update pv status
+            $pv = DB::table('pv')->where('id', $pvid)->update(['status' => $status]);
 
             //send email to the owner of the pv
             $username = $this->staffname($sentfrom);

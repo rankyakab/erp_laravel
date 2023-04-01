@@ -133,4 +133,26 @@ class Controller extends BaseController
         }
     }
 
+    //check if user account is active
+    public static function checkstatus($user){
+
+        return DB::table('users')->where('id', $user)->value('status');
+
+    }
+
+    //check if staff profile is completed
+    public function checkprofile($staff){
+
+        $check = DB::table('profile')->where('id', $staff)->get();
+
+        if(is_null($check[0]->staffid) || is_null($check[0]->surname) || is_null($check[0]->firstname) || is_null($check[0]->email) || is_null($check[0]->phone) || is_null($check[0]->dob) || is_null($check[0]->doe) || is_null($check[0]->department) || is_null($check[0]->designation) || is_null($check[0]->office) || is_null($check[0]->gender) || is_null($check[0]->accountno) || is_null($check[0]->bankname) || is_null($check[0]->image) || is_null($check[0]->signature)){
+
+            return "Incomplete";
+
+        }else{
+
+            return "Complete";
+        }
+    }
+
 }

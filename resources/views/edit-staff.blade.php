@@ -106,11 +106,11 @@
 					 	<div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">First Name</label>
-								<input type="text" class="form-control" id="fname" name="fname" value="{{ $staff[0]->firstname }}" placeholder="First Name">
+								<input type="text" class="form-control" id="fname" name="fname" value="{{ $staff[0]->firstname }}" placeholder="First Name" required>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Staff ID</label>
-								<input type="text" class="form-control" id="staffid" name="staffid" value="{{ $staff[0]->staffid }}" placeholder="Staff ID">
+								<input type="text" class="form-control" id="staffid" name="staffid" value="{{ $staff[0]->staffid }}" placeholder="Staff ID" required>
 							</div>
 						</div><br />
 						<div class="row">
@@ -120,17 +120,17 @@
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Date of Employment</label>
-								<input type="date" class="form-control" id="doe" name="doe" value="{{ $staff[0]->doe }}" placeholder="Date of Employment" max="{{ date('Y-m-d') }}">
+								<input type="date" class="form-control" id="doe" name="doe" value="{{ $staff[0]->doe }}" placeholder="Date of Employment" max="{{ date('Y-m-d') }}" required>
 							</div>
 						</div><br />
 						<div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Surname</label>
-								<input type="text" class="form-control" id="sname" name="sname" value="{{ $staff[0]->surname }}" placeholder="Surname">
+								<input type="text" class="form-control" id="sname" name="sname" value="{{ $staff[0]->surname }}" placeholder="Surname" required>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Department</label>
-								<select class="form-control" id="department" name="department">
+								<select class="form-control" id="department" name="department" required>
 									<option>{{ $staff[0]->department }}</option>
 									@foreach($departments as $department)
 									<option>{{ $department->departments }}</option>
@@ -142,7 +142,7 @@
 						<div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Gender</label>
-								<select class="form-control" id="gender" name="gender">
+								<select class="form-control" id="gender" name="gender" required>
 									<option>{{ $staff[0]->gender }}</option>
 									<option>Male</option>
 									<option>Female</option>
@@ -150,7 +150,7 @@
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Designation</label>
-								<select class="form-control" id="designation" name="designation">
+								<select class="form-control" id="designation" name="designation" required>
 									<option>{{ $staff[0]->designation }}</option>
 									@foreach($designations as $designation)
 									<option>{{ $designation->designations }}</option>
@@ -163,7 +163,7 @@
 								<label for="inputFirstName" class="form-label">Date of Birth</label>
 								@php $today = date('Y-m-d') @endphp
 								@php $date = strtotime($today.' -15 year') @endphp
-								<input type="date" class="form-control" id="dob" name="dob" value="{{ $staff[0]->dob }}" max="{{ date('Y-m-d', $date) }}">
+								<input type="date" class="form-control" id="dob" name="dob" value="{{ $staff[0]->dob }}" max="{{ date('Y-m-d', $date) }}" required>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Office</label>
@@ -177,7 +177,7 @@
 						</div><br /><div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Email Address</label>
-								<input type="email" class="form-control" id="email" value="{{ $staff[0]->email }}" name="email" placeholder="Email Address" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+								<input type="email" class="form-control" id="email" value="{{ $staff[0]->email }}" name="email" placeholder="Email Address" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Account Number</label>
@@ -186,7 +186,7 @@
 						</div><br /><div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Phone Number</label>
-								<input type="text" class="form-control" id="phone" name="phone" value="{{ $staff[0]->phone }}" placeholder="Phone Number">
+								<input type="text" class="form-control" id="phone" name="phone" value="{{ $staff[0]->phone }}" placeholder="Phone Number" required>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Bank Name</label>
@@ -200,7 +200,7 @@
 						</div><br /><div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Employment Status</label>
-								<select class="form-control" id="employmentstatus" name="employmentstatus">
+								<select class="form-control" id="employmentstatus" name="employmentstatus" required>
 									<option>{{ $staff[0]->employmentstatus }}</option>
 									<option>Active Employment</option>
 									<option>Resigned</option>
@@ -211,7 +211,7 @@
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Employment Status Since</label>
-								<input type="date" class="form-control" id="datechanged" name="datechanged" value="{{ $staff[0]->datechanged }}">
+								<input type="date" class="form-control" id="datechanged" name="datechanged" value="{{ $staff[0]->datechanged }}" required>
 							</div>
 						</div><br />
 						<div class="row">

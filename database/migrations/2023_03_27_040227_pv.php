@@ -32,6 +32,7 @@ class Pv extends Migration
             $table->string("accountname");
             $table->string("bank");
             $table->string("amountinwords");
+            $data->string("project");
             $table->timestamps();
         });
     }

@@ -50,7 +50,7 @@
 					 	@csrf
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">Memo Title</label>
-							<input type="text" class="form-control" id="title" name="title" placeholder="Memo Title" value="{{ $memo[0]->title }}">
+							<input type="text" class="form-control" id="title" name="title" placeholder="Memo Title" value="{{ $memo[0]->title }}" required>
 					 	</div><br />
 					 	<div class="col-sm-12">
 					 	<div class="row g-3">
@@ -71,7 +71,7 @@
 								<link rel="stylesheet" href="{{ asset('assets/richtexteditor/rte_theme_default.css') }}" />
 								<script type="text/javascript" src="{{ asset('assets/richtexteditor/rte.js') }}"></script>
 								<script type="text/javascript" src="{{ asset('assets/richtexteditor/plugins/all_plugins.js') }}"></script>
-								<textarea id="div_editor1" name="memobody">
+								<textarea id="div_editor1" name="memobody" required>
 									
 								</textarea>
 

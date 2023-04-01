@@ -21,7 +21,7 @@
 					 	@csrf
 					 	<div class="col-sm-8">
 
-					 		<input type="text" name="designations" id="designations" class="form-control" placeholder="Enter Designation">
+					 		<input type="text" name="designations" id="designations" class="form-control" placeholder="Enter Designation" required>
 						
 					 	</div>
 					 	<div class="col-sm-4">

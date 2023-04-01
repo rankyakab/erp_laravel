@@ -21,7 +21,7 @@
 					 	@csrf
 					 	<div class="col-sm-8">
 
-					 		<input type="text" name="role" id="role" class="form-control" placeholder="Enter Role Name">
+					 		<input type="text" name="role" id="role" class="form-control" placeholder="Enter Role Name" required>
 						
 					 	</div>
 					 	<div class="col-sm-4">

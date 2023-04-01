@@ -217,13 +217,13 @@
 						<div class="row g-3">
 						 	<div class="col-sm-3">
 						 		<label for="inputFirstName" class="form-label">Status</label>
-								<select name="status" id="status" class="form-control">
+								<select name="status" id="status" class="form-control" required>
 									<option value="">Select Status</option>
 								</select>
 							</div>
 							<div class="col-sm-8">
 						 		<label for="inputFirstName" class="form-label">Remark</label>
-								<input type="text" name="remark" class="form-control" placeholder="Remark">
+								<input type="text" name="remark" class="form-control" placeholder="Remark" required>
 							</div>
 						 	<div class="col-sm-1 text-right float-right">
 						 		<label for="inputFirstName" class="form-label"><br /></label>

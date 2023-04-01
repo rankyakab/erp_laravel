@@ -19,8 +19,23 @@ class HomeController extends Controller
 
     public function dashboard(){
 
-        $pvs = DB::table('pv')->orderBy('created_at', 'desc')->limit(6)->get();
+        if($this->checkstatus(Auth::user()->id) != "Active"){
 
-        return view('dashboard', ['pvs' => $pvs]);
+            Auth::logout();
+
+            return redirect('login');
+
+        }else if($this->checkprofile(Auth::user()->profileid) != "Incompleted"){
+
+            return view('updateprofile', ["profileinfo" => "Complete Profile Update to Proceed"]);
+
+        }else{
+
+            $pvs = DB::table('pv')->orderBy('created_at', 'desc')->limit(6)->get();
+
+            return view('dashboard', ['pvs' => $pvs]);
+
+        }
+
     }
 }

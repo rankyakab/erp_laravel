@@ -110,7 +110,18 @@ class MemoController extends Controller
             }
             $data['created_at'] = date('Y-m-d H:i:s');
 
+            try {
+
             $create = DB::table('memo')->insert($data);
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                ]);
+            }
 
             if($create){
 
@@ -214,7 +225,18 @@ class MemoController extends Controller
         $data['remarks'] = $remarks;
         $data['updated_at'] = date('Y-m-d H:i:s');
 
-        $update = DB::table('memo')->where('id', $request->id)->update($data);
+        try {
+
+            $update = DB::table('memo')->where('id', $request->id)->update($data);
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                ]);
+            }
 
 
         if($update){
@@ -222,9 +244,19 @@ class MemoController extends Controller
 
         $data['actor'] = Auth::user()->profileid;
         $data['actor_type'] = 'Recipient';
+        
+        try {
 
+            $trail = DB::table('memotrail')->insert($data);
 
-        $trail = DB::table('memotrail')->insert($data);
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                ]);
+            }
 
         //send email to owner of the memo
         $username = $this->staffname($sentfrom);
@@ -284,8 +316,19 @@ class MemoController extends Controller
         $olddata['attachment'] = $memodetails[0]->attachment;
         $olddata['actor'] = Auth::user()->id;
         $olddata['actor_type'] = 'Sender';
+        
+        try {
 
-        $trail = DB::table('memotrail')->insert($olddata);
+            $trail = DB::table('memotrail')->insert($olddata);
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                ]);
+            }
 
         
         $data = array();
@@ -298,7 +341,19 @@ class MemoController extends Controller
             $data['attachment'] = $attachmenturl;
         }
 
-        $update = DB::table('memo')->where('id', $request->id)->update($data);
+        
+        try {
+
+            $update = DB::table('memo')->where('id', $request->id)->update($data);
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                ]);
+            }
 
 
         if($update){

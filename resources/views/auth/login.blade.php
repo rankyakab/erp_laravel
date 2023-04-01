@@ -2,7 +2,7 @@
 <body class="bg-login">
 	<!--wrapper-->
 	<div class="wrapper">
-		<div class="section-authentication-signin d-flex align-items-center justify-content-center my-5 my-lg-0">
+		<div class="section-authentication-signin d-flex align-items-center justify-content-center my-5 my-lg-0" style="background-image: url(assets/images/IMG_5425.jpg); background-repeat: no-repeat; background-size: cover;">
 			<div class="container-fluid">
 				<div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3">
 					<div class="col mx-auto">

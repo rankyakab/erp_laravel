@@ -63,7 +63,7 @@
 					</div>
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">Memo Body</label>
-							<p class="form-control" name="title">{{ memo[0]->body }}</p>
+							<p class="form-control" name="title">{!! memo[0]->body !!}</p>
 								
 					 	</div>
 					 	@if(!empty(memo[0]->attachment))
@@ -99,13 +99,13 @@
 						<div class="row g-3">
 						 	<div class="col-sm-3">
 						 		<label for="inputFirstName" class="form-label">Status</label>
-								<select name="sendto" id="status" class="form-control">
+								<select name="sendto" id="status" class="form-control" required>
 									<option value="">Select Recipient</option>
 								</select>
 							</div>
 							<div class="col-sm-8">
 						 		<label for="inputFirstName" class="form-label">Remark</label>
-								<input type="text" name="remark" class="form-control" placeholder="Remark">
+								<input type="text" name="remark" class="form-control" placeholder="Remark" required>
 							</div>
 						 	<div class="col-sm-1 text-right float-right">
 						 		<label for="inputFirstName" class="form-label"><br /></label>

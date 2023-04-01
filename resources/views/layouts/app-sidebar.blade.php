@@ -7,7 +7,7 @@
 					<img src="{{ asset('assets/images/RELIA-ENERGY-Logo-2020 (1).png') }}" class="logo-icon" alt="logo icon">
 				</div>
 				<div>
-					<h4 class="logo-text">Relia Energy</h4>
+					<h4 class="logo-text" style="font-size: 20px;">Relia Energy</h4>
 				</div>
 				<div class="toggle-icon ms-auto"><i class='bx bx-arrow-to-left'></i>
 				</div>

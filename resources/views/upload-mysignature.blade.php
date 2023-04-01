@@ -15013,7 +15013,7 @@ be a descendant of the grid when it is being dragged.
 	                      <span class="btn btn-round btn-rose btn-file">
 	                        <span class="fileinput-new">Add Photo</span>
 	                        <span class="fileinput-exists">Change</span>
-	                        <input type="file" name="pics" id="pics" />
+	                        <input type="file" name="pics" id="pics" required/>
 	                      </span>
 	                      <br />
 	                      <a href="#pablo" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput"><i class="fa fa-times"></i> Remove</a>
