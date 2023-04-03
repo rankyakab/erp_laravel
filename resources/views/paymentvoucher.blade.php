@@ -46,7 +46,7 @@
 				</div>
 				  <div class="card-body" style="padding-top: 30px;">
 				  	<div class="form-body">
-					 <form class="row g-3" method="post" action="submitpv" enctype="multipart/form-data" id="submitpv">
+					 <form class="row g-3" method="post" action="submitpv" enctype="multipart/form-data" id="submitpvs">
 					 	@csrf
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">PV Title</label>

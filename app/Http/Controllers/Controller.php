@@ -9,6 +9,7 @@ use Illuminate\Routing\Controller as BaseController;
 
 use DB;
 use Auth;
+use DateTime;
 
 class Controller extends BaseController
 {
@@ -74,6 +75,7 @@ class Controller extends BaseController
         $data['title'] = $title;
         $data['status'] = $status;
         $data['location'] = $location;
+        $data['created_at'] = date('Y-m-d H:i:s');
 
         return DB::table('notifications')->insert($data);
 
@@ -145,7 +147,7 @@ class Controller extends BaseController
 
         $check = DB::table('profile')->where('id', $staff)->get();
 
-        if(is_null($check[0]->staffid) || is_null($check[0]->surname) || is_null($check[0]->firstname) || is_null($check[0]->email) || is_null($check[0]->phone) || is_null($check[0]->dob) || is_null($check[0]->doe) || is_null($check[0]->department) || is_null($check[0]->designation) || is_null($check[0]->office) || is_null($check[0]->gender) || is_null($check[0]->accountno) || is_null($check[0]->bankname) || is_null($check[0]->image) || is_null($check[0]->signature)){
+        if(empty($check[0]->staffid) || empty($check[0]->surname) || empty($check[0]->firstname) || empty($check[0]->email) || empty($check[0]->phone) || empty($check[0]->dob) || empty($check[0]->doe) || empty($check[0]->department) || empty($check[0]->designation) || empty($check[0]->office) || empty($check[0]->gender) || empty($check[0]->accountno) || empty($check[0]->bankname) || empty($check[0]->image) || empty($check[0]->signature)){
 
             return "Incomplete";
 
@@ -153,6 +155,64 @@ class Controller extends BaseController
 
             return "Complete";
         }
+    }
+
+
+    public static function getactions($action){
+
+        return DB::table('actions')->where('id', $action)->value('action');
+    }
+
+
+    public static function notifications(){
+
+        return DB::table('notifications')->where([['staff', Auth::user()->profileid],['status', 'Unread']])->orderBy('created_at', 'desc')->get();
+    }
+
+    public static function duration($startdate){
+
+        $enddate = date('Y-m-d H:i:s');
+
+        $date1 = new DateTime($enddate);
+        $date2 = new DateTime($startdate);
+        $interval = $date1->diff($date2);
+        //echo "difference " . $interval->y . " years, " . $interval->m." months, ".$interval->d." days "; 
+
+        $year = $interval->y;
+        $month = $interval->m;
+        $days = $interval->d;
+        $hours = $interval->h;
+        $minutes = $interval->i;
+        $seconds = $interval->s;
+
+        if($year == 1){
+            return $year . " year ";
+        }else if($year > 1){
+            return $year . " years ";
+        }else if($month == 1){
+            return $month . " month ";
+        }else if($month > 1){
+            return $month . " months ";
+        }else if($days == 1){
+            return $days . " day ";
+        }else if($days > 1){
+            return $days . " days ";
+        }else if($hours == 1){
+            return $hours . " hour ";
+        }else if($hours > 1){
+            return $hours . " hours ";
+        }else if($minutes == 1){
+            return $minutes . " minute ";
+        }else if($minutes > 1){
+            return $minutes . " minutes ";
+        }else if($seconds == 1){
+            return $seconds . " second ";
+        }else if($seconds > 1){
+            return $seconds . " seconds ";
+        }else{
+            return $seconds . " seconds "; 
+        }
+        
     }
 
 }

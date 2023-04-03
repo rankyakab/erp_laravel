@@ -67,7 +67,7 @@
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Memo CC</label>
-								<select data-placeholder="Begin typing a name to filter..." multiple class=" form-control" name="copies[]" required>
+								<select data-placeholder="Begin typing a name to filter..." multiple class=" form-control" name="copies[]">
 									<option value=""></option>
 								    @foreach($staffs as $staff)
 								    @if(Auth::user()->name != $staff->firstname.' '.$staff->surname.' '.$staff->othername)
@@ -82,24 +82,35 @@
 					 		<label for="inputFirstName" class="form-label">Memo Body</label>
 							<!--<textarea class="form-control" id="body" name="body" placeholder="Memo Body" style="height: 200px;"></textarea>-->
 							<!--Include the JS & CSS-->
-								<link rel="stylesheet" href="{{ asset('assets/richtexteditor/rte_theme_default.css') }}" />
-								<script type="text/javascript" src="{{ asset('assets/richtexteditor/rte.js') }}"></script>
-								<script type="text/javascript" src="{{ asset('assets/richtexteditor/plugins/all_plugins.js') }}"></script>
-								<textarea id="div_editor1" name="memobody" required>
+								
+								<textarea id="" name="memobody" class="form-control" rows="20" required>
 									
 								</textarea>
 
-								<script>
-									var editor1 = new RichTextEditor("#div_editor1");
-									//editor1.setHTMLCode("Use inline HTML or setHTMLCode to init the default content.");
-								</script>
-								<input type="hidden" name="body">
+								
 								
 					 	</div>
 					 	<div class="col-sm-12">
 						<div class="row g-3">
 						 	<div class="col-sm-6">
-								<input type="file" name="attachment" class="form-control" accept=".pdf" placeholder="Select Attachment">
+								<input type="file" id="pics" name="attachment" class="form-control" accept=".pdf" placeholder="Select Attachment">
+							</div>
+						 	<div class="col-sm-6 text-right float-right">
+								
+							</div>
+						</div>
+					</div><br /><br />
+					<div class="col-sm-12" style="margin-top: 50px;">
+					 		
+							<p id="signature"><img src="{{ asset(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid)) }}" width="150px"></p>
+							<p id="sender"><b>{{ app\Http\Controllers\Controller::staffname(Auth::user()->profileid) }}</b></p>
+								
+					 	</div>
+					 	<br /><br />
+						<div class="col-sm-12">
+						<div class="row g-3">
+						 	<div class="col-sm-6">
+								
 							</div>
 						 	<div class="col-sm-6 text-right float-right">
 								<button class="btn btn-info" type="submit" id="button">Submit</button>

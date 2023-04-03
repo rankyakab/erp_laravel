@@ -29,14 +29,26 @@ class MemoController extends Controller
 
     public function memoinbox(){
 
-        $memos = DB::table('memo')->where([['sendto', Auth::user()->profileid],['copies', 'LIKE', '%'.Auth::user()->profileid.'%']])->get();
+        //update notification to read
+        $update = DB::table('notifications')
+                        ->where([['staff', Auth::user()->profileid],['type', 'Memo'],['location', 'memoinbox']])
+                        ->update(['status' => 'Read', 'updated_at' => date('Y-m-d H:i:s')]);
+
+        $memos = DB::table('memo')
+                    ->where('sendto', Auth::user()->profileid)
+                    ->orWhere('copies', 'LIKE', '%'.Auth::user()->profileid.'%')->get();
 
         return view('memoinbox', ['memos' => $memos]);
     }
 
     public function sentmemo(){
 
-        $memos = DB::table('memo')->where('sentfrom', Auth::user()->profileid)->get();
+        //update notification to read
+        $update = DB::table('notifications')
+                        ->where([['staff', Auth::user()->profileid],['type', 'Memo'],['location', 'sentmemo']])
+                        ->update(['status' => 'Read', 'updated_at' => date('Y-m-d H:i:s')]);
+
+        $memos = DB::table('memo')->where('sentform', Auth::user()->profileid)->get();
 
         return view('sentmemo', ['memos' => $memos]);
     }
@@ -52,10 +64,10 @@ class MemoController extends Controller
 
         $title = $request->title;
         $body = $request->memobody;
-        $recipient = $request->recipient;
+        $recipient = $request->sendto;
         $copies = $request->copies;
         $attachment = $request->attachment;
-        $sender = Auth::user()->id;
+        $sender = Auth::user()->profileid;
         $status = 'Pending Approval';
 
 
@@ -103,25 +115,27 @@ class MemoController extends Controller
             $data['body'] = $body;
             $data['status'] = $status;
             $data['sendto'] = $recipient;
-            $data['copies'] = $copies;
+            if(!empty($copies)){
+            $data['copies'] = implode($copies, ",");
+            }
             if(!empty($attachment)){
                 $attachmenturl = $attachment->store('assets/attachments');
                 $data['attachment'] = $attachmenturl;
             }
             $data['created_at'] = date('Y-m-d H:i:s');
 
-            try {
+            //try {
 
             $create = DB::table('memo')->insert($data);
 
-            } catch (\Exception $e) {
+            /*} catch (\Exception $e) {
                 DB::rollback();
                 // something went wrong
                 return response()->json([
                     'message' => 'error',
-                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again.'
                 ]);
-            }
+            }*/
 
             if($create){
 
@@ -139,8 +153,12 @@ class MemoController extends Controller
                     
                 }
 
-                //send email to copies
+                //create recipient notification
 
+                $this->createnotification($recipient, 'Memo', $title, 'Unread', 'memoinbox');
+
+                //send email to copies
+                if(!empty($copies)){
                 $total = count($copies);
 
                 for($i=0; $i<$total; $i++){
@@ -162,18 +180,17 @@ class MemoController extends Controller
                 }
 
 
-                //create recipient notification
-
-                $this->createnotification($recipient, 'Memo', $title, 'Unread', 'allmemo');
-
-
                 //create copies notifications
                 for($j=0; $j<$total; $j++){
 
-                    $this->createnotification($copies[$i], 'Memo', $title, 'Unread', 'allmemo');
+                    $this->createnotification($copies[$j], 'Memo', $title, 'Unread', 'memoinbox');
 
                 }
 
+                }
+
+
+                
 
                 //log the event
 
@@ -208,9 +225,11 @@ class MemoController extends Controller
 
         $memo = DB::table('memo')->where('id', $request->id)->get();
 
-        $memotrails = DB::table('memotrail')->where('memoid', $request->id)->get();
+        $actions = DB::table('processes')->where('process', 'Memo')->value('actions');
 
-        return view('memodetails', ['memo' => $memo, 'memotrails' => $memotrails]);
+        $memotrails = DB::table('memotrail')->where('memoid', $request->id)->orderBy('created_at', 'desc')->get();
+
+        return view('memodetails', ['memo' => $memo, 'memotrails' => $memotrails, 'actions' => $actions]);
     }
 
 
@@ -221,8 +240,9 @@ class MemoController extends Controller
         $sentfrom = $request->sentfrom;
         $title = $request->title;
 
+        $data = array();
+
         $data['status'] = $status;
-        $data['remarks'] = $remarks;
         $data['updated_at'] = date('Y-m-d H:i:s');
 
         try {
@@ -234,16 +254,18 @@ class MemoController extends Controller
                 // something went wrong
                 return response()->json([
                     'message' => 'error',
-                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again.'
                 ]);
             }
 
 
         if($update){
 
-
+        $data['memoid'] = $request->id;
+        $data['remark'] = $remarks;
         $data['actor'] = Auth::user()->profileid;
         $data['actor_type'] = 'Recipient';
+        $data['created_at'] = date('Y-m-d H:i:s');
         
         try {
 
@@ -254,7 +276,7 @@ class MemoController extends Controller
                 // something went wrong
                 return response()->json([
                     'message' => 'error',
-                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again.'
                 ]);
             }
 
@@ -275,7 +297,7 @@ class MemoController extends Controller
 
         //create recipient notification
 
-        $this->createnotification($sentfrom, 'Memo', $title, 'Unread', 'allmemo');
+        $this->createnotification($sentfrom, 'Memo', $title, 'Unread', 'sentmemo');
 
         //log the event
 
@@ -305,8 +327,10 @@ class MemoController extends Controller
 
     public function submiteditmemo(Request $request){
 
-
+        
         $memodetails = DB::table('memo')->where('id', $request->id)->get();
+
+        //dd($memodetails);
 
         $olddata = array();
 
@@ -314,8 +338,11 @@ class MemoController extends Controller
         $olddata['title'] = $memodetails[0]->title;
         $olddata['body'] = $memodetails[0]->body;
         $olddata['attachment'] = $memodetails[0]->attachment;
-        $olddata['actor'] = Auth::user()->id;
+        $olddata['actor'] = Auth::user()->profileid;
         $olddata['actor_type'] = 'Sender';
+        $olddata['created_at'] = date('Y-m-d H:i:s');
+
+
         
         try {
 
@@ -326,7 +353,7 @@ class MemoController extends Controller
                 // something went wrong
                 return response()->json([
                     'message' => 'error',
-                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again'
                 ]);
             }
 
@@ -334,10 +361,10 @@ class MemoController extends Controller
         $data = array();
 
         $data['title'] = $request->title;
-        $data['body'] = $request->body;
+        $data['body'] = $request->memobody;
         if(!empty($request->attachment)){
             $attachment = $request->file('attachment');
-            $attachmenturl = $attachment->store();
+            $attachmenturl = $attachment->store('assets/attachments');
             $data['attachment'] = $attachmenturl;
         }
 
@@ -351,7 +378,7 @@ class MemoController extends Controller
                 // something went wrong
                 return response()->json([
                     'message' => 'error',
-                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again.'
                 ]);
             }
 
@@ -372,16 +399,24 @@ class MemoController extends Controller
             
         }
 
+        //create recipient notification
+
+        $this->createnotification($memodetails[0]->sendto, 'Memo', $request->title, 'Unread', 'memoinbox');
+
         //send email to copies
         $copies = $memodetails[0]->copies;
 
-        $total = count($copies);
+        if(!empty($copies)){
+
+        $totalcopy = explode(",", $copies);
+
+        $total = count($totalcopy);
 
         for($i=0; $i<$total; $i++){
 
             //send email to actors
-        $username = $this->staffname($copies[$i]);
-        $useremail = $this->profileemail($copies[$i]);
+        $username = $this->staffname($totalcopy[$i]);
+        $useremail = $this->profileemail($totalcopy[$i]);
         
             try{
                 //send email to the person concerned
@@ -393,24 +428,17 @@ class MemoController extends Controller
                 
             }
 
+            //create copies notifications
+
+            $this->createnotification($totalcopy[$i], 'Memo', $request->title, 'Unread', 'memoinbox');
+
         }
-
-
-        //create recipient notification
-
-        $this->createnotification($recipient, 'Memo', $request->title, 'Unread', 'allmemo');
-
-
-        //create copies notifications
-        for($j=0; $j<$total; $j++){
-
-            $this->createnotification($copies[$i], 'Memo', $request->title, 'Unread', 'allmemo');
 
         }
 
         //log the event
 
-        $this->logevent("Successfully updated a memo with the title ".$title);
+        $this->logevent("Successfully updated a memo with the title ".$request->title);
 
 
         return response()->json([

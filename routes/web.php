@@ -42,13 +42,23 @@ Route::get('/addsignature', [ProfileController::class, 'addsignature']);
 
 Route::get('/designations', [ProfileController::class, 'designations']);
 
+Route::get('/showdesignations', [ProfileController::class, 'showdesignations']);
+
 Route::get('/departments', [ProfileController::class, 'departments']);
+
+Route::get('/deletedepartment', [ProfileController::class, 'deletedepartment']);
+
+Route::get('/deletedesignation', [ProfileController::class, 'deletedesignation']);
 
 Route::post('/submitdepartment', [ProfileController::class, 'submitdepartment']);
 
 Route::get('/offices', [ProfileController::class, 'offices']);
 
+Route::get('/deleteoffice', [ProfileController::class, 'deleteoffice']);
+
 Route::get('/banks', [ProfileController::class, 'banks']);
+
+Route::get('/deletebank', [ProfileController::class, 'deletebank']);
 
 Route::get('/staffprofile', [ProfileController::class, 'staffprofile']);
 
@@ -131,6 +141,8 @@ Route::post('submitpvstatus', [PVController::class, 'submitpvstatus']);
 
 Route::get('editpv', [PVController::class, 'editpv']);
 
+Route::get('sentpvs', [PVController::class, 'sentpvs']);
+
 
 /*************************** Circular Controller *********************************/
 
@@ -147,13 +159,19 @@ Route::post('submitcircular', [CircularController::class, 'submitcircular']);
 
 Route::get('/actions', [AccessController::class, 'actions']);
 
+Route::get('/deleteaction', [AccessController::class, 'deleteaction']);
+
 Route::post('/submiaction', [AccessController::class, 'submiaction']);
 
 Route::get('/process', [AccessController::class, 'process']);
 
+Route::get('/deleteprocess', [AccessController::class, 'deleteprocess']);
+
 Route::post('/submitprocess', [AccessController::class, 'submitprocess']);
 
 Route::get('/roles', [AccessController::class, 'roles']);
+
+Route::get('/deleterole', [AccessController::class, 'deleterole']);
 
 Route::post('/submitrole', [AccessController::class, 'submitrole']);
 

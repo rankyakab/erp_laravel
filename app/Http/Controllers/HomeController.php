@@ -19,15 +19,29 @@ class HomeController extends Controller
 
     public function dashboard(){
 
+        
+
         if($this->checkstatus(Auth::user()->id) != "Active"){
 
             Auth::logout();
 
             return redirect('login');
 
-        }else if($this->checkprofile(Auth::user()->profileid) != "Incompleted"){
+        }else if($this->checkprofile(Auth::user()->profileid) == "Incomplete"){
 
-            return view('updateprofile', ["profileinfo" => "Complete Profile Update to Proceed"]);
+
+
+            $staff = DB::table('profile')->where('id', Auth::user()->profileid)->get();
+
+            $offices = DB::table('offices')->orderBy('offices', 'asc')->get();
+
+            $banks = DB::table('banks')->orderBy('banks', 'asc')->get();
+
+            $departments = DB::table('departments')->orderBy('departments', 'asc')->get();
+
+            $designations = DB::table('designations')->orderBy('designations', 'asc')->get();
+
+            return view('update-profile', ["staff" => $staff, 'offices' => $offices, 'banks' => $banks, 'departments' => $departments, 'designations' => $designations, "profileinfo" => "Complete Profile Update to Proceed"]);
 
         }else{
 

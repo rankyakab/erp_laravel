@@ -2,7 +2,7 @@
 	
 	//Adding bank into the system
 
-	$("#submitmemos").on('submit', function(event){
+	$("#submitmemo").on('submit', function(event){
 	      event.preventDefault();
 	      
 	      $.ajax({
@@ -103,5 +103,10 @@
 	        }
 	      });
 	    });
+
+
+	$("#showattachment").click(function(){
+		$("#hideattachment").toggle();
+	})
 
 </script>

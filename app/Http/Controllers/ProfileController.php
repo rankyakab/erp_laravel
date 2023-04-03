@@ -86,6 +86,73 @@ class ProfileController extends Controller
     public function submitdepartment(Request $request){
 
         $departments = $request->departments;
+        $deptid = $request->deptid;
+
+        if(!empty($deptid)){
+
+         $check = DB::table('departments')->where('departments', $departments)->count();
+
+        if($check == 1){
+
+            //log the event
+
+            $this->logevent("Attempted to update department ".$departments." to the database, but failed because the event exist");
+
+
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Department, '.$departments." already exist"
+            ]);
+        }
+
+
+        $data = array();
+
+        $data['departments'] = $departments;
+        $data['updated_at'] = date('Y-m-d H:i:s');
+
+        try {
+
+            $update = DB::table('departments')->where('id', $deptid)->update($data);
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                ]);
+            }
+
+        if($update){
+
+            
+            //log the event
+
+            $this->logevent("Successfully updated department ".$departments." to the database");
+
+            return response()->json([
+                'message' => 'success',
+                'info' => 'Department, '.$departments." successfully updated"
+            ]);
+
+        }else{
+
+            
+            //log the event
+
+            $this->logevent("Attempted to update department ".$departments." to the database, but failed");
+
+
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Could not update department, '.$departments." at the moment, please try again."
+            ]);
+
+        }
+
+        }else{
+
 
         //check if department already added to the database
 
@@ -99,7 +166,8 @@ class ProfileController extends Controller
 
 
             return response()->json([
-                'message' => 'error'
+                'message' => 'error',
+                'info' => 'Department, '.$departments." already exist"
             ]);
         }
 
@@ -130,7 +198,8 @@ class ProfileController extends Controller
             $this->logevent("Added new department ".$departments." to the database");
 
             return response()->json([
-                'message' => 'success'
+                'message' => 'success',
+                'info' => 'Department, '.$departments." successully added."
             ]);
 
         }else{
@@ -142,11 +211,13 @@ class ProfileController extends Controller
 
 
             return response()->json([
-                'message' => 'error'
+                'message' => 'error',
+                'info' => 'Could not add the Department, '.$departments." at the moment please try again."
             ]);
 
         }
 
+        }
     }
 
 
@@ -157,6 +228,76 @@ class ProfileController extends Controller
     public function submitdesignation(Request $request){
 
         $designations = $request->designations;
+
+
+        if(!empty($request->desid)){
+
+        //check if designation already added to the database
+
+        $check = DB::table('designations')->where('designations', $designations)->count();
+
+        if($check == 1){
+
+            
+            //log the event
+
+            $this->logevent("Attempted to add new designation ".$designations." to the database, but failed because the event exist");
+
+
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Designation already exist'
+            ]);
+        }
+
+        $data = array();
+
+        $data['designations'] = $designations;
+        $data['updated_at'] = date('Y-m-d H:i:s');
+
+        
+        try {
+
+            $update = DB::table('designations')->where('id', $request->desid)->update($data);
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again'
+                ]);
+            }
+
+        if($update){
+
+            
+            //log the event
+
+            $this->logevent("Successfully updated designation ".$designations." to the database");
+
+            return response()->json([
+                'message' => 'success',
+                'info' => 'Designation successfully updated'
+            ]);
+
+        }else{
+
+            
+            //log the event
+
+            $this->logevent("Attempted to update designation ".$designations." to the database, but failed");
+
+
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Error updating designation, please again.'
+            ]);
+
+        }
+
+
+        }else{
 
         //check if designation already added to the database
 
@@ -191,7 +332,7 @@ class ProfileController extends Controller
                 // something went wrong
                 return response()->json([
                     'message' => 'error',
-                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again'
                 ]);
             }
 
@@ -203,7 +344,8 @@ class ProfileController extends Controller
             $this->logevent("Added new designation ".$designations." to the database");
 
             return response()->json([
-                'message' => 'success'
+                'message' => 'success',
+                'info' => 'Designation successfully created'
             ]);
 
         }else{
@@ -215,11 +357,22 @@ class ProfileController extends Controller
 
 
             return response()->json([
-                'message' => 'error'
+                'message' => 'error',
+                'info' => 'Error creating designation, please try again'
             ]);
 
         }
 
+    }
+
+    }
+
+
+    public function showdesignations(){
+
+        $designations = DB::table('designations')->orderBy('designations', 'asc')->get();
+
+        return view('process.designation', ['designations' => $designations]);
     }
 
 
@@ -230,6 +383,73 @@ class ProfileController extends Controller
     public function submitoffices(Request $request){
 
         $offices = $request->offices;
+
+        if(!empty($request->ofid)){
+
+            //check if office already added to the database
+
+        $check = DB::table('offices')->where('offices', $offices)->count();
+
+        if($check == 1){
+
+            
+            //log the event
+
+            $this->logevent("Attempted to add new office ".$offices." to the database, but failed because the event exist");
+
+
+            return response()->json([
+                'message' => 'error',
+                'info' => "Office ".$offices." already exist in the database"
+            ]);
+        }
+
+        $data = array();
+
+        $data['offices'] = $offices;
+        $data['updated_at'] = date('Y-m-d H:i:s');
+
+        try {
+
+            $update = DB::table('offices')->where('id', $request->ofid)->update($data);
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again'
+                ]);
+            }
+
+        if($update){
+
+            
+            //log the event
+
+            $this->logevent("Successfully updated office ".$offices." in the database");
+
+            return response()->json([
+                'message' => 'success',
+                'info' => 'Office successfully updated.'
+            ]);
+
+        }else{
+
+            
+            //log the event
+
+            $this->logevent("Attempted to update office ".$offices." to the database, but failed");
+
+
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Office update failed please try again.'
+            ]);
+
+        }
+
+        }else{
 
         //check if office already added to the database
 
@@ -244,7 +464,8 @@ class ProfileController extends Controller
 
 
             return response()->json([
-                'message' => 'error'
+                'message' => 'error',
+                'info' => 'Office already exist'
             ]);
         }
 
@@ -275,7 +496,8 @@ class ProfileController extends Controller
             $this->logevent("Added new office ".$offices." to the database");
 
             return response()->json([
-                'message' => 'success'
+                'message' => 'success',
+                'info' => 'Office successfully created'
             ]);
 
         }else{
@@ -287,10 +509,13 @@ class ProfileController extends Controller
 
 
             return response()->json([
-                'message' => 'error'
+                'message' => 'error',
+                'info' => 'Could not create office at the moment, please try again.'
             ]);
 
         }
+
+    }
 
     }
 
@@ -302,6 +527,74 @@ class ProfileController extends Controller
     public function submitbank(Request $request){
 
         $banks = $request->banks;
+
+        if(!empty($request->bkid)){
+
+        //check if bank already added to the database
+
+        $check = DB::table('banks')->where('banks', $banks)->count();
+
+        if($check == 1){
+
+            
+            //log the event
+
+            $this->logevent("Attempted to update bank ".$banks." to the database, but failed because the event exist");
+
+
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Bank already exist.'
+            ]);
+        }
+
+        $data = array();
+
+        $data['banks'] = $banks;
+        $data['updated_at'] = date('Y-m-d H:i:s');
+
+        
+        try {
+
+            $update = DB::table('banks')->where('id', $request->bkid)->update($data);
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again.'
+                ]);
+            }
+
+        if($update){
+
+            
+            //log the event
+
+            $this->logevent("Successfully updated bank ".$banks." to the database");
+
+            return response()->json([
+                'message' => 'success',
+                'info' => 'Bank successfully updated.'
+            ]);
+
+        }else{
+
+            
+            //log the event
+
+            $this->logevent("Attempted to update bank ".$banks." to the database, but failed");
+
+
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Error updating bank to the database, kindly try again.'
+            ]);
+
+        }
+
+        }else{
 
         //check if bank already added to the database
 
@@ -316,7 +609,8 @@ class ProfileController extends Controller
 
 
             return response()->json([
-                'message' => 'error'
+                'message' => 'error',
+                'info' => 'Bank already exist.'
             ]);
         }
 
@@ -348,7 +642,8 @@ class ProfileController extends Controller
             $this->logevent("Added new bank ".$banks." to the database");
 
             return response()->json([
-                'message' => 'success'
+                'message' => 'success',
+                'info' => 'Bank successfully added to the database.'
             ]);
 
         }else{
@@ -360,10 +655,13 @@ class ProfileController extends Controller
 
 
             return response()->json([
-                'message' => 'error'
+                'message' => 'error',
+                'info' => 'Error adding bank to the database, kindly try again.'
             ]);
 
         }
+
+    }
 
     }
 
@@ -489,7 +787,7 @@ class ProfileController extends Controller
             return response()->json([
                 'message' => 'success',
                 'id' => $create,
-                'info' => 'New staff account successfully created'
+                'info' => 'New staff account successfully created '.$username.' '.$useremail
             ]);
 
         }else{
@@ -940,12 +1238,6 @@ class ProfileController extends Controller
 
 
             return response()->json([
-                'message' => 'error',
-                'info' => 'Staff update could not be completed at the moment, please try again'
-            ]);
-
-
-            return response()->json([
                 'message' => 'success',
                 'info' => 'User data successfully updated'
             ]);
@@ -1331,6 +1623,181 @@ class ProfileController extends Controller
             ]);
             }
 
+        }
+    }
+
+
+    public function deletedepartment(Request $request){
+
+        $department = DB::table('departments')->where('id', $request->id)->value('departments');
+
+        try {
+
+            $delete = DB::table('departments')->where('id', $request->id)->limit(1)->delete();
+
+        } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, please try again'
+                ]);
+            }
+
+        if($delete){
+
+            //log the event
+
+            $this->logevent("Successfully deleted the department ".$department." from the database");
+
+            return response()->json([
+                "message" => "success",
+                "info" => "Department ".$department." successfully removed from the database"
+            ]);
+
+        }else{
+
+            //log the event
+
+            $this->logevent("Attempted to delete the department ".$department." from the database but failed");
+
+            return response()->json([
+                "message" => "error",
+                "info" => "Error deleting Department ".$department." please try again."
+            ]);
+        }
+
+        
+    }
+
+
+
+    public function deletedesignation(Request $request){
+
+        $designation = DB::table('designations')->where('id', $request->id)->value('designations');
+
+        try {
+
+            $delete = DB::table('designations')->where('id', $request->id)->limit(1)->delete();
+
+        } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, please try again'
+                ]);
+            }
+
+        if($delete){
+
+            //log the event
+
+            $this->logevent("Successfully deleted the designation ".$designation." from the database");
+
+            return response()->json([
+                "message" => "success",
+                "info" => "Designation ".$designation." successfully removed from the database"
+            ]);
+
+        }else{
+
+            //log the event
+
+            $this->logevent("Attempted to delete the designation ".$designation." from the database but failed");
+
+            return response()->json([
+                "message" => "error",
+                "info" => "Error deleting Designation ".$designation." please try again."
+            ]);
+        }
+    }
+
+
+
+    public function deleteoffice(Request $request){
+
+        $office = DB::table('offices')->where('id', $request->id)->value('offices');
+
+        try {
+
+            $delete = DB::table('offices')->where('id', $request->id)->limit(1)->delete();
+
+        } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, please try again'
+                ]);
+            }
+
+        if($delete){
+
+            //log the event
+
+            $this->logevent("Successfully deleted the office ".$office." from the database");
+
+            return response()->json([
+                "message" => "success",
+                "info" => "Office ".$office." successfully removed from the database"
+            ]);
+
+        }else{
+
+            //log the event
+
+            $this->logevent("Attempted to delete office ".$office." from the database but failed");
+
+            return response()->json([
+                "message" => "error",
+                "info" => "Error deleting office ".$office." please try again."
+            ]);
+        }
+    }
+
+
+
+
+
+    public function deletebank(Request $request){
+
+        $bank = DB::table('banks')->where('id', $request->id)->value('banks');
+
+        try {
+
+            $delete = DB::table('banks')->where('id', $request->id)->limit(1)->delete();
+
+        } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, please try again'
+                ]);
+            }
+
+        if($delete){
+
+            //log the event
+
+            $this->logevent("Successfully deleted bank ".$bank." from the database");
+
+            return response()->json([
+                "message" => "success",
+                "info" => "Bank ".$bank." successfully removed from the database"
+            ]);
+
+        }else{
+
+            //log the event
+
+            $this->logevent("Attempted to delete bank ".$bank." from the database but failed");
+
+            return response()->json([
+                "message" => "error",
+                "info" => "Error deleting bank ".$bank." please try again."
+            ]);
         }
     }
 

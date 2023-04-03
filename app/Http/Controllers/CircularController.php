@@ -62,7 +62,18 @@ class CircularController extends Controller
         
         $data['created_at'] = date('Y-m-d H:i:s');
 
+        try {
+
         $create = DB::table('circular')->insert($data);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+            ]);
+        }
 
         if($create){
 

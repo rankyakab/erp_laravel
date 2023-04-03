@@ -30,6 +30,8 @@ class AccessController extends Controller
 
         $action = $request->action;
 
+        if(!empty($request->actid)){
+
         //check if action already added to the database
 
         $check = DB::table('actions')->where('action', $action)->count();
@@ -39,12 +41,83 @@ class AccessController extends Controller
             
             //log the event
 
-            $this->logevent("Attempted to add new action ".$action." to the database, but failed because the event exist");
+            $this->logevent("Attempted to update action ".$action." to the database, but failed because the event exist");
 
 
             return response()->json([
                 'message' => 'error',
-                'info' => 'unable to add action to the database'
+                'info' => 'Unable to update action to the database, the name provided already exist.'
+            ]);
+        }
+
+        $data = array();
+
+        $data['action'] = $action;
+        $data['updated_at'] = date('Y-m-d H:i:s');
+
+        try {
+
+        $update = DB::table('actions')->where('id', $request->actid)->update($data);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Error performing this action, make sure all the required fields are provided then try again.'
+            ]);
+        }
+
+        if($update){
+
+            
+            //log the event
+
+            $this->logevent("Updated action ".$action." to the database");
+
+            return response()->json([
+                'message' => 'success',
+                'info' => 'Action successfully updated to the database'
+            ]);
+
+        }else{
+
+            //log the event
+
+            $logs = array();
+
+            $logs['user'] = Auth::user()->id;
+            $logs['action'] = "Attempted to update action ".$action." to the database, but failed";
+            $logs['created_at'] = date('Y-m-d H:i:s');
+            $logs['updated_at'] = date('Y-m-d H:i:s');
+
+            $createlogs = DB::table('logs')->insert($logs);
+
+
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Error updating action to the database, please try again.'
+            ]);
+
+        }
+
+        }else{
+
+        //check if action already added to the database
+
+        $check = DB::table('actions')->where('action', $action)->count();
+
+        if($check == 1){
+
+            
+            //log the event
+
+            $this->logevent("Attempted to add new action ".$action." to the database, but failed because the event already exist.");
+
+
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Unable to add action to the database, the name provided already exist.'
             ]);
         }
 
@@ -63,7 +136,7 @@ class AccessController extends Controller
             // something went wrong
             return response()->json([
                 'message' => 'error',
-                'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                'info' => 'Error performing this action, make sure all the required fields are provided then try again.'
             ]);
         }
 
@@ -95,8 +168,10 @@ class AccessController extends Controller
 
             return response()->json([
                 'message' => 'error',
-                'info' => 'Error adding action to the database, please try again'
+                'info' => 'Error adding action to the database, please try again.'
             ]);
+
+        }
 
         }
     }
@@ -118,6 +193,74 @@ class AccessController extends Controller
         $process = $request->process;
         $action = implode($request->actions, ',');
 
+        if(!empty($request->proid)){
+
+            //check if process already added to the database
+
+        $check = DB::table('processes')->where('process', $process)->count();
+
+        if($check == 1){
+
+            
+            //log the event
+
+            $this->logevent("Attempted to update process ".$process." to the database, but failed because the event already exist");
+
+
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Unable to update process to the database, the event already exist'
+            ]);
+        }
+
+        $data = array();
+
+        $data['process'] = $process;
+        $data['actions'] = $action;
+        $data['updated_at'] = date('Y-m-d H:i:s');
+
+        try {
+
+        $update = DB::table('processes')->where('id', $request->proid)->update($data);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Error performing this action, make sure all the required fields are provided then try again.'
+            ]);
+        }
+
+        if($update){
+
+            
+            //log the event
+
+            $this->logevent("Updated process ".$process." to the database");
+
+            return response()->json([
+                'message' => 'success',
+                'info' => 'Process successfully updated.'
+            ]);
+
+        }else{
+
+            
+            //log the event
+
+            $this->logevent("Attempted to add new process ".$process." to the database, but failed");
+
+
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Error adding process to the database, please try again'
+            ]);
+
+        }
+
+        }else{
+
         //check if process already added to the database
 
         $check = DB::table('processes')->where('process', $process)->count();
@@ -132,7 +275,7 @@ class AccessController extends Controller
 
             return response()->json([
                 'message' => 'error',
-                'info' => 'unable to add process to the database'
+                'info' => 'Unable to add process to the database, the event already exist'
             ]);
         }
 
@@ -185,10 +328,78 @@ class AccessController extends Controller
 
     }
 
+    }
+
 
     public function submitrole(Request $request){
 
         $role = $request->role;
+
+        if(!empty($request->roid)){
+
+        //check if role already added to the database
+
+        $check = DB::table('role')->where('role', $role)->count();
+
+        if($check == 1){
+
+            
+            //log the event
+
+            $this->logevent("Attempted to update role ".$role." to the database, but failed because role already exist");
+
+
+            return response()->json([
+                'message' => 'error',
+                'info' => 'unable to add role to the database'
+            ]);
+        }
+
+        $data = array();
+
+        $data['role'] = $role;
+        $data['updated_at'] = date('Y-m-d H:i:s');
+
+        try {
+
+        $update = DB::table('role')->where('id', $request->roid)->update($data);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Error performing this action, make sure all the required fields are provided then try again.'
+            ]);
+        }
+
+        if($update){
+
+            //log the event
+
+            $this->logevent("Added new role ".$role." to the database");
+
+            return response()->json([
+                'message' => 'success',
+                'info' => 'Role successfully updated to the database'
+            ]);
+
+        }else{
+
+            //log the event
+
+            $this->logevent("Attempted to update role ".$role." to the database, but failed");
+
+
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Error updating role to the database, please try again.'
+            ]);
+
+        }
+
+
+        }else{
 
         //check if bank already added to the database
 
@@ -204,7 +415,7 @@ class AccessController extends Controller
 
             return response()->json([
                 'message' => 'error',
-                'info' => 'unable to add role to the database'
+                'info' => 'Unable to add role to the database'
             ]);
         }
 
@@ -223,7 +434,7 @@ class AccessController extends Controller
             // something went wrong
             return response()->json([
                 'message' => 'error',
-                'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                'info' => 'Error performing this action, make sure all the required fields are provided then try again.'
             ]);
         }
 
@@ -235,7 +446,7 @@ class AccessController extends Controller
 
             return response()->json([
                 'message' => 'success',
-                'info' => 'Process successfully added to the database'
+                'info' => 'Role successfully added to the database.'
             ]);
 
         }else{
@@ -247,12 +458,14 @@ class AccessController extends Controller
 
             return response()->json([
                 'message' => 'error',
-                'info' => 'Error adding role to the database, please try again'
+                'info' => 'Error adding role to the database, please try again.'
             ]);
 
         }
 
     }
+
+}
 
 
     public function roles(){
@@ -374,6 +587,139 @@ class AccessController extends Controller
                 'info' => 'Error creating privileges, please try again.'
             ]);
 
-            }
+        }
     }
+
+
+
+    public function deleterole(Request $request){
+
+        $role = DB::table('role')->where('id', $request->id)->value('role');
+
+        try {
+
+            $delete = DB::table('role')->where('id', $request->id)->limit(1)->delete();
+
+        } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, please try again'
+                ]);
+            }
+
+        if($delete){
+
+            $delete = DB::table('privileges')->where('role', $request->id)->delete();
+
+            //log the event
+
+            $this->logevent("Successfully deleted role ".$role." and all its privileges from the database");
+
+            return response()->json([
+                "message" => "success",
+                "info" => "Role ".$role." and all thhe privileges asigned to it successfully removed from the database"
+            ]);
+
+        }else{
+
+            //log the event
+
+            $this->logevent("Attempted to delete role ".$role." from the database but failed");
+
+            return response()->json([
+                "message" => "error",
+                "info" => "Error deleting role ".$role." please try again."
+            ]);
+        }
+    }
+
+
+    public function deleteaction(Request $request){
+
+        $action = DB::table('actions')->where('id', $request->id)->value('action');
+
+        try {
+
+            $delete = DB::table('actions')->where('id', $request->id)->limit(1)->delete();
+
+        } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, please try again'
+                ]);
+            }
+
+        if($delete){
+
+            //log the event
+
+            $this->logevent("Successfully deleted action ".$action." from the database");
+
+            return response()->json([
+                "message" => "success",
+                "info" => "Action ".$action." successfully removed from the database"
+            ]);
+
+        }else{
+
+            //log the event
+
+            $this->logevent("Attempted to delete action ".$action." from the database but failed");
+
+            return response()->json([
+                "message" => "error",
+                "info" => "Error deleting action ".$action." please try again."
+            ]);
+        }
+
+    }
+
+
+    public function deleteprocess(Request $request){
+
+        $process = DB::table('processes')->where('id', $request->id)->value('process');
+
+        try {
+
+            $delete = DB::table('processes')->where('id', $request->id)->limit(1)->delete();
+
+        } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, please try again'
+                ]);
+            }
+
+        if($delete){
+
+            //log the event
+
+            $this->logevent("Successfully deleted process ".$process." from the database");
+
+            return response()->json([
+                "message" => "success",
+                "info" => "Process ".$process." successfully removed from the database"
+            ]);
+
+        }else{
+
+            //log the event
+
+            $this->logevent("Attempted to delete process ".$process." from the database but failed");
+
+            return response()->json([
+                "message" => "error",
+                "info" => "Error deleting process ".$process." please try again."
+            ]);
+        }
+
+    }
+
+
 }

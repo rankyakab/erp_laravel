@@ -14998,22 +14998,24 @@ be a descendant of the grid when it is being dragged.
 					 	<div class="col-sm-12">
 					 	<center>
 
+              <a href="{{ url('https://www.slazzer.com/') }}" target="_blank">Click this link to remove background from your signature</a><br /><br /><br />
+
 
 
 					 		<!--image upload starts here--->
 	                	<div class="fileinput fileinput-new text-center" data-provides="fileinput">
 	                    <div class="fileinput-new border-gray">
-	                      <img src="@if(!is_null(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid))) {{ asset(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid)) }} @else {{ asset('assets/images/signature.png') }} @endif" width="250px" alt="...">
+	                      <img src="@if(!is_null(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid))) {{ asset(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid)) }} @else {{ asset('assets/images/signature.jpg') }} @endif" width="250px" alt="...">
 	                    </div>
 	                    <div class="fileinput-preview fileinput-exists border-gray">
-	                      <img src="@if(!is_null(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid))) {{ asset(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid)) }} @else {{ asset('assets/images/signature.png') }} @endif" width="250px" alt="...">
+	                      <img src="@if(!is_null(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid))) {{ asset(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid)) }} @else {{ asset('assets/images/signature.jpg') }} @endif" width="250px" alt="...">
 	                    </div>
 	                    <div>
 	                    	
 	                      <span class="btn btn-round btn-rose btn-file">
 	                        <span class="fileinput-new">Add Photo</span>
 	                        <span class="fileinput-exists">Change</span>
-	                        <input type="file" name="pics" id="pics" required/>
+	                        <input type="file" name="pics" id="pics" accept="image/*" required/>
 	                      </span>
 	                      <br />
 	                      <a href="#pablo" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput"><i class="fa fa-times"></i> Remove</a>

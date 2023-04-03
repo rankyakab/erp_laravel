@@ -10,14 +10,14 @@
 					<div class="breadcrumb-title pe-3">Tables</div>
 					<div class="ps-3">
 						<nav aria-label="breadcrumb">
-							<ol class="breadcrumb mb-0 p-0">
+							<ol class="breadcrumb mb-0 p-0" style="background-color: transparent;">
 								<li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
 								</li>
-								<li class="breadcrumb-item active" aria-current="page">Data Table</li>
+								<li class="breadcrumb-item active" aria-current="page">User Table</li>
 							</ol>
 						</nav>
 					</div>
-					<div class="ms-auto">
+					<!--<div class="ms-auto">
 						<div class="btn-group">
 							<button type="button" class="btn btn-primary">Settings</button>
 							<button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown">	<span class="visually-hidden">Toggle Dropdown</span>
@@ -28,10 +28,10 @@
 								<div class="dropdown-divider"></div>	<a class="dropdown-item" href="javascript:;">Separated link</a>
 							</div>
 						</div>
-					</div>
+					</div>-->
 				</div>
-				<!--end breadcrumb-->
-				<h6 class="mb-0 text-uppercase">DataTable Example</h6>
+				<!--end breadcrumb
+				<h6 class="mb-0 text-uppercase">Application User Table</h6>-->
 				<hr/>
 				<div class="card">
 					<div class="card-body">

@@ -49,7 +49,9 @@
 					 <form class="row g-3" action="submitupdateprofile" id="submitupdateprofile" method="post">
 					 	@csrf
 					 	@isset($profileinfo)
-					 	<p class="alert alert-warning col-sm-12">{{ $profileinfo }}</p>
+					 	<div class="col-sm-12">
+					 	<p class="alert alert-warning">{{ $profileinfo }}</p>
+					 	</div>
 					 	@endisset
 					 	<div class="col-sm-4">
 					 		
@@ -79,14 +81,14 @@
 	                  </div><br /><br />
 
 
-
+	                  
 
 	                  <div class="fileinput fileinput-new text-center" data-provides="fileinput">
 	                    <div class="fileinput-new  border-gray">
-	                      <a href="{{ url('uploadmysignature?id='.$staff[0]->id) }}"><img src="@if(!is_null(asset($staff[0]->signature))) {{ asset($staff[0]->signature) }} @else {{ asset('assets/images/signature.jpg') }} @endif" width="250px" alt="..."></a>
+	                      <a href="{{ url('uploadmysignature?id='.$staff[0]->id) }}"><img src="@if(!is_null(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid))) {{ asset(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid)) }} @else {{ asset('assets/images/signature.jpg') }} @endif" width="250px" alt="..."></a>
 	                    </div>
 	                    <div class="fileinput-preview fileinput-exists  border-gray">
-	                      <img src="@if(!is_null($staff[0]->signature)) {{ asset($staff[0]->signature) }} @else {{ asset('assets/images/signature.jpg') }} @endif" width="250px" alt="...">
+	                      <img src="@if(!is_null(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid))) {{ asset(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid)) }} @else {{ asset('assets/images/signature.jpg') }} @endif" width="250px" alt="...">
 	                    </div>
 	                    <div>
 	                    	<!--<label>Signature</label>
@@ -119,7 +121,7 @@
 						<div class="row">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Other Names</label>
-								<input type="text" class="form-control" id="onames" name="onames" value="{{ $staff[0]->othername }}" placeholder="Other Names" required>
+								<input type="text" class="form-control" id="onames" name="onames" value="{{ $staff[0]->othername }}" placeholder="Other Names">
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Date of Employment</label>

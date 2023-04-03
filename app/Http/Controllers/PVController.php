@@ -501,4 +501,12 @@ class PVController extends Controller
             ]);
         }
     }
+
+
+    public function sentpvs(){
+
+        $pvs = DB::table('pv')->orderBy('created_at', 'desc')->where('sentform', Auth::user()->profileid)->get();
+
+        return view('sentpvs', ['pvs' => $pvs]);
+    }
 }
