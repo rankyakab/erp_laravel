@@ -5,9 +5,10 @@ use App\Http\Controllers\MemoController;
 use App\Http\Controllers\PVController;
 use App\Http\Controllers\CircularController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AccessController;
-
+use App\Http\Controllers\TaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +31,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [HomeController::class, 'dashboard']);
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 /*************************** Profile Controller ********************************/
 
@@ -104,6 +105,53 @@ Route::get('/changepassword', [ProfileController::class, 'changepassword']);
 
 Route::post('/submitpassword', [ProfileController::class, 'submitpassword']);
 
+
+
+
+
+
+/**************************** BEGINIG OF PROJECT Controller **************************************/
+
+Route::get('/projects', [ProjectController::class, 'index']);
+Route::get('/projects/personal', [ProjectController::class, 'personal']);
+Route::get('/project/create', [ProjectController::class, 'create']);
+Route::get('/project/{project}/task/create', [ProjectController::class, 'createtask']);
+
+Route::get('/project/{project}', [ProjectController::class, 'show']);
+Route::delete('/project/{project}', [ProjectController::class, 'destroy']);
+Route::post('/projects', [ProjectController::class, 'store']);
+/**************************** END OF PROJECT Controller **************************************/
+
+
+
+
+
+
+
+/**************************** BEGINIG OF TASK Controller **************************************/
+
+
+Route::post('/itask/store', [TaskController::class, 'store']);
+
+Route::get('/task/{task}/show', [TaskController::class, 'show']);
+
+Route::put('/project/task/{task}', [TaskController::class, 'update']);
+Route::put('/project/move/task/{task}', [TaskController::class, 'update_status']);
+Route::delete('/project/task/{task}', [TaskController::class, 'destroy']);
+
+
+
+/**************************** END OF TASK Controller **************************************/
+
+
+
+
+
+
+
+
+
+
 /*************************** Memo Controller *************************************/
 
 Route::get('/creatememo', [MemoController::class, 'creatememo']);
@@ -154,6 +202,10 @@ Route::get('/listcirculars', [CircularController::class, 'listcirculars']);
 
 Route::post('submitcircular', [CircularController::class, 'submitcircular']);
 
+Route::post('submitcircularstatus', [CircularController::class, 'submitcircularstatus']);
+
+Route::get('/mycirculars', [CircularController::class, 'mycirculars']);
+
 
 /**************************** Role Privileges *************************************/
 
@@ -178,12 +230,3 @@ Route::post('/submitrole', [AccessController::class, 'submitrole']);
 Route::get('/privileges', [AccessController::class, 'privileges']);
 
 Route::post('/submitprivileges', [AccessController::class, 'submitprivileges']);
-
-
-
-
-
-
-
-
-
