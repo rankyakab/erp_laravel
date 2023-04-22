@@ -41,4 +41,26 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // Relationship With Tasks
+    public function requestedBy()
+    {
+        return $this->hasMany(Procurement::class, 'requested_by');
+    }
+    // Relationship With Tasks
+    public function sentTo()
+    {
+        return $this->hasMany(Procurement::class, 'sent_to');
+    }
+
+    // Relationship With Tasks
+    public function logisticsRequestedBy()
+    {
+        return $this->hasMany(Logistic::class, 'requested_by');
+    }
+    // Relationship With Tasks
+    public function logisticsSentTo()
+    {
+        return $this->hasMany(Logistic::class, 'sent_to');
+    }
 }

@@ -179,6 +179,81 @@
 						</li>-->
 					</ul>
 				</li>
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class='bx bxs-bus' ></i>
+						</div>
+						<div class="menu-title">Logistics</div>
+					</a>
+					<ul>
+						<li> <a href="{{ url('logistics') }}"><i class="bx bx-right-arrow-alt"></i>Logistics</a>
+						</li>
+						<li> <a href="{{ url('logisticcreate') }}"><i class="bx bx-right-arrow-alt"></i>Create Logistics</a>
+						</li>
+					    <li> <a href="{{ url('logisticrequest') }}"><i class="bx bx-right-arrow-alt"></i>My logistics Request</a>
+						</li>
+						
+					</ul>
+				</li>
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class='bx bxs-store-alt'></i>
+						</div>
+						<div class="menu-title">Procuremet</div>
+					</a>
+					<ul>
+						<li> <a href="{{ url('procurementcreate') }}"><i class="bx bx-right-arrow-alt"></i>New Procurement</a>
+						</li>
+						<li> <a href="{{ url('myprocurements') }}"><i class="bx bx-right-arrow-alt"></i>My Procurements </a>
+						</li>
+					    <li> <a href="{{ url('procurements') }}"><i class="bx bx-right-arrow-alt"></i>View All Procurement</a>
+						</li>
+						
+					</ul>
+				</li>
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class='bx bxs-box' ></i>
+						</div>
+						<div class="menu-title">Stocks</div>
+					</a>
+					<ul>
+						<li> <a href="{{ url('stockcreate') }}"><i class="bx bx-right-arrow-alt"></i>New Stock</a>
+
+						</li>
+						<li> <a href="{{ url('stocks') }}"><i class="bx bx-right-arrow-alt"></i>View All Stocks</a>
+
+						<li> <a href="{{ url('stockrequest') }}"><i class="bx bx-right-arrow-alt"></i>All Stock Request</a>
+						<li> <a href="{{ url('stockrequestlisttreat') }}"><i class="bx bx-right-arrow-alt"></i>Treat Stock Request</a>
+
+						<li> <a href="{{ url('mystockrequest') }}"><i class="bx bx-right-arrow-alt"></i>View My Requests</a>
+						</li>
+						<li> <a href="{{ url('stockrequestcreate') }}"><i class="bx bx-right-arrow-alt"></i>Make  Request</a>
+						</li>
+						
+						</li>
+					
+					    
+						</li>
+						
+					</ul>
+				</li>
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class='bx bxs-group'></i>
+						</div>
+						<div class="menu-title">Categories</div>
+					</a>
+					<ul>
+						 <li> <a href="{{ url('categorycreate') }}"><i class="bx bx-right-arrow-alt"></i>New Category</a>
+						</li>
+						<li> <a href="{{ url('categories') }}"><i class="bx bx-right-arrow-alt"></i>View All Category</a>
+						</li>
+					
+					   
+						
+					</ul>
+				</li>
 				@endif
 				<!--<li>
 					<a href="charts-chartjs.html">

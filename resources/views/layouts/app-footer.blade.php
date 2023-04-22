@@ -8,6 +8,7 @@
 			<p class="mb-0">Copyright © Relia Energy {{ date('Y') }}. All right reserved.</p>
 		</footer>
 	</div>
+	  <x-flash-message />
 	<!--end wrapper-->
 	
 	<!-- Bootstrap JS -->

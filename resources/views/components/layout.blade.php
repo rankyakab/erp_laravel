@@ -3,6 +3,7 @@
 
 @include("layouts.app-title")
 <body>
+   
 @include("layouts.app-sidebar")
 @include("layouts.app-header")
 <!--start page wrapper -->

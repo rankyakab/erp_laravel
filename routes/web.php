@@ -8,7 +8,13 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AccessController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LogisticController;
+use App\Http\Controllers\ProcurementController;
+use App\Http\Controllers\StockController;
+use App\Http\Controllers\StockrequestController;
 use App\Http\Controllers\TaskController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +38,49 @@ Route::get('/', function () {
 Route::get('/dashboard', [HomeController::class, 'dashboard']);
 
 require __DIR__ . '/auth.php';
+
+
+
+
+
+
+
+
+
+/**************************** BEGINIG OF Category Controller **************************************/
+
+
+// Route::post('/itask/store', [TaskController::class, 'store']);
+
+// Route::get('/stock/{stock}/show', [StockController::class, 'show']);
+Route::get('/categories', [CategoryController::class, 'index']);
+Route::get('/categorycreate', [CategoryController::class, 'create']);
+
+//  show the edit;
+Route::get('/category/{category}', [CategoryController::class, 'edit']);
+
+
+
+
+// Create New Stock
+Route::post('/category', [CategoryController::class, 'store']);
+
+// Edit New Stock
+Route::put('/category/{category}', [CategoryController::class, 'update']);
+Route::delete('/category/{category}', [CategoryController::class, 'destroy']);
+
+
+
+
+/**************************** END OF TASK Controller **************************************/
+
+
+
+
+
+
+
+
 
 /*************************** Profile Controller ********************************/
 
@@ -105,6 +154,27 @@ Route::get('/changepassword', [ProfileController::class, 'changepassword']);
 
 Route::post('/submitpassword', [ProfileController::class, 'submitpassword']);
 
+/**************************** BEGINIG OF Logistics Route **************************************/
+
+
+Route::get('/logistics', [LogisticController::class, 'index']);
+Route::get('/logisticrequest', [LogisticController::class, 'myindex']);
+Route::get('/logisticcreate', [LogisticController::class, 'create']);
+Route::post('/logistics', [LogisticController::class, 'store']);
+Route::get('/logistic/{logistic}', [LogisticController::class, 'show']);
+Route::delete('/logistic/{logistic}', [LogisticController::class, 'destroy']);
+Route::get('/logistic/edit/{logistic}', [LogisticController::class, 'edit']);
+Route::put('/logistic/{logistic}', [LogisticController::class, 'update']);
+
+
+
+
+
+
+
+
+
+/**************************** Ending  OF logistics route **************************************/
 
 
 
@@ -121,6 +191,73 @@ Route::get('/project/{project}', [ProjectController::class, 'show']);
 Route::delete('/project/{project}', [ProjectController::class, 'destroy']);
 Route::post('/projects', [ProjectController::class, 'store']);
 /**************************** END OF PROJECT Controller **************************************/
+
+
+
+
+
+/**************************** BEGINIG OF Procurement Controller **************************************/
+
+
+// Route::post('/itask/store', [TaskController::class, 'store']);
+
+// Route::get('/stock/{stock}/show', [StockController::class, 'show']);
+Route::get('/procurements', [ProcurementController::class, 'index']);
+Route::get('/myprocurements', [ProcurementController::class, 'myindex']);
+Route::get('/procurementcreate', [ProcurementController::class, 'create']);
+Route::post('/procurements', [ProcurementController::class, 'store']);
+Route::get('/procurement/{procurement}', [ProcurementController::class, 'show']);
+Route::delete('/procurement/{procurement}', [ProcurementController::class, 'destroy']);
+Route::get('/procurement/edit/{procurement}', [ProcurementController::class, 'edit']);
+Route::put('/procurement/{procurement}', [ProcurementController::class, 'update']);
+
+
+
+
+
+
+
+/**************************** Start  OF Stock Request Controller **************************************/
+
+Route::get('/stockrequest', [StockrequestController::class, 'index']);
+Route::get('/mystockrequest', [StockrequestController::class, 'myindex']);
+Route::put('/mystockrequestedit{request}', [StockrequestController::class, 'update']);
+Route::get('/mystockrequestedit{request}', [StockrequestController::class, 'edit']);
+Route::get('/mystockrequest{request}', [StockrequestController::class, 'show']);
+Route::get('/stockrequestlisttreat{request}', [StockrequestController::class, 'treat']);
+Route::post('/stockrequestlisttreat{request}', [StockrequestController::class, 'updatetreat']);
+Route::get('/stockrequestlisttreat', [StockrequestController::class, 'stockrequestlisttreat']);
+
+Route::post('/stockrequestcreate', [StockrequestController::class, 'store']);
+Route::get('/stockrequestcreate', [StockrequestController::class, 'create']);
+/**************************** End  OF Stock Request Controller **************************************/
+
+/**************************** BEGINIG OF Stocl Controller **************************************/
+
+
+// Route::post('/itask/store', [TaskController::class, 'store']);
+
+// Route::get('/stock/{stock}/show', [StockController::class, 'show']);
+Route::get('/stocks', [StockController::class, 'index']);
+Route::get('/stockcreate', [StockController::class, 'create']);
+
+Route::get('/stockedit{stock}', [StockController::class, 'edit']);
+Route::get('/stock{stock}', [StockController::class, 'show']);
+
+Route::put('/stock/edit/{stock}', [StockController::class, 'update']);
+Route::delete('/stock/{stock}', [StockController::class, 'destroy']);
+
+// Create New Stock
+Route::post('/stocks', [StockController::class, 'store']);
+// Route::put('/stock/{task}', [StockController::class, 'update']);
+// Route::put('/project/move/task/{task}', [StockController::class, 'update_status']);
+// Route::delete('/project/task/{task}', [TaskController::class, 'destroy']);
+
+
+
+/**************************** END OF TASK Controller **************************************/
+
+
 
 
 

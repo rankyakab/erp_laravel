@@ -18,85 +18,86 @@ class MemoController extends Controller
         $this->middleware('auth');
     }
 
-    public function creatememo(){
-        
-        if($this->checkrole(Auth::user()->role, 1, 6) == "allow"){
+    public function creatememo()
+    {
 
-        $staffs = DB::table('profile')->orderBy('firstname')->get();
+        if ($this->checkrole(Auth::user()->role, 1, 6) == "allow") {
 
-        return view('creatememo', ['staffs' => $staffs]);
-        
-        }else{
-            
+            $staffs = DB::table('profile')->orderBy('firstname')->get();
+
+            return view('creatememo', ['staffs' => $staffs]);
+        } else {
+
             Auth::logout();
-            
+
             return redirect('login');
         }
     }
 
-    
 
-    public function memoinbox(){
-        
-        if($this->checkrole(Auth::user()->role, 1, 2) == "allow"){
 
-        //update notification to read
-        $update = DB::table('notifications')
-                        ->where([['staff', Auth::user()->profileid],['type', 'Memo'],['location', 'memoinbox']])
-                        ->update(['status' => 'Read', 'updated_at' => date('Y-m-d H:i:s')]);
+    public function memoinbox()
+    {
 
-        $memos = DB::table('memo')
-                    ->where('sendto', Auth::user()->profileid)
-                    ->orWhere('copies', 'LIKE', '%'.Auth::user()->profileid.'%')->get();
+        if ($this->checkrole(Auth::user()->role, 1, 2) == "allow") {
 
-        return view('memoinbox', ['memos' => $memos]);
-        
-        }else{
-            
+            //update notification to read
+            $update = DB::table('notifications')
+                ->where([['staff', Auth::user()->profileid], ['type', 'Memo'], ['location', 'memoinbox']])
+                ->update(['status' => 'Read', 'updated_at' => date('Y-m-d H:i:s')]);
+
+            $memos = DB::table('memo')
+                ->where('sendto', Auth::user()->profileid)
+                ->orWhere('copies', 'LIKE', '%' . Auth::user()->profileid . '%')->get();
+
+            return view('memoinbox', ['memos' => $memos]);
+        } else {
+
             Auth::logout();
-            
+
             return redirect('login');
         }
     }
 
-    public function sentmemo(){
-        
-        if($this->checkrole(Auth::user()->role, 1, 2) == "allow"){
+    public function sentmemo()
+    {
 
-        //update notification to read
-        $update = DB::table('notifications')
-                        ->where([['staff', Auth::user()->profileid],['type', 'Memo'],['location', 'sentmemo']])
-                        ->update(['status' => 'Read', 'updated_at' => date('Y-m-d H:i:s')]);
+        if ($this->checkrole(Auth::user()->role, 1, 2) == "allow") {
 
-        $memos = DB::table('memo')->where('sentform', Auth::user()->profileid)->get();
+            //update notification to read
+            $update = DB::table('notifications')
+                ->where([['staff', Auth::user()->profileid], ['type', 'Memo'], ['location', 'sentmemo']])
+                ->update(['status' => 'Read', 'updated_at' => date('Y-m-d H:i:s')]);
 
-        return view('sentmemo', ['memos' => $memos]);
-        
-        }else{
-            
+            $memos = DB::table('memo')->where('sentform', Auth::user()->profileid)->get();
+
+            return view('sentmemo', ['memos' => $memos]);
+        } else {
+
             Auth::logout();
-            
+
             return redirect('login');
         }
     }
 
-    public function allmemo(){
-        
-        if($this->checkrole(Auth::user()->role, 5, 2) == "allow"){
+    public function allmemo()
+    {
 
-        $memos = DB::table('memo')->orderBy('created_at', 'desc')->get();
+        if ($this->checkrole(Auth::user()->role, 5, 2) == "allow") {
 
-        return view('allmemo', ['memos' => $memos]);
-        
-        }else{
-            
+            $memos = DB::table('memo')->orderBy('created_at', 'desc')->get();
+
+            return view('allmemo', ['memos' => $memos]);
+        } else {
+
             Auth::logout();
-            
+
             return redirect('login');
         }
     }
 
-    public function submitmemo(Request $request){
+    public function submitmemo(Request $request)
+    {
 
         $title = $request->title;
         $body = $request->memobody;
@@ -110,16 +111,16 @@ class MemoController extends Controller
         //check if this memo was submitted earlier incase of network failure
 
         $checkmemo = DB::table('memo')
-                    ->where([
-                            ['sentform', $sender],
-                            ['title', $title],
-                            ['body', $body],
-                            ['status', $status],
-                            ['sendto', $sender],
-                            ['copies', $copies]
-                    ])->count();
+            ->where([
+                ['sentform', $sender],
+                ['title', $title],
+                ['body', $body],
+                ['status', $status],
+                ['sendto', $sender],
+                ['copies', $copies]
+            ])->count();
 
-        if($checkmemo == 1){
+        if ($checkmemo == 1) {
 
             //log the event
 
@@ -137,11 +138,10 @@ class MemoController extends Controller
                 'message' => 'error',
                 'info' => 'Memo creation failed because the memo already exist in the database'
             ]);
+        } else {
 
-        }else{
 
 
-            
 
             //insert memo in to the database
             $data = array();
@@ -151,42 +151,40 @@ class MemoController extends Controller
             $data['body'] = $body;
             $data['status'] = $status;
             $data['sendto'] = $recipient;
-            if(!empty($copies)){
-            $data['copies'] = implode($copies, ",");
+            if (!empty($copies)) {
+                $data['copies'] = implode($copies, ",");
             }
-            if(!empty($attachment)){
+            if (!empty($attachment)) {
                 $attachmenturl = $attachment->store('assets/attachments');
                 $data['attachment'] = $attachmenturl;
             }
             $data['created_at'] = date('Y-m-d H:i:s');
 
-            //try {
+            try {
 
-            $create = DB::table('memo')->insert($data);
-
-            /*} catch (\Exception $e) {
+                $create = DB::table('memo')->insert($data);
+            } catch (\Exception $e) {
                 DB::rollback();
                 // something went wrong
                 return response()->json([
                     'message' => 'error',
                     'info' => 'Error performing this action, make sure all the required fields are provided then try again.'
                 ]);
-            }*/
+            }
 
-            if($create){
+            if ($create) {
 
                 //send email to actors
                 $username = $this->staffname($recipient);
                 $useremail = $this->profileemail($recipient);
-                
-                try{
+
+                try {
                     //send email to the person concerned
                     Mail::send('emails.sentmemoemail', ['username' => $username, 'useremail' => $useremail], function ($message) use ($username, $useremail) {
-                    $message->to($useremail, $username)->subject('New memo requires your attention.');
-                    $message->from('erp@reliaenergy.com', 'ERP');
+                        $message->to($useremail, $username)->subject('New memo requires your attention.');
+                        $message->from('erp@reliaenergy.com', 'ERP');
                     });
-                }catch(\Exception $e){
-                    
+                } catch (\Exception $e) {
                 }
 
                 //create recipient notification
@@ -194,46 +192,42 @@ class MemoController extends Controller
                 $this->createnotification($recipient, 'Memo', $title, 'Unread', 'memoinbox');
 
                 //send email to copies
-                if(!empty($copies)){
-                $total = count($copies);
+                if (!empty($copies)) {
+                    $total = count($copies);
 
-                for($i=0; $i<$total; $i++){
+                    for ($i = 0; $i < $total; $i++) {
 
-                //send email to actors
-                $username = $this->staffname($copies[$i]);
-                $useremail = $this->profileemail($copies[$i]);
-                
-                    try{
-                        //send email to the person concerned
-                        Mail::send('emails.sentmemoemail', ['username' => $username, 'useremail' => $useremail], function ($message) use ($username, $useremail) {
-                        $message->to($useremail, $username)->subject('New memo requires your attention.');
-                        $message->from('erp@reliaenergy.com', 'ERP');
-                        });
-                    }catch(\Exception $e){
-                        
+                        //send email to actors
+                        $username = $this->staffname($copies[$i]);
+                        $useremail = $this->profileemail($copies[$i]);
+
+                        try {
+                            //send email to the person concerned
+                            Mail::send('emails.sentmemoemail', ['username' => $username, 'useremail' => $useremail], function ($message) use ($username, $useremail) {
+                                $message->to($useremail, $username)->subject('New memo requires your attention.');
+                                $message->from('erp@reliaenergy.com', 'ERP');
+                            });
+                        } catch (\Exception $e) {
+                        }
                     }
 
+
+                    //create copies notifications
+                    for ($j = 0; $j < $total; $j++) {
+
+                        $this->createnotification($copies[$j], 'Memo', $title, 'Unread', 'memoinbox');
+                    }
                 }
 
 
-                //create copies notifications
-                for($j=0; $j<$total; $j++){
 
-                    $this->createnotification($copies[$j], 'Memo', $title, 'Unread', 'memoinbox');
-
-                }
-
-                }
-
-
-                
 
                 //log the event
 
                 $logs = array();
 
                 $logs['user'] = Auth::user()->id;
-                $logs['action'] = "Created new memo ".$title;
+                $logs['action'] = "Created new memo " . $title;
                 $logs['created_at'] = date('Y-m-d H:i:s');
                 $logs['updated_at'] = date('Y-m-d H:i:s');
 
@@ -244,40 +238,35 @@ class MemoController extends Controller
                     'message' => 'success',
                     'info' => 'Memo successfully created'
                 ]);
-
-
-                
             }
-            
         }
-
-
     }
 
 
 
-    public function memodetails(Request $request){
+    public function memodetails(Request $request)
+    {
 
-    if($this->checkrole(Auth::user()->role, 1, 2) == "allow"){
+        if ($this->checkrole(Auth::user()->role, 1, 2) == "allow") {
 
-        $memo = DB::table('memo')->where('id', $request->id)->get();
+            $memo = DB::table('memo')->where('id', $request->id)->get();
 
-        $actions = DB::table('processes')->where('process', 'Memo')->value('actions');
+            $actions = DB::table('processes')->where('process', 'Memo')->value('actions');
 
-        $memotrails = DB::table('memotrail')->where('memoid', $request->id)->orderBy('created_at', 'desc')->get();
+            $memotrails = DB::table('memotrail')->where('memoid', $request->id)->orderBy('created_at', 'desc')->get();
 
-        return view('memodetails', ['memo' => $memo, 'memotrails' => $memotrails, 'actions' => $actions]);
-        
-    }else{
-            
+            return view('memodetails', ['memo' => $memo, 'memotrails' => $memotrails, 'actions' => $actions]);
+        } else {
+
             Auth::logout();
-            
+
             return redirect('login');
         }
     }
 
 
-    public function memoreaction(Request $request){
+    public function memoreaction(Request $request)
+    {
 
         $status = $request->status;
         $remarks = $request->remarks;
@@ -292,7 +281,27 @@ class MemoController extends Controller
         try {
 
             $update = DB::table('memo')->where('id', $request->id)->update($data);
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Error performing this action, make sure all the required fields are provided then try again.'
+            ]);
+        }
 
+
+        if ($update) {
+
+            $data['memoid'] = $request->id;
+            $data['remark'] = $remarks;
+            $data['actor'] = Auth::user()->profileid;
+            $data['actor_type'] = 'Recipient';
+            $data['created_at'] = date('Y-m-d H:i:s');
+
+            try {
+
+                $trail = DB::table('memotrail')->insert($data);
             } catch (\Exception $e) {
                 DB::rollback();
                 // something went wrong
@@ -302,85 +311,59 @@ class MemoController extends Controller
                 ]);
             }
 
+            //send email to owner of the memo
+            $username = $this->staffname($sentfrom);
+            $useremail = $this->profileemail($sentfrom);
 
-        if($update){
-
-        $data['memoid'] = $request->id;
-        $data['remark'] = $remarks;
-        $data['actor'] = Auth::user()->profileid;
-        $data['actor_type'] = 'Recipient';
-        $data['created_at'] = date('Y-m-d H:i:s');
-        
-        try {
-
-            $trail = DB::table('memotrail')->insert($data);
-
+            try {
+                //send email to the person concerned
+                Mail::send('emails.memoreplyemail', ['username' => $username, 'useremail' => $useremail], function ($message) use ($username, $useremail) {
+                    $message->to($useremail, $username)->subject('Update on one of your memo.');
+                    $message->from('erp@reliaenergy.com', 'ERP');
+                });
             } catch (\Exception $e) {
-                DB::rollback();
-                // something went wrong
-                return response()->json([
-                    'message' => 'error',
-                    'info' => 'Error performing this action, make sure all the required fields are provided then try again.'
-                ]);
             }
 
-        //send email to owner of the memo
-        $username = $this->staffname($sentfrom);
-        $useremail = $this->profileemail($sentfrom);
-        
-        try{
-            //send email to the person concerned
-            Mail::send('emails.memoreplyemail', ['username' => $username, 'useremail' => $useremail], function ($message) use ($username, $useremail) {
-            $message->to($useremail, $username)->subject('Update on one of your memo.');
-            $message->from('erp@reliaenergy.com', 'ERP');
-            });
-        }catch(\Exception $e){
-            
+
+            //create recipient notification
+
+            $this->createnotification($sentfrom, 'Memo', $title, 'Unread', 'sentmemo');
+
+            //log the event
+
+            $this->logevent("Successfully updated a memo with the title " . $title);
+
+
+            return response()->json([
+                'message' => 'success',
+                'info' => 'Memo successfully updated'
+            ]);
         }
-
-
-        //create recipient notification
-
-        $this->createnotification($sentfrom, 'Memo', $title, 'Unread', 'sentmemo');
-
-        //log the event
-
-        $this->logevent("Successfully updated a memo with the title ".$title);
-
-
-        return response()->json([
-            'message' => 'success',
-            'info' => 'Memo successfully updated'
-        ]);
-         
-
-        }
-
     }
 
 
 
-    public function editmemo(Request $request){
+    public function editmemo(Request $request)
+    {
 
-        if($this->checkrole(Auth::user()->role, 1, 7) == "allow"){
-            
+        if ($this->checkrole(Auth::user()->role, 1, 7) == "allow") {
+
             $memo = DB::table('memo')->where('id', $request->id)->get();
 
-            return view('editmemo',['memo' => $memo]);
-            
-        }else{
-            
+            return view('editmemo', ['memo' => $memo]);
+        } else {
+
             Auth::logout();
-            
+
             return redirect('login');
         }
-        
     }
 
 
-    public function submiteditmemo(Request $request){
+    public function submiteditmemo(Request $request)
+    {
 
-        
+
         $memodetails = DB::table('memo')->where('id', $request->id)->get();
 
         //dd($memodetails);
@@ -396,115 +379,102 @@ class MemoController extends Controller
         $olddata['created_at'] = date('Y-m-d H:i:s');
 
 
-        
+
         try {
 
             $trail = DB::table('memotrail')->insert($olddata);
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Error performing this action, make sure all the required fields are provided then try again'
+            ]);
+        }
 
-            } catch (\Exception $e) {
-                DB::rollback();
-                // something went wrong
-                return response()->json([
-                    'message' => 'error',
-                    'info' => 'Error performing this action, make sure all the required fields are provided then try again'
-                ]);
-            }
 
-        
         $data = array();
 
         $data['title'] = $request->title;
         $data['body'] = $request->memobody;
-        if(!empty($request->attachment)){
+        if (!empty($request->attachment)) {
             $attachment = $request->file('attachment');
             $attachmenturl = $attachment->store('assets/attachments');
             $data['attachment'] = $attachmenturl;
         }
 
-        
+
         try {
 
             $update = DB::table('memo')->where('id', $request->id)->update($data);
-
-            } catch (\Exception $e) {
-                DB::rollback();
-                // something went wrong
-                return response()->json([
-                    'message' => 'error',
-                    'info' => 'Error performing this action, make sure all the required fields are provided then try again.'
-                ]);
-            }
-
-
-        if($update){
-
-        //send email to actors
-        $username = $this->staffname($memodetails[0]->sendto);
-        $useremail = $this->profileemail($memodetails[0]->sendto);
-        
-        try{
-            //send email to the person concerned
-            Mail::send('emails.editmemoemail', ['username' => $username, 'useremail' => $useremail], function ($message) use ($username, $useremail) {
-            $message->to($useremail, $username)->subject('A memo sent to you was updated.');
-            $message->from('erp@reliaenergy.com', 'ERP');
-            });
-        }catch(\Exception $e){
-            
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Error performing this action, make sure all the required fields are provided then try again.'
+            ]);
         }
 
-        //create recipient notification
 
-        $this->createnotification($memodetails[0]->sendto, 'Memo', $request->title, 'Unread', 'memoinbox');
-
-        //send email to copies
-        $copies = $memodetails[0]->copies;
-
-        if(!empty($copies)){
-
-        $totalcopy = explode(",", $copies);
-
-        $total = count($totalcopy);
-
-        for($i=0; $i<$total; $i++){
+        if ($update) {
 
             //send email to actors
-        $username = $this->staffname($totalcopy[$i]);
-        $useremail = $this->profileemail($totalcopy[$i]);
-        
-            try{
+            $username = $this->staffname($memodetails[0]->sendto);
+            $useremail = $this->profileemail($memodetails[0]->sendto);
+
+            try {
                 //send email to the person concerned
                 Mail::send('emails.editmemoemail', ['username' => $username, 'useremail' => $useremail], function ($message) use ($username, $useremail) {
-                $message->to($useremail, $username)->subject('A memo you were copied was updated.');
-                $message->from('erp@reliaenergy.com', 'ERP');
+                    $message->to($useremail, $username)->subject('A memo sent to you was updated.');
+                    $message->from('erp@reliaenergy.com', 'ERP');
                 });
-            }catch(\Exception $e){
-                
+            } catch (\Exception $e) {
             }
 
-            //create copies notifications
+            //create recipient notification
 
-            $this->createnotification($totalcopy[$i], 'Memo', $request->title, 'Unread', 'memoinbox');
+            $this->createnotification($memodetails[0]->sendto, 'Memo', $request->title, 'Unread', 'memoinbox');
 
+            //send email to copies
+            $copies = $memodetails[0]->copies;
+
+            if (!empty($copies)) {
+
+                $totalcopy = explode(",", $copies);
+
+                $total = count($totalcopy);
+
+                for ($i = 0; $i < $total; $i++) {
+
+                    //send email to actors
+                    $username = $this->staffname($totalcopy[$i]);
+                    $useremail = $this->profileemail($totalcopy[$i]);
+
+                    try {
+                        //send email to the person concerned
+                        Mail::send('emails.editmemoemail', ['username' => $username, 'useremail' => $useremail], function ($message) use ($username, $useremail) {
+                            $message->to($useremail, $username)->subject('A memo you were copied was updated.');
+                            $message->from('erp@reliaenergy.com', 'ERP');
+                        });
+                    } catch (\Exception $e) {
+                    }
+
+                    //create copies notifications
+
+                    $this->createnotification($totalcopy[$i], 'Memo', $request->title, 'Unread', 'memoinbox');
+                }
+            }
+
+            //log the event
+
+            $this->logevent("Successfully updated a memo with the title " . $request->title);
+
+
+            return response()->json([
+                'message' => 'success',
+                'info' => 'Memo successfully updated'
+            ]);
         }
-
-        }
-
-        //log the event
-
-        $this->logevent("Successfully updated a memo with the title ".$request->title);
-
-
-        return response()->json([
-            'message' => 'success',
-            'info' => 'Memo successfully updated'
-        ]); 
-
-
-
     }
-
-}
-
-
-    
 }
