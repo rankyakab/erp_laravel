@@ -86,39 +86,51 @@
 <script>
 
 
-//	import swal from 'sweetalert';
-	//Adding bank into the system
-    $('form').submit(function(event) {
+$('form').submit(function(event) {
     event.preventDefault(); // prevent the form from submitting
      $("#button").hide();
 	$("#processing").show();
+	
+			const swalWithBootstrapButtons = Swal.mixin({
+			customClass: {
+				confirmButton: 'btn btn-success',
+				cancelButton: 'btn btn-danger'
+			},
+			buttonsStyling: false
+			})
+
+			swalWithBootstrapButtons.fire({
+			title: 'Are you sure you want to create a New Category?',
+			text: "You won't be able to revert this!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Yes, Create !',
+			cancelButtonText: 'No, cancel!',
+			reverseButtons: true
+			}).then((result) => {
+			if (result.isConfirmed) {
+				$(this).unbind('submit').submit();
+				swalWithBootstrapButtons.fire(
+				'creating  Category',
+				'...',
+				''
+				)
+			} else if (
+				/* Read more about handling dismissals below */
+				result.dismiss === Swal.DismissReason.cancel
+				
+			) {
+				swalWithBootstrapButtons.fire(
+				'Cancelled',
+				'You Cancelled this Operation :)',
+				'error'
+				)
+				$("#button").show();
+				$("#processing").hide();
+			}
+			})
 
 
-    let confirmAction = confirm("Are you sure to execute this action?");
-        if (confirmAction) {
-       $(this).unbind('submit').submit();
-        } else {
-           $("#button").show();
-	$("#processing").hide();
-        }
-
-
-    Swal({
-        title: 'Are you sure you want to Create this Catergory?',
-        text: 'You will not be able to undo this action.',
-        icon: 'warning',
-        buttons: true,
-        dangerMode: true,
-    })
-    .then((willSubmit) => {
-        if (willSubmit) {
-            
-            $(this).unbind('submit').submit(); // submit the form
-        }
-    });
 });
 
-
-
-        
 </script>

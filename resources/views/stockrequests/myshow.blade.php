@@ -8,9 +8,9 @@
 					<div class="ps-3">
 						<nav aria-label="breadcrumb">
 							<ol class="breadcrumb mb-0 p-0" style="background-color: transparent;">
-								<li class="breadcrumb-item"><i class="bx bx-copy"></i>
+								<li class="breadcrumb-item"><a href="/mystockrequest"><i class="bx bx-copy"></i></a>
 								</li>
-								<li class="breadcrumb-item active" aria-current="page">  {{ucfirst($stockrequest->stock->name)}}  Stock request Page</li>
+								<li class="breadcrumb-item active" aria-current="page">  {{ucfirst($stockrequest['stock']['name'])}}  Stock request Page</li>
 							</ol>
 						</nav>
 					</div>
@@ -190,35 +190,28 @@
                         </div>
                          @endif
 
-                         
-
-                                @if($stockrequest->status=="approved")
+                           @if($stockrequest->status=="pending")
                         
                                         <div class="row my-5">
                                         <div class="col-lg-2">
                                         
                                                 
-                                        <p><b>Disburse:</b></p>
+                                        <p>Edit:</p>
                                         
                                         </div>
                                         <div class="col-lg-10 ">
-
-                                            <form method="POST" action="/mystockrequest{{$stockrequest->id}}">
-                                                @csrf
-                                                @method('PUT')
-                                                <button  class="btn btn-success" id="disperse-item" type="submit" data-src="disperse">
-                                                     Disburse Stock Item<i class='bx bxs-send'></i>
+                                            <a href="/mystockrequestedit{{$stockrequest->id}}">
+                                            <button  class="btn btn-warning" id="delete-task" >
+                                                    Edit<i class='bx bx-edit'></i>
                                                 </button>
-                                                <img src="{{ asset('assets/images/processing.gif') }}" width="50px;" id="processing-disperse" class="processing-disperse" style="display: none;">
-                                
-                                            </form>
-
-                                           
+                                            </a>
                                             
                                         </div>
                                         </div>
                             @endif
-                        
+                            
+
+                            
                         
                         </div>
                 
@@ -277,7 +270,7 @@ swalWithBootstrapButtons.fire({
     swalWithBootstrapButtons.fire(
       'Deleted!',
       'Request Delete in process.',
-      'success'
+      ''
     )
   } else if (
     /* Read more about handling dismissals below */

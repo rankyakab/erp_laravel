@@ -234,44 +234,44 @@ $('form').submit(function(event) {
      $("#button").hide();
 	$("#processing").show();
 	
-const swalWithBootstrapButtons = Swal.mixin({
-  customClass: {
-    confirmButton: 'btn btn-success',
-    cancelButton: 'btn btn-danger'
-  },
-  buttonsStyling: false
-})
+			const swalWithBootstrapButtons = Swal.mixin({
+			customClass: {
+				confirmButton: 'btn btn-success',
+				cancelButton: 'btn btn-danger'
+			},
+			buttonsStyling: false
+			})
 
-swalWithBootstrapButtons.fire({
-  title: 'Are you sure you want to create Stock?',
-  text: "You won't be able to revert this!",
-  icon: 'warning',
-  showCancelButton: true,
-  confirmButtonText: 'Yes, Create !',
-  cancelButtonText: 'No, cancel!',
-  reverseButtons: true
-}).then((result) => {
-  if (result.isConfirmed) {
-	 $(this).unbind('submit').submit();
-    swalWithBootstrapButtons.fire(
-      'Creating Stock!',
-      'Stock Creation in process.',
-      ''
-    )
-  } else if (
-    /* Read more about handling dismissals below */
-    result.dismiss === Swal.DismissReason.cancel
-	
-  ) {
-    swalWithBootstrapButtons.fire(
-      'Cancelled',
-      'You Cancelled this Operation :)',
-      'error'
-    )
-	$("#button").show();
-	$("#processing").hide();
-  }
-})
+			swalWithBootstrapButtons.fire({
+			title: 'Are you sure you want to create Stock?',
+			text: "You won't be able to revert this!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Yes, Create !',
+			cancelButtonText: 'No, cancel!',
+			reverseButtons: true
+			}).then((result) => {
+			if (result.isConfirmed) {
+				$(this).unbind('submit').submit();
+				swalWithBootstrapButtons.fire(
+				'Creating Stock!',
+				'Stock Creation in process.',
+				''
+				)
+			} else if (
+				/* Read more about handling dismissals below */
+				result.dismiss === Swal.DismissReason.cancel
+				
+			) {
+				swalWithBootstrapButtons.fire(
+				'Cancelled',
+				'You Cancelled this Operation :)',
+				'error'
+				)
+				$("#button").show();
+				$("#processing").hide();
+			}
+			})
 
 
 });

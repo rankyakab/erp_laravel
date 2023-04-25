@@ -25,9 +25,15 @@ class Procurement extends Model
     {
         return $this->belongsTo(User::class, 'requested_by');
     }
-    // Relationship With Tasks
+    // Relationship With User
     public function sentTo()
     {
         return $this->belongsTo(User::class, 'sent_to');
+    }
+
+
+    public function treatedBy()
+    {
+        return $this->belongsTo(User::class, 'treated_by');
     }
 }

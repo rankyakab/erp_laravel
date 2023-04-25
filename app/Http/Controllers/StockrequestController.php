@@ -4,12 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Stock;
 use App\Models\Stockrequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class StockrequestController extends Controller
 {
+    //Authenticate user
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -63,13 +71,6 @@ class StockrequestController extends Controller
             'stock_id' => 'required',
             'recipient_id' => 'required',
 
-
-
-
-
-
-
-
         ]);
         $formFields['requested_by'] = Auth::user()->profileid;
         $formFields['status'] = "pending";
@@ -80,19 +81,32 @@ class StockrequestController extends Controller
         if (!is_null($data['copy_id'])) {
             $formFields['copy_id'] =
                 implode(", ", $data['copy_id']);
+            foreach ($data['copy_id'] as $value) {
+                $this->createnotification($value, 'Stock Request', "You have a Stock Request is awaiting your action", 'Unread', 'stockrequestlisttreat');
+            }
         }
 
         $stock = Stock::find($stock_id);
+        $user = User::find($data["recipient_id"]);
 
+        // dd($user->profile);
         if ($stock->qty_in_stock < $qty_requested) {
             $errorMessage = 'You Request is more than the number of that particular Item in Stock';
             return view('stockrequests.create', compact('errorMessage'));
         }
 
-
+        try {
+            //send email to the person concerned
+            Mail::send('emails.stockrequest', ['username' => $$user->name, 'useremail' => $user->email], function ($message) use ($username, $useremail) {
+                $message->to($useremail, $username)->subject('New Stock Request requires your attention.');
+                $message->from('erp@reliaenergy.com', 'ERP');
+            });
+        } catch (\Exception $e) {
+        }
+        $this->createnotification($user->profile->id, 'Stock Request', "You have a Stock Request is awaiting your action", 'Unread', 'stockrequestlisttreat');
 
         DB::table('stockrequests')->insert($formFields);
-        return redirect('/stockrequest')->with('message', 'Stock created successfully!');
+        return redirect('/mystockrequest')->with('message', 'Request made  successfully!');
     }
 
     /**
@@ -106,7 +120,11 @@ class StockrequestController extends Controller
 
         return  view('stockrequests.show', ['stockrequest' => Stockrequest::find($stockrequest)]);
     }
+    public function myshow($stockrequest)
+    {
 
+        return  view('stockrequests.myshow', ['stockrequest' => Stockrequest::find($stockrequest)]);
+    }
 
     public function treat($stockrequest)
     {
@@ -156,15 +174,16 @@ class StockrequestController extends Controller
                 implode(", ", $data['copy_id']);
         }
 
-        $stock = Stock::find($stock_id);
+        // $stock = Stock::find($stock_id);
 
-        if ($stock->qty_in_stock < $qty_requested) {
+        if ($srequest->stock->qty_in_stock < $qty_requested) {
             $errorMessage = 'You Request is more than the number of that particular Item in Stock';
-            return view("stockrequests.edit", [compact('errorMessage'), 'stockrequest' => $srequest]);
+            return view("stockrequests.edit", compact('errorMessage'), ['stockrequest' => $srequest]);
         }
 
 
-
+        $user = User::find($data['recipient_id']);
+        $this->createnotification($user->profile->id, 'Stock Request', "You have a Stock Request awaiting your action", 'Unread', 'stockrequestlisttreat');
 
 
         $srequest->qty_requested = $qty_requested;
@@ -186,22 +205,23 @@ class StockrequestController extends Controller
         $srequest = Stockrequest::find($stockrequest);
 
 
-        //$name = if($stock->name == )
-        $name = '';
-        if ($request->validate(['status' => 'required'])["status"] == "approved") {
-            $name = "approval_date";
-        } else {
-            $name = 'decline_date';
-        }
+
 
         $formFields = $request->validate([
-            'treat_comment' => 'required',
-
+            'treat_comment' => 'nullable|string',
             'status' => 'required',
             'treated_by' => 'required',
 
         ]);
-
+        //$name = if($stock->name == )
+        $name = '';
+        if ($request->validate(['status' => 'required'])["status"] == "approved") {
+            $name = "approval_date";
+            $this->createnotification($srequest->requester->profile->id, 'Stock Request Approved', "You have an Approved Stock Request", 'Unread', 'mystockrequest');
+        } else {
+            $name = 'decline_date';
+            $this->createnotification($srequest->requester->profile->id, 'Stock Request Rejected', "You have a Rejected Stock Request", 'Unread', 'mystockrequest');
+        }
 
         $formFields[$name] = now();
 
@@ -217,14 +237,47 @@ class StockrequestController extends Controller
         return redirect("/stockrequestlisttreat{$stockrequest}")->with('message', 'Approval Action Executed  successfully!');
     }
 
+
+
+    public function disburse(Request $request,  $stockrequest)
+    {
+
+        $srequest = Stockrequest::find($stockrequest);
+
+
+
+
+
+        if ($srequest->stock->qty_in_stock < $srequest->qty_requested) {
+            $errorMessage = 'You Request is more than the number of that particular Item in Stock';
+            return view("stockrequests.edit", [compact('errorMessage'), 'stockrequest' => $srequest]);
+        }
+
+
+        //  dd($formFields);
+        $srequest->disburse_date = now();
+        $srequest->status = "disbursed";
+        $stock = $srequest->stock;
+        $stock->qty_in_stock = $stock->qty_in_stock - $srequest->qty_requested;
+        $stock->save();
+
+        $srequest->save();
+        // dd($srequest);
+
+        return redirect("/mystockrequest{$srequest->id}")->with('message', 'Disbursed Action Executed  successfully!');
+    }
+
+
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Stockrequest  $stockrequest
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Stockrequest $stockrequest)
+    public function destroy($stockrequest)
     {
-        //
+        $srequest = Stockrequest::find($stockrequest)->delete();
+
+        return redirect("mystockrequest/")->with('message', 'Stock Request Deleted successfully!');
     }
 }

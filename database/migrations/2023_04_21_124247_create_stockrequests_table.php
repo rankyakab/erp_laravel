@@ -23,6 +23,7 @@ class CreateStockrequestsTable extends Migration
             $table->Timestamp('request_date')->default(now());
             $table->Timestamp('approval_date')->nullable(true);
             $table->Timestamp('decline_date')->nullable(true);
+            $table->Timestamp('disburse_date')->nullable(true);
             $table->foreignId('treated_by')->nullable(true);
             $table->text('purpose')->nullable(true);
             $table->text('treat_comment')->nullable(true);

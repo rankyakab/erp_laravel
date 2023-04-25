@@ -9,6 +9,13 @@ use Profile;
 
 class TaskController extends Controller
 {
+
+    //Authenticate user
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *

@@ -4,10 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Procurement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ProcurementController extends Controller
 {
+
+    //Authenticate user
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -48,7 +56,6 @@ class ProcurementController extends Controller
         $formFields = $request->validate([
             'item' => ['required', 'string', 'max:255'],
             'quantity' => 'required',
-            'amount' => 'required',
             'unit_price' => 'required',
             'total_price' => 'required',
             'requested_by' => 'required',
@@ -70,7 +77,7 @@ class ProcurementController extends Controller
 
         DB::table('procurements')->insert($formFields);
         //  dd($formFields);
-        return redirect('/procurements')->with('message', 'Procurement Request created successfully!');
+        return redirect('/myprocurements')->with('message', 'Procurement Request created successfully!');
     }
 
     /**
@@ -107,7 +114,6 @@ class ProcurementController extends Controller
         $formFields = $request->validate([
             'item' => ['required', 'string', 'max:255'],
             'quantity' => 'required',
-            'amount' => 'required',
             'unit_price' => 'required',
             'total_price' => 'required',
             'requested_by' => 'required',
@@ -127,8 +133,38 @@ class ProcurementController extends Controller
         $procurement->save();
 
 
-        return redirect("procurements/")->with('message', 'Procurement Request updated successfully!');
+        return redirect("/procurementedit{$procurement->id}")->with('message', 'Procurement Request updated successfully!');
     }
+
+
+    public function treat(Request $request, Procurement $procurement)
+    {
+        $formFields = $request->validate([
+            'status' => 'required',
+            'treat_comment' => 'nullable|string'
+
+        ]);
+
+        if ($formFields["status"] == "approve") {
+            $procurement->approval_date = now();
+            $procurement->status = "approved";
+        } else {
+            $procurement->decline_date = now();
+            $procurement->status = "rejected";
+        }
+
+        if (!is_null($formFields["treat_comment"])) {
+            $procurement->treat_comment = $formFields["treat_comment"];
+        }
+        $procurement->treated_by = Auth::user()->profileid;
+        //dd($formFields);
+        //    $procurement->update($formFields);
+        $procurement->save();
+
+
+        return redirect("/procurement{$procurement->id}")->with('message', 'Procurement Request Treated successfully!');
+    }
+
 
     /**
      * Remove the specified resource from storage.

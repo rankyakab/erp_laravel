@@ -44,33 +44,38 @@
 				</div>
 				  <div class="card-body" style="padding-top: 40px;">
 				  	<div class="form-body">
-					 <form class="row g-3" action="/procurement/{{$procurement->id}}" id="submitstaff" method="post" enctype="multipart/form-data">
+						  <x-flash-message />
+					 <form class="row g-3" action="/procurementedit{{$procurement->id}}" id="submitstaff" method="post" enctype="multipart/form-data" name="edit-procurement">
 					 	@csrf
                         @method('PUT')
 					 <div class="col-sm-12">
 					 	<div class="row">
-						 	<div class="col-sm-3">
+						 	<div class="col-sm-4">
 								<label for="item" class="form-label">Item Name<small style="color:#ff0000">*</small></label>
 								<input type="text" class="form-control" id="item" name="item" placeholder="Item  Name"  value="{{$procurement->item}}"  required>
                                  @error('item')
                                     <p class="text-red-500 text-xs mt-1">{{$message}}</p>
                                     @enderror
 							</div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
 								<label for="quantity" class="form-label">Quantity<small style="color:#ff0000">*</small></label>
 								<input type="number" class="form-control" id="quantity" name="quantity" placeholder="Enter Quntity"  value="{{$procurement->quantity}}"  required>
                                  @error('quantity')
                                     <p class="text-red-500 text-xs mt-1">{{$message}}</p>
                                     @enderror
 							</div>
-						 	<div class="col-sm-3">
+						 	<div class="col-sm-4">
 								<label for="date" class="form-label">Date<small style="color:#ff0000">*</small></label>
-                                	
-								<input type="date" class="form-control" id="date" name="date"  placeholder="Choose date" value="{{$procurement->date}}"  required >
+                                	@php
+									$date_input_format = date('Y-m-d', strtotime($procurement->date));
+
+									@endphp
+								<input type="date" class="form-control" id="date" name="date"  placeholder="Choose date" value="{{$date_input_format}}"  required >
                                  @error('date')
                                     <p class="text-red-500 text-xs mt-1">{{$message}}</p>
                                     @enderror
 							</div>
+							<!--
                             <div class="col-sm-3">
 								<label for="amount" class="form-label">Amount<small style="color:#ff0000">*</small></label>
 								<input type="number" class="form-control" id="amount" name="amount" placeholder="Enter Amount"  value="{{$procurement->amount}}"  required>
@@ -78,7 +83,9 @@
                                     <p class="text-red-500 text-xs mt-1">{{$message}}</p>
                                     @enderror
 							</div>
+								-->
 						</div><br />
+				
                        <div class="row">
 						 	<div class="col-sm-4">
 								<label for="unit_price" class="form-label">Unit Price<small style="color:#ff0000">*</small></label>
@@ -89,7 +96,10 @@
 							</div>
                             <div class="col-sm-4">
 								<label for="total_price" class="form-label">Total Price<small style="color:#ff0000">*</small></label>
-								<input type="number" class="form-control" id="total_price" name="total_price" placeholder="Total Price"  value="{{$procurement->total_price}}"  required>
+								<input type="number" class="form-control" id="total_price2" name="total_price2" placeholder="Unit Price"  value="{{$procurement->total_price}}" disabled required>
+                           
+								<input type="number" class="form-control" id="total_price" name="total_price" placeholder="Unit Price"  value="{{$procurement->total_price}}" hidden  required>
+                           
                                  @error('total_price')
                                     <p class="text-red-500 text-xs mt-1">{{$message}}</p>
                                     @enderror
@@ -130,7 +140,7 @@
 
 						 	<div class="col-sm-4">
 								<label for="qty_purchased" class="form-label">Add Attachment<small style="color:#ff0000">*</small></label>
-								<input type="file" class="form-control" required  name="attachment"  value="{{old('attachment')}}" placeholder="Add Attachment">
+								<input type="file" class="form-control"   name="attachment"  value="{{old('attachment')}}" placeholder="Add Attachment">
                                    @error('attachmentnt')
                                     <p class="text-red-500 text-xs mt-1">{{$message}}</p>
                                     @enderror
@@ -187,3 +197,86 @@
 	</div>
 </div>
 </x-layout>
+
+<script>
+$('#unit_price').on('input', function() {
+				var amount = $('#quantity').val();
+				var unit_price =$('#unit_price').val();
+				
+				if(amount > 0 && unit_price > 0){
+				$('#total_price').val(amount * unit_price);
+				$('#total_price2').val(amount * unit_price);
+				}else {
+					$('#total_price').val(0);
+					$('#total_price2').val(0);
+				}
+						// Set the value of the second input field based on the value of the first using jQuery
+			
+	});
+$('#quantity').on('input', function() {
+	var amount = $('#quantity').val();
+	var unit_price =$('#unit_price').val();
+	
+	if(amount > 0 && unit_price > 0){
+       $('#total_price').val(amount * unit_price);
+	    $('#total_price2').val(amount * unit_price);
+	}else {
+		 $('#total_price').val(0);
+		  $('#total_price2').val(0);
+	}
+			// Set the value of the second input field based on the value of the first using jQuery
+			
+});
+
+
+//	import swal from 'sweetalert';
+	//Adding bank into the system
+$("form[name='edit-procurement']").submit(function(event) {
+    event.preventDefault(); // prevent the form from submitting
+     $("#button").hide();
+	$("#processing").show();
+	
+			const swalWithBootstrapButtons = Swal.mixin({
+			customClass: {
+				confirmButton: 'btn btn-success',
+				cancelButton: 'btn btn-danger'
+			},
+			buttonsStyling: false
+			})
+
+			swalWithBootstrapButtons.fire({
+			title: 'Are you sure you want to Edit this  Procurement Request?',
+			text: "You won't be able to revert this!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Yes, Edit !',
+			cancelButtonText: 'No, cancel!',
+			reverseButtons: true
+			}).then((result) => {
+			if (result.isConfirmed) {
+				$(this).unbind('submit').submit();
+				swalWithBootstrapButtons.fire(
+				'Editing Procurement Request',
+				'...',
+				''
+				)
+			} else if (
+				/* Read more about handling dismissals below */
+				result.dismiss === Swal.DismissReason.cancel
+				
+			) {
+				swalWithBootstrapButtons.fire(
+				'Cancelled',
+				'You Cancelled this Operation :)',
+				'error'
+				)
+				$("#button").show();
+				$("#processing").hide();
+			}
+			})
+
+
+});
+
+
+</script>

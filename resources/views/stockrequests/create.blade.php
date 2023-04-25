@@ -87,11 +87,13 @@ use App\Models\User;
 											<div class="col-sm-8">
 											
 											<div class="row my-5">
-
+	
 												<div class="col-sm-6">
 													<label for="inputCategory" class="form-label">Select Stock Item <small style="color:#ff0000">*</small></label>
 													<select class="form-control" id="stock_id" name="stock_id">
+													
 														<option value="">Select Stock Item</option>
+														
 														@foreach(Stock::all() as $stock)
 														<option @if($stock->qty_in_stock==0){{"disabled"}} @endif value="{{$stock->id}}" data-src =" @if(is_null($stock->image)){{"assets/images/signature.jpg"}} @else {{$stock->image}} @endif ">{{ $stock->name }} @if($stock->qty_in_stock==0){{" (Out of Stock)"}} @endif</option>
 														@endforeach
@@ -246,20 +248,20 @@ const swalWithBootstrapButtons = Swal.mixin({
 })
 
 swalWithBootstrapButtons.fire({
-  title: 'Are you sure you want to create Stock?',
+  title: 'Are you sure you want to make request for this item?',
   text: "You won't be able to revert this!",
   icon: 'warning',
   showCancelButton: true,
-  confirmButtonText: 'Yes, Create !',
+  confirmButtonText: 'Yes, Make !',
   cancelButtonText: 'No, cancel!',
   reverseButtons: true
 }).then((result) => {
   if (result.isConfirmed) {
 	 $(this).unbind('submit').submit();
     swalWithBootstrapButtons.fire(
-      'Creating!',
-      'Stock Creation in process.',
-      'success'
+      'Requesting!',
+      'Item requesting in progress.',
+      'processing'
     )
   } else if (
     /* Read more about handling dismissals below */

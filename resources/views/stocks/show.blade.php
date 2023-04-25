@@ -42,7 +42,7 @@
          </div>
 
 
-        <div class="card" style="padding-bottom: 30px;">
+     <div class="card" style="padding-bottom: 30px;">
           <div class="row">
                 <div class="col-lg-12 col-sm-12" style="padding: 30px;">
                    
@@ -192,9 +192,9 @@
                               
        
                     </div>
- </div>
+     </div>
 		
-	</div>
+</div>
 </div>
 <!--end page wrapper -->
 				

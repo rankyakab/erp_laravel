@@ -28,8 +28,9 @@
 
 
        <div class="card-body" style="padding-top: 40px;">
+		<x-flash-message />
 				  	<div class="form-body">
-					 <form class="row g-3" action="/category/{{$category->id}} " id="submitstaff" method="post">
+					 <form class="row g-3" action="/category/{{$category->id}} " id="submitstaff" method="post" name="edit-cat">
 					 	@csrf
                         @method('PUT')
 					 	<div class="col-sm-4">
@@ -37,6 +38,7 @@
 					 	</div>
 					 	<div class="col-sm-8">
 					 	<div class="row">
+							
 						 	<div class="col-sm-6">
 								<label for="name" class="form-label">( Edit )  Category Name<small style="color:#ff0000">*</small></label>
 								<input type="text" class="form-control" id="name" name="name" placeholder="Stock  Name"  value="{{$category->name}}"  required>
@@ -70,3 +72,55 @@
 
 
 </x-layout>
+<script>
+
+//	import swal from 'sweetalert';
+	//Adding bank into the system
+$("form[name='edit-cat']").submit(function(event) {
+    event.preventDefault(); // prevent the form from submitting
+     $("#button").hide();
+	$("#processing").show();
+	
+			const swalWithBootstrapButtons = Swal.mixin({
+			customClass: {
+				confirmButton: 'btn btn-success',
+				cancelButton: 'btn btn-danger'
+			},
+			buttonsStyling: false
+			})
+
+			swalWithBootstrapButtons.fire({
+			title: 'Are you sure you want to Edit this  Category?',
+			text: "You won't be able to revert this!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Yes, Edit !',
+			cancelButtonText: 'No, cancel!',
+			reverseButtons: true
+			}).then((result) => {
+			if (result.isConfirmed) {
+				$(this).unbind('submit').submit();
+				swalWithBootstrapButtons.fire(
+				'Editing Procurement Request',
+				'...',
+				''
+				)
+			} else if (
+				/* Read more about handling dismissals below */
+				result.dismiss === Swal.DismissReason.cancel
+				
+			) {
+				swalWithBootstrapButtons.fire(
+				'Cancelled',
+				'You Cancelled this Operation :)',
+				'error'
+				)
+				$("#button").show();
+				$("#processing").hide();
+			}
+			})
+
+
+});
+
+</script>

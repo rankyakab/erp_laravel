@@ -42,6 +42,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function profile()
+    {
+        return $this->belongsTo(Profile::class, 'profileid');
+    }
+
     // Relationship With Tasks
     public function requestedBy()
     {

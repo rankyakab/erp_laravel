@@ -202,14 +202,16 @@ Route::post('/projects', [ProjectController::class, 'store']);
 // Route::post('/itask/store', [TaskController::class, 'store']);
 
 // Route::get('/stock/{stock}/show', [StockController::class, 'show']);
+Route::get('/procurementedit{procurement}', [ProcurementController::class, 'edit']);
+Route::put('/procurementedit{procurement}', [ProcurementController::class, 'update']);
 Route::get('/procurements', [ProcurementController::class, 'index']);
 Route::get('/myprocurements', [ProcurementController::class, 'myindex']);
 Route::get('/procurementcreate', [ProcurementController::class, 'create']);
 Route::post('/procurements', [ProcurementController::class, 'store']);
-Route::get('/procurement/{procurement}', [ProcurementController::class, 'show']);
+Route::get('/procurement{procurement}', [ProcurementController::class, 'show']);
+Route::post('/procurement{procurement}', [ProcurementController::class, 'treat']);
 Route::delete('/procurement/{procurement}', [ProcurementController::class, 'destroy']);
-Route::get('/procurement/edit/{procurement}', [ProcurementController::class, 'edit']);
-Route::put('/procurement/{procurement}', [ProcurementController::class, 'update']);
+
 
 
 
@@ -219,17 +221,30 @@ Route::put('/procurement/{procurement}', [ProcurementController::class, 'update'
 
 /**************************** Start  OF Stock Request Controller **************************************/
 
-Route::get('/stockrequest', [StockrequestController::class, 'index']);
 Route::get('/mystockrequest', [StockrequestController::class, 'myindex']);
 Route::put('/mystockrequestedit{request}', [StockrequestController::class, 'update']);
 Route::get('/mystockrequestedit{request}', [StockrequestController::class, 'edit']);
-Route::get('/mystockrequest{request}', [StockrequestController::class, 'show']);
-Route::get('/stockrequestlisttreat{request}', [StockrequestController::class, 'treat']);
-Route::post('/stockrequestlisttreat{request}', [StockrequestController::class, 'updatetreat']);
-Route::get('/stockrequestlisttreat', [StockrequestController::class, 'stockrequestlisttreat']);
+
+Route::get('/mystockrequest{request}', [StockrequestController::class, 'myshow']);
+Route::delete('/mystockrequest{request}', [StockrequestController::class, 'destroy']);
+Route::put('/mystockrequest{request}', [StockrequestController::class, 'disburse']);
+
+
 
 Route::post('/stockrequestcreate', [StockrequestController::class, 'store']);
 Route::get('/stockrequestcreate', [StockrequestController::class, 'create']);
+
+
+
+
+Route::get('/stockrequestlisttreat{request}', [StockrequestController::class, 'treat']);
+
+Route::post('/stockrequestlisttreat{request}', [StockrequestController::class, 'updatetreat']);
+Route::get('/stockrequestlisttreat', [StockrequestController::class, 'stockrequestlisttreat']);
+Route::get('/stockrequest{request}', [StockrequestController::class, 'show']);
+Route::get('/stockrequest', [StockrequestController::class, 'index']);
+
+
 /**************************** End  OF Stock Request Controller **************************************/
 
 /**************************** BEGINIG OF Stocl Controller **************************************/

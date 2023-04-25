@@ -16,6 +16,8 @@
 					</div>
 
 				</div>
+
+
                 <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
 					<div class="col">
 						<div class="card radius-10 border-warning border-start border-0 border-4">
@@ -75,44 +77,51 @@
 					</div>
 				</div><!--end row-->
 
-                <div class="row">
-						 	<div class="col-sm-6">
-								
-			                	<h6 class="mb-0 text-uppercase">ALl Procurement Request List </h6>
-							</div>
-						 	<div class="col-sm-6">
-								<a href="/procurement/create"><button class="btn btn-success"> + Add New Rquest </button> </a>
+
+				<div class="card" style="padding: 20px;">
+							<div class="card-body">
+
+							<div class="row">
+											<div class="col-sm-6">
+												
+												<h6 class="mb-0 text-uppercase">ALl Procurement Request List </h6>
+											</div>
+											<div class="col-sm-6">
+												<a href="/procurementcreate"><button class="btn btn-success"> + Add New Rquest </button> </a>
+											</div>
+								</div>
 							</div>
 				</div>
-                <br />
+                <br/>
 
-
-   
-
-
-
-				
-				<hr/>
-				<div class="card">
+				<div class="card" style="padding: 20px;">
 					<div class="card-body">
+                        <div class="card-title">
+							<x-flash-message />
+							<h4 class="mb-0">All Procurements </h4>
+						</div>
+                        <hr/>
+						<hr/>
 						<div class="table-responsive">
-							<table id="example" class="table table-striped table-bordered" style="width:100%">
+
+
+							<table id="example" class="table" style="width:100%">
 								<thead>
 									<tr>
 										<th>s/n</th>
                                         <th>Name</th>
 										<th>Qty</th>
-										<th>Amount</th>
+										<th>Total Price</th>
 										<th>Requested By</th>
 										<th>Sent to</th>
 										<th>Date </th>
 										<th>Status</th>
-                                        <th>Action</th>
+                                      
                                         
 									</tr>
 								</thead>
 								<tbody>
-                                    @unless (count($procurements)==0)
+                                @unless (count($procurements)==0)
                                         
                                             @foreach($procurements as $key => $procurement)
 										  @php
@@ -128,28 +137,58 @@
 											@endphp 
                                             
                                             <tr>
-                                                <td><a href="/stock/{{$procurement->id}}">{{ $key+1}}  </a></td>
-                                                <td>{{ $procurement->item }}</td>
-                                                <td>{{ $procurement->quantity }}</td>
-                                                <td>{{ $procurement->amount }}</td>
-                                                <td>{{ $procurement->requestedBy->name }}</td>
+                                                <td><a href="/procurement{{$procurement->id}}">{{ $key+1}}  </a></td>
+												 <td>{{$procurement->item}}</td>
+                                                 <td>{{number_format( $procurement->quantity ,0)}}</td>
+                                                <td><b>&#8358; {{number_format($procurement->total_price,2)}} </b></td>
+											    <td>{{ $procurement->requestedBy->name }}</td>
                                                 <td>{{ $procurement->sentTo->name }}</td>
                                                 <td>{{ $procurement->date }}</td>
-                                                <td>{{ $procurement->status }}</td>
-                                                <td><a href="/procurement/{{$procurement->id}}"><i class='bx bx-movie' style="color:orange;font-size: 3em;"></i></td>
-                                                 </tr>
+                                               
+												<td><a href="/procurement{{$procurement->id}}">
+													
+													  @if($procurement->status=="pending")
+                                                                <button type="button" class="btn btn-warning btn-sm">pending</button>
+                            
+                                                                @elseif($procurement->status=="approved")
+                                                                <button type="button" class="btn btn-success btn-sm"> Approved</button>
+
+                                                                @elseif($procurement->status=="rejected")
+                                                                <button type="button" class="btn btn-danger btn-sm"> Rejected</button>
+
+                                                                @elseif($procurement->status=="dispersed")
+                                                                <button type="button" class="btn btn-info btn-sm"> Dispersed</button>
+																@else
+																  <button type="button" class="btn btn-danger btn-sm"> Rejected</button>
+
+                                                                @endif
+												</td>
+                                                 
+                                              
+                                              </tr>
                                           
                                             @endforeach
                                     @else
-                                    <p>No Stocks found</p>
+                                    <p>No Procurement found</p>
                                     @endunless
 								</tbody>
 							</table>
                            
+
+
 						</div>
                         
 					</div>
 				</div>
+                
+            
+
+   
+
+
+
+				
+				
                 <div class=" mt-6 p-4">
                           
                 </div>

@@ -81,21 +81,24 @@
                                             
                                             <tr>
                                                 <td>{{ $key+1}}  </td>
-                                                <td><a href="/mystockrequest{{$request->id}}"> <img src ="{{asset($request->stock->image) }}"  width="50px;"/></a> </td>
+                                                <td><a href="/stockrequest{{$request->id}}"> <img src ="{{asset($request->stock->image) }}"  width="50px;"/></a> </td>
                                                 <td>{{ $request->stock->name }}</td>
                                                 <td>{{ $request->stock->stock_id }}</td>
                                                 <td>{{ $request->stock->categories->name }}</td>
                                                 <td>{{ $request->requester->name }}</td>
-                                                <td>{{ $request->qty_requested }}</td>
-                                                <td>{{ $request->stock->qty_in_stock }}</td>
+                                                <td>{{ number_format($request->qty_requested) }}</td>
+                                                <td> {{number_format($request->stock->qty_in_stock) }}</td>
                                                
                                                 <td>
-                                                        <a href="/mystockrequest{{$request->id}}">
+                                                        <a href="/stockrequest{{$request->id}}">
                                                                 @if($request->status =="pending")
                                                                 <button type="button" class="btn btn-warning btn-sm">Pending</button>
                             
                                                                 @elseif($request->status =="approved")
                                                                 <button type="button" class="btn btn-success btn-sm"> Approved</button>
+
+                                                                 @elseif($request->status =="disbursed")
+                                                                <button type="button" class="btn btn-info btn-sm"> Disbursed</button>
                                                                 @else
                                                                 <button type="button" class="btn btn-danger btn-sm"> Rejected</button>
                                                                 @endif

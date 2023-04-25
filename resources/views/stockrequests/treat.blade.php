@@ -8,7 +8,7 @@
 					<div class="ps-3">
 						<nav aria-label="breadcrumb">
 							<ol class="breadcrumb mb-0 p-0" style="background-color: transparent;">
-								<li class="breadcrumb-item"><a href="/stocks"><i class="bx bx-copy"></i></a>
+								<li class="breadcrumb-item"><a href="/stockrequestlisttreat"><i class="bx bx-copy"></i></a>
 								</li>
 								<li class="breadcrumb-item active" aria-current="page">  {{ucfirst($stockrequest['stock']['name'])}}  Stock request Page</li>
 							</ol>
@@ -58,7 +58,9 @@
                                                                                 echo "<span class='badge bg-warning'>Request Pending Approval</span> ";
                                                                             }else if($stockrequest->status=="approved"){
                                                                                 echo "<span class='badge bg-success'>Request Approved</span> ";
-                                                                            } else {
+                                                                            }else if($stockrequest->status=="disbursed"){
+                                                                                echo "<span class='badge bg-info'>Request Disbursed</span> ";
+                                                                            }  else {
                                                                                 echo "<span class='badge bg-danger'>Request Rejected</span> ";
                                                                     
                                                                             }
@@ -135,26 +137,40 @@
                                                 </div>
                                     </div>
                                         
-                                <div class="row my-3">
-                                                <div class="col-lg-2">
-                                                    <p>Date of Approval :</p>
-                                                </div>
-                                                <div class="col-lg-10">
-                                                        <p><b> 
-                                                    {{ is_null($stockrequest->approval_date)?"--":$stockrequest->approval_date}}</b></p>
-
-                                                </div>
-                                </div>
-                                    <div class="row my-3">
-                                                <div class="col-lg-2">
-                                                    <p>Date of Rejection :</p>
-                                                </div>
-                                                <div class="col-lg-10">
-                                                        <p> <b> {{is_null($stockrequest->decline_date)?"--": $stockrequest->decline_date}} </b></p>
-
-                                                </div>
+                                       @if($stockrequest->status=="approved")
+                    <div class="row my-3">
+                                    <div class="col-lg-2">
+                                        <p>Date of Approval :</p>
                                     </div>
-                                    
+                                    <div class="col-lg-10">
+                                            <p><b> 
+                                          {{ is_null($stockrequest->approval_date)?"--":$stockrequest->approval_date}}</b></p>
+
+                                     </div>
+                    </div>
+                        @endif
+                @if($stockrequest->status=="rejected")
+                         <div class="row my-3">
+                                    <div class="col-lg-2">
+                                        <p>Date of Rejection :</p>
+                                    </div>
+                                    <div class="col-lg-10">
+                                            <p> <b> {{is_null($stockrequest->decline_date)?"--": $stockrequest->decline_date}} </b></p>
+
+                                    </div>
+                        </div>
+                         @endif
+                           @if($stockrequest->status=="disbursed")
+                         <div class="row my-3">
+                                    <div class="col-lg-2">
+                                        <p>Date of Disbursment :</p>
+                                    </div>
+                                    <div class="col-lg-10">
+                                            <p> <b> {{is_null($stockrequest->disburse_date)?"--": $stockrequest->disburse_date}} </b></p>
+
+                                    </div>
+                        </div>
+                         @endif
 
                                 
                         
@@ -278,20 +294,20 @@ const swalWithBootstrapButtons = Swal.mixin({
 })
 
 swalWithBootstrapButtons.fire({
-  title: 'Are you sure you want to Delete this Stock?',
+  title: 'Are you sure you want to take this action?',
   text: "You won't be able to revert this Action!",
   icon: 'warning',
   showCancelButton: true,
-  confirmButtonText: 'Yes, Delete !',
+  confirmButtonText: 'Yes, Act !',
   cancelButtonText: 'No, cancel!',
   reverseButtons: true
 }).then((result) => {
   if (result.isConfirmed) {
 	 $(this).unbind('submit').submit();
     swalWithBootstrapButtons.fire(
-      'Deleted!',
-      'Stock Delete in process.',
-      'success'
+      '',
+      ' in progress.',
+      ''
     )
   } else if (
     /* Read more about handling dismissals below */

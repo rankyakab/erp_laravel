@@ -14,7 +14,7 @@ use App\Models\User;
 					<div class="ps-3">
 						<nav aria-label="breadcrumb">
 							<ol class="breadcrumb mb-0 p-0" style="background-color: transparent;">
-								<li class="breadcrumb-item"><a href="/stocks"><i class="bx bx-user"></i></a>
+								<li class="breadcrumb-item"><a href="/mystockrequest"><i class="bx bx-user"></i></a>
 								</li>
 								<li class="breadcrumb-item active" aria-current="page">Edit Request for Stock</li>
 							</ol>
@@ -250,20 +250,20 @@ const swalWithBootstrapButtons = Swal.mixin({
 })
 
 swalWithBootstrapButtons.fire({
-  title: 'Are you sure you want to create Stock?',
+  title: 'Are you sure you want to Edit Request?',
   text: "You won't be able to revert this!",
   icon: 'warning',
   showCancelButton: true,
-  confirmButtonText: 'Yes, Create !',
+  confirmButtonText: 'Yes, Edit !',
   cancelButtonText: 'No, cancel!',
   reverseButtons: true
 }).then((result) => {
   if (result.isConfirmed) {
 	 $(this).unbind('submit').submit();
     swalWithBootstrapButtons.fire(
-      'Creating!',
-      'Stock Creation in process.',
-      'success'
+      'Editing!',
+      'Request Editing  in progress.',
+      ''
     )
   } else if (
     /* Read more about handling dismissals below */

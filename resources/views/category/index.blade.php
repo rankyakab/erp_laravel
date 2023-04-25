@@ -35,6 +35,7 @@
 				<div class="card">
 					<div class="card-body">
 						<div class="table-responsive">
+								<x-flash-message />
 							<table id="example" class="table table-striped table-bordered" style="width:100%">
 								<thead>
 									<tr>
@@ -63,7 +64,7 @@
                                                 <td>{{ $category->name }}</td>
                                                 
                                                 <td>
-                                                    <form class="inline" method="POST" action="/category/{{$category->id}}">
+                                                    <form class="inline" method="POST" action="/category/{{$category->id}}" name="delete-cat">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit">
@@ -103,3 +104,54 @@
 
 
 </x-layout>
+<script>
+
+//	import swal from 'sweetalert';
+	//Adding bank into the system
+$("form[name='delete-cat']").submit(function(event) {
+    event.preventDefault(); // prevent the form from submitting
+     $("#button").hide();
+	$("#processing").show();
+	
+			const swalWithBootstrapButtons = Swal.mixin({
+			customClass: {
+				confirmButton: 'btn btn-success',
+				cancelButton: 'btn btn-danger'
+			},
+			buttonsStyling: false
+			})
+
+			swalWithBootstrapButtons.fire({
+			title: 'Are you sure you want to Delete this  Category?',
+			text: "You won't be able to revert this!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Yes, Delete !',
+			cancelButtonText: 'No, cancel!',
+			reverseButtons: true
+			}).then((result) => {
+			if (result.isConfirmed) {
+				$(this).unbind('submit').submit();
+				swalWithBootstrapButtons.fire(
+				'Editing Procurement Request',
+				'...',
+				''
+				)
+			} else if (
+				/* Read more about handling dismissals below */
+				result.dismiss === Swal.DismissReason.cancel
+				
+			) {
+				swalWithBootstrapButtons.fire(
+				'Cancelled',
+				'You Cancelled this Operation :)',
+				'error'
+				)
+				$("#button").show();
+				$("#processing").hide();
+			}
+			})
+
+
+});
+</script>

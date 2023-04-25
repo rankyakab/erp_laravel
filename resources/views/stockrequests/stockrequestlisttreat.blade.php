@@ -8,7 +8,7 @@
 					<div class="ps-3">
 						<nav aria-label="breadcrumb">
 							<ol class="breadcrumb mb-0 p-0">
-								<li class="breadcrumb-item"><a href="javascript:;"><a href="/stocks"><i class="bx bx-user"></i></a>
+								<li class="breadcrumb-item"><a href="javascript:;"><a href="/stockrequestlisttreat"><i class="bx bx-user"></i></a>
 								</li>
 								<li class="breadcrumb-item " aria-current="page">My Stock Request Awaiting Action Records</li>
 							</ol>
@@ -47,17 +47,18 @@
 
 
                              $mystockrequests = $stockrequests
-                        @endphp
+                            @endphp
                             <div class="row">
-                                    <div class="col-lg-4 col-sm-12">
-                                        <h1>Pending</h1>
+                                             
+                                    <div class="col-lg-6 col-sm-12">
+                                        <h1 class="text-warning">Pending</h1>
                                         <div class="card" style="padding-bottom: 30px;">
                                             
                                                     <div class=" radius-10">
                                                         <div class="card-header">
                                                             <div class="d-flex align-items-center">
                                                                 <div>
-                                                                    <h4 class="mb-0">Pending</h4>
+                                                                    <h4 class="mb-0 text-warning">Pending</h4>
                                                                 </div>
 
                                                             </div>
@@ -70,21 +71,26 @@
                                                             <div class="table-responsive">
 
 
-                                                                <table id="example" class="table" style="width:100%">
+                                                                <table id="pending" class="table" style="width:100%">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th>s/n</th>
+                                                                            
                                                                         <th>Stock Name</th>
+                                                                        <th>Requested by</th>
+                                                                        <th>Action</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
                                                                 @foreach($mystockrequests as $key => $request)
                                                                     @if ( $request['status']=='pending')
-                                                                        <tr>
-                                                                    <td>{{ $key+1}}  </td>
-                                                                    <td><a href="/stockrequestlisttreat{{$request->id}}"> <img src ="{{asset($request->stock->image) }}"  width="50px;"/></a> </td>
-                                                                    <td>{{ $request->stock->name }}</td>
+                                                                       <tr>
+                                                                    
+                                                                    <td> {{ $request->stock->name }}</td>
+                                                                    <td>{{ $request->requester->name }}</td>
+                                                                    <td> <a href="/stockrequestlisttreat{{$request->id}}"><button class="btn btn-warning">View</button> </a></td>
+                                                                   
                                                                         </tr>
+                                                                    
                                                                     @endif
 
                                                                     
@@ -108,74 +114,17 @@
                                             
                                         </div>
                                     </div>
-                                
-                                    <div class="col-lg-4 col-sm-12">
-                                        <h1 class="text-warning">Approved</h1>
+
+
+                                  <div class="col-lg-6 col-sm-12">
+                                        <h1 class="text-success">Approved</h1>
                                         <div class="card" style="padding-bottom: 30px;">
                                             
                                                     <div class=" radius-10">
                                                         <div class="card-header">
                                                             <div class="d-flex align-items-center">
                                                                 <div>
-                                                                    <h4 class="mb-0 text-warning" >Approved</h4>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-
-
-
-                                                        <div class="card-body" style="padding-top: 30px;">
-                                                          
-
-                                                            @unless (count($mystockrequests)==0)
-                                                            @php
-                                                                    $ongoing_count=0;
-                                                                @endphp
-                                                                @foreach($mystockrequests as $key => $request)
-                                                                    @if ( $request->status=='approved')
-                                                                        @php
-                                                                            $ongoing_count++;
-                                                                        @endphp
-
-                                                                         <div class="form-group row  " >
-                                                                            <a href="/task/{{$request->id}}/show">
-                                                                            <div class="col-sm-12 p-3 mb-2  text-darkradius-3 radius-10" style="background-color: #1434A4; color:#fff;">
-                                                                            <p> {{$request->stock->name }} <i class='bx bx-dots-vertical'></i></p>
-                                                                            
-                                                                            
-                                                                        
-                                                                            </div>
-                                                                            </a>
-
-                                                                            
-                                                                    
-                                                                    </div>
-                                                                    @endif
-
-                                                                    
-                                                                @endforeach
-                                                                    @if ( $ongoing_count==0)
-                                                                    <p>No Ongoing Task for Project</p>
-                                                                    @endif
-                                                                    
-                                                                @else
-                                                            <p>No Ongoing Task for Project</p>
-                                                                @endunless
-                                                        </div>
-                                                    </div>
-                                            
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-sm-12">
-                                        <h1 class="text-success">declined</h1>
-                                        <div class="card" style="padding-bottom: 30px;">
-                                            
-                                                    <div class=" radius-10">
-                                                        <div class="card-header">
-                                                            <div class="d-flex align-items-center">
-                                                                <div>
-                                                                    <h4 class="mb-0 text-success">Declinded</h4>
+                                                                    <h4 class="mb-0 text-success">Approved</h4>
                                                                 </div>
 
                                                             </div>
@@ -185,45 +134,189 @@
 
                                                         <div class="card-body" style="padding-top: 30px;">
                                                             @unless (count($mystockrequests)==0)
-                                                            @php
-                                                                    $completed_count=0;
-                                                                @endphp
+                                                            <div class="table-responsive">
+
+
+                                                                <table id="approved" class="table" style="width:100%">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            
+                                                                        <th>Stock Name</th>
+                                                                        <th>Requested by</th>
+                                                                        <th>Action</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
                                                                 @foreach($mystockrequests as $key => $request)
-                                                                    @if ( $request->status=='declined')
-                                                                        @php
-                                                                            $completed_count++;
-                                                                        @endphp
-
-                                                                             <div class="form-group row  " >
-                                                                            <a href="/task/{{$request->id}}/show">
-                                                                            <div class="col-sm-12 p-3 mb-2  text-darkradius-3 radius-10" style="background-color: #1434A4; color:#fff;">
-                                                                            <p> {{$request->stock->name }} <i class='bx bx-dots-vertical'></i></p>
-                                                                            
-                                                                            
-                                                                        
-                                                                            </div>
-                                                                            </a>
-
-                                                                            
+                                                                    @if ( $request['status']=='approved')
+                                                                       <tr>
                                                                     
-                                                                    </div>
+                                                                    <td> {{ $request->stock->name }}</td>
+                                                                    <td>{{ $request->requester->name }}</td>
+                                                                    <td> <a href="/stockrequestlisttreat{{$request->id}}"><button class="btn btn-success">View</button> </a></td>
+                                                                   
+                                                                        </tr>
+                                                                    
                                                                     @endif
 
                                                                     
                                                                 @endforeach
-                                                                    @if ( $ongoing_count==0)
-                                                                    <p>No Completed Task for Project</p>
-                                                                    @endif
-                                                                    
+                                                                	</tbody>
+                                                                    </table>
+                                                                
+
+
+                                                                </div>
+                        
+					
                                                                 @else
-                                                            <p>No Completed Task for Project</p>
+                                                                <p>No Backlog Task for Project</p>
                                                                 @endunless
 
+                                                                
+                                                
+                                                        </div>
+                                                    </div>
+                                            
+                                        </div>
+                                  </div>
+
+
+
+
+
+                                      <div class="col-lg-6 col-sm-12">
+                                        <h1 class="text-info">Disbursed</h1>
+                                        <div class="card" style="padding-bottom: 30px;">
+                                            
+                                                    <div class=" radius-10">
+                                                        <div class="card-header">
+                                                            <div class="d-flex align-items-center">
+                                                                <div>
+                                                                    <h4 class="mb-0 text-info">Disbursed</h4>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+
+
+                                                        <div class="card-body" style="padding-top: 30px;">
+                                                            @unless (count($mystockrequests)==0)
+                                                            <div class="table-responsive">
+
+
+                                                                <table id="disbursed" class="table" style="width:100%">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            
+                                                                        <th>Stock Name</th>
+                                                                        <th>Requested by</th>
+                                                                        <th>Action</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                @foreach($mystockrequests as $key => $request)
+                                                                    @if ( $request['status']=='disbursed')
+                                                                       <tr>
+                                                                    
+                                                                    <td> {{ $request->stock->name }}</td>
+                                                                    <td>{{ $request->requester->name }}</td>
+                                                                    <td> <a href="/stockrequestlisttreat{{$request->id}}"><button class="btn btn-info">View</button> </a></td>
+                                                                   
+                                                                        </tr>
+                                                                    
+                                                                    @endif
+
+                                                                    
+                                                                @endforeach
+                                                                	</tbody>
+                                                                    </table>
+                                                                
+
+
+                                                                </div>
+                        
+					
+                                                                @else
+                                                                <p>No Backlog Task for Project</p>
+                                                                @endunless
+
+                                                                
+                                                
                                                         </div>
                                                     </div>
                                             
                                         </div>
                                     </div>
+
+
+                                      <div class="col-lg-6 col-sm-12">
+                                        <h1 class="text-danger">Rejected</h1>
+                                        <div class="card" style="padding-bottom: 30px;">
+                                            
+                                                    <div class=" radius-10">
+                                                        <div class="card-header">
+                                                            <div class="d-flex align-items-center">
+                                                                <div>
+                                                                    <h4 class="mb-0 text-danger">Rejected</h4>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+
+
+                                                        <div class="card-body" style="padding-top: 30px;">
+                                                            @unless (count($mystockrequests)==0)
+                                                            <div class="table-responsive">
+
+
+                                                                <table id="rejected" class="table" style="width:100%">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            
+                                                                        <th>Stock Name</th>
+                                                                        <th>Requested by</th>
+                                                                        <th>Action</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                @foreach($mystockrequests as $key => $request)
+                                                                    @if ( $request['status']=='rejected')
+                                                                       <tr>
+                                                                    
+                                                                    <td> {{ $request->stock->name }}</td>
+                                                                    <td>{{ $request->requester->name }}</td>
+                                                                    <td> <a href="/stockrequestlisttreat{{$request->id}}"><button class="btn btn-danger">View</button> </a></td>
+                                                                   
+                                                                        </tr>
+                                                                    
+                                                                    @endif
+
+                                                                    
+                                                                @endforeach
+                                                                	</tbody>
+                                                                    </table>
+                                                                
+
+
+                                                                </div>
+                        
+					
+                                                                @else
+                                                                <p>No Backlog Task for Project</p>
+                                                                @endunless
+
+                                                                
+                                                
+                                                        </div>
+                                                    </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+                                       
                             </div>
 
                         

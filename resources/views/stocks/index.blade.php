@@ -16,6 +16,7 @@
 					</div>
 
 				</div>
+				
                 <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
 					<div class="col">
 						<div class="card radius-10 border-warning border-start border-0 border-4">
@@ -144,10 +145,11 @@
                                                 <td> <img src ="{{asset($stock->image) }}"  width="50px;"/> </td>
                                                 <td>{{ $stock->name }}</td>
                                                 <td>{{ $stock->stock_id }}</td>
+												
                                                 <td>{{ $stock->categories->name }}</td>
-                                                <td>{{ $stock->qty_purchased }}</td>
-                                                <td>{{ $stock->total_amount }}</td>
-                                                <td>{{ $stock->qty_in_stock }}</td>
+                                                <td>{{ number_format($stock->qty_purchased) }}</td>
+                                                <td><b>&#8358; {{number_format($stock->total_amount,2)}} </b></td>
+                                                <td>{{ number_format($stock->qty_in_stock) }}</td>
                                                 <td>{{ $stock->supplier }}</td>
                                                 <td>
                                                         <a href="/stock{{$stock->id}}">
