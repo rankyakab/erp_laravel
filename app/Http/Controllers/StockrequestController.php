@@ -78,13 +78,7 @@ class StockrequestController extends Controller
         $qty_requested = $data['qty_requested'];
         $stock_id = $data['stock_id'];
 
-        if (!is_null($data['copy_id'])) {
-            $formFields['copy_id'] =
-                implode(", ", $data['copy_id']);
-            foreach ($data['copy_id'] as $value) {
-                $this->createnotification($value, 'Stock Request', "You have a Stock Request is awaiting your action", 'Unread', 'stockrequestlisttreat');
-            }
-        }
+
 
         $stock = Stock::find($stock_id);
         $user = User::find($data["recipient_id"]);
@@ -95,17 +89,53 @@ class StockrequestController extends Controller
             return view('stockrequests.create', compact('errorMessage'));
         }
 
+
+        DB::table('stockrequests')->insert($formFields);
+
+
+        //send email to recipients
+        $username = $this->staffname($user->name);
+        $useremail = $this->staffemail($user->email);
+
         try {
             //send email to the person concerned
-            Mail::send('emails.stockrequest', ['username' => $$user->name, 'useremail' => $user->email], function ($message) use ($username, $useremail) {
-                $message->to($useremail, $username)->subject('New Stock Request requires your attention.');
+            Mail::send('emails.stockrequest', ['username' => $username, 'useremail' => $useremail], function ($message) use ($username, $useremail) {
+                $message->to($useremail, $username)->subject('New Stock Request has been created at Relia Energy ERP.');
                 $message->from('erp@reliaenergy.com', 'ERP');
             });
         } catch (\Exception $e) {
         }
+
+
+        //send notification message to every staff
         $this->createnotification($user->profileid, 'Stock Request', "You have a Stock Request is awaiting your action", 'Unread', 'stockrequestlisttreat');
 
-        DB::table('stockrequests')->insert($formFields);
+
+        if (!is_null($data['copy_id'])) {
+            $formFields['copy_id'] =
+                implode(", ", $data['copy_id']);
+            foreach ($data['copy_id'] as $value) {
+                $user = User::find($value);
+                //send email to recipients
+                $username = $this->staffname($user->name);
+                $useremail = $this->staffemail($user->email);
+
+                try {
+                    //send email to the person concerned
+                    Mail::send('emails.stockrequest', ['username' => $username, 'useremail' => $useremail], function ($message) use ($username, $useremail) {
+                        $message->to($useremail, $username)->subject('New Stock Request has been created at Relia Energy ERP.');
+                        $message->from('erp@reliaenergy.com', 'ERP');
+                    });
+                } catch (\Exception $e) {
+                }
+
+
+                //send notification message to every staff
+                $this->createnotification($value, 'Stock Request', "You have a Stock Request is awaiting your action", 'Unread', 'stockrequestlisttreat');
+            }
+        }
+
+
         return redirect('/mystockrequest')->with('message', 'Request made  successfully!');
     }
 

@@ -18,26 +18,26 @@
 	            </div>
                 
 
-                    <div class="card" style="padding: 20px;">
-                        <div class="card-body">
-                            <div class="row">
-                                        <div class="col-sm-6">
-                                            
-                                            <h6 class="mb-0 text-uppercase">My Stock Request Awaiting Action List </h6>
+                <div class="card" >
+                    <div class="card-body" style="padding: 20px;">
+                        <div class="row">
+                                    <div class="col-sm-6">
+                                        
+                                        <h6 class="mb-0 text-uppercase">My Stock Request Awaiting Action List </h6>
+                                    </div>
+                                    <div class="col-sm-6">
                                         </div>
-                                        <div class="col-sm-6">
-                                         </div>
-                            </div>
-
-
                         </div>
+
+
                     </div>
-                <br />
+                </div>
+                    <br />
 
 
    
-				<div class="card" style="padding: 20px;">
-					<div class="card-body">
+				<div class="card" >
+					<div class="card-body" style="padding: 20px;">
                         <div class="card-title">
 							<x-flash-message />
 							<h4 class="mb-0">All Stocks Request </h4>
@@ -46,7 +46,7 @@
                         @php
 
 
-                             $mystockrequests = $stockrequests
+                             $mystockrequests = $stockrequests;
                             @endphp
                             <div class="row">
                                              
@@ -73,7 +73,7 @@
 
                                                                 <table id="pending" class="table" style="width:100%">
                                                                     <thead>
-                                                                        <tr>
+                                                                        <tr style="background-color: #0000ff; color: yellow">
                                                                             
                                                                         <th>Stock Name</th>
                                                                         <th>Requested by</th>
@@ -81,12 +81,26 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
+                                                                        
                                                                 @foreach($mystockrequests as $key => $request)
+                                                                  @php
+                                                                    $stock_name = null;
+                                                                    $requested_by=null;
+                                                                    if($request && !is_null($request->stock)){
+                                                                    $stock_name = $request->stock->name;
+                                               
+																			}
+                                                                   if($request && !is_null($request->requester)){
+                                                                    $requested_by= $request->requester->name;
+                                               
+																			}
+
+                                                                  @endphp
                                                                     @if ( $request['status']=='pending')
                                                                        <tr>
                                                                     
-                                                                    <td> {{ $request?->stock?->name }}</td>
-                                                                    <td>{{ $request?->requester?->name }}</td>
+                                                                    <td> {{  $stock_name }}</td>
+                                                                    <td>{{$requested_by }}</td>
                                                                     <td> <a href="/stockrequestlisttreat{{$request->id}}"><button class="btn btn-warning">View</button> </a></td>
                                                                    
                                                                         </tr>
@@ -139,7 +153,7 @@
 
                                                                 <table id="approved" class="table" style="width:100%">
                                                                     <thead>
-                                                                        <tr>
+                                                                        <tr style="background-color: #0000ff; color: green">
                                                                             
                                                                         <th>Stock Name</th>
                                                                         <th>Requested by</th>
@@ -148,11 +162,24 @@
                                                                     </thead>
                                                                     <tbody>
                                                                 @foreach($mystockrequests as $key => $request)
+                                                                 @php
+                                                                    $stock_name = null;
+                                                                    $requested_by=null;
+                                                                    if($request && !is_null($request->stock)){
+                                                                    $stock_name = $request->stock->name;
+                                               
+																			}
+                                                                   if($request && !is_null($request->requester)){
+                                                                    $requested_by= $request->requester->name;
+                                               
+																			}
+
+                                                                  @endphp
                                                                     @if ( $request['status']=='approved')
                                                                        <tr>
                                                                     
-                                                                    <td> {{ $request?->stock?->name }}</td>
-                                                                    <td>{{ $request?->requester?->name }}</td>
+                                                                    <td> {{ $stock_name }}</td>
+                                                                    <td>{{ $requested_by }}</td>
                                                                     <td> <a href="/stockrequestlisttreat{{$request->id}}"><button class="btn btn-success">View</button> </a></td>
                                                                    
                                                                         </tr>
@@ -208,7 +235,7 @@
 
                                                                 <table id="disbursed" class="table" style="width:100%">
                                                                     <thead>
-                                                                        <tr>
+                                                                       <tr style="background-color: #0000ff; color: cyan">
                                                                             
                                                                         <th>Stock Name</th>
                                                                         <th>Requested by</th>
@@ -217,11 +244,24 @@
                                                                     </thead>
                                                                     <tbody>
                                                                 @foreach($mystockrequests as $key => $request)
+                                                                 @php
+                                                                    $stock_name = null;
+                                                                    $requested_by=null;
+                                                                    if($request && !is_null($request->stock)){
+                                                                    $stock_name = $request->stock->name;
+                                               
+																			}
+                                                                   if($request && !is_null($request->requester)){
+                                                                    $requested_by= $request->requester->name;
+                                               
+																			}
+
+                                                                  @endphp
                                                                     @if ( $request['status']=='disbursed')
                                                                        <tr>
                                                                     
-                                                                    <td> {{ $request?->stock?->name }}</td>
-                                                                    <td>{{ $request?->requester?->name }}</td>
+                                                                    <td> {{  $stock_name }}</td>
+                                                                    <td>{{ $requested_by }}</td>
                                                                     <td> <a href="/stockrequestlisttreat{{$request->id}}"><button class="btn btn-info">View</button> </a></td>
                                                                    
                                                                         </tr>
@@ -274,7 +314,7 @@
 
                                                                 <table id="rejected" class="table" style="width:100%">
                                                                     <thead>
-                                                                        <tr>
+                                                                        <tr style="background-color: #0000ff; color: red">
                                                                             
                                                                         <th>Stock Name</th>
                                                                         <th>Requested by</th>
@@ -283,11 +323,24 @@
                                                                     </thead>
                                                                     <tbody>
                                                                 @foreach($mystockrequests as $key => $request)
+                                                                @php
+                                                                    $stock_name = null;
+                                                                    $requested_by=null;
+                                                                    if($request && !is_null($request->stock)){
+                                                                    $stock_name = $request->stock->name;
+                                               
+																			}
+                                                                   if($request && !is_null($request->requester)){
+                                                                    $requested_by= $request->requester->name;
+                                               
+																			}
+
+                                                                  @endphp
                                                                     @if ( $request['status']=='rejected')
                                                                        <tr>
                                                                     
-                                                                    <td> {{ $request?->stock?->name }}</td>
-                                                                    <td>{{ $request?->requester?->name }}</td>
+                                                                    <td> {{  $stock_name }}</td>
+                                                                    <td>{{ $requested_by}}</td>
                                                                     <td> <a href="/stockrequestlisttreat{{$request->id}}"><button class="btn btn-danger">View</button> </a></td>
                                                                    
                                                                         </tr>

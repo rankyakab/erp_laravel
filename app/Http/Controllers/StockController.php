@@ -9,6 +9,7 @@ use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class StockController extends Controller
 {
@@ -197,8 +198,11 @@ class StockController extends Controller
         $formFields['status'] = 'In stock';
 
         if ($request->hasFile('image')) {
+            if (Storage::exists($stock->image)) {
+                Storage::delete($stock->image);
+            }
             //    dd($formFields['image'] = $request->file('image')->store('image', 'local'));
-            $stock->image = $request->file('image')->store('image', 'local');
+            $stock->image = $request->file('stocks')->store('image', 'local');
         }
 
 

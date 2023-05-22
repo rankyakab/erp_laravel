@@ -18,30 +18,30 @@
 				</div>
                 
 
-		<div class="card" style="padding: 20px;">
-			<div class="card-body">
-                <div class="row">
-						 	<div class="col-sm-6">
-								
-			                	<h6 class="mb-0 text-uppercase">My Stock Request Table</h6>
-							</div>
-						 	<div class="col-sm-6">
-								<a href="/stockcreate" style=" 
-					position: relative;
-					float: right;
-					"><button class="btn btn-success"> + Make Request </button> </a>
-												</div>
+				<div class="card" style="padding: 20px;">
+					<div class="card-body">
+						<div class="row">
+									<div class="col-sm-6">
+										
+										<h6 class="mb-0 text-uppercase">My Stock Request Table</h6>
+									</div>
+									<div class="col-sm-6">
+										<a href="/stockcreate" style=" 
+							position: relative;
+							float: right;
+							"><button class="btn btn-success"> + Make Request </button> </a>
+														</div>
+						</div>
+
+
+					</div>
 				</div>
-
-
-			</div>
-		</div>
-                <br />
+						<br />
 
 
    
-				<div class="card" style="padding: 20px;">
-					<div class="card-body">
+				<div class="card" >
+					<div class="card-body" style="padding: 20px;">
                         <div class="card-title">
 							<x-flash-message />
 							<h4 class="mb-0">All Stocks Request </h4>
@@ -52,7 +52,7 @@
 
 							<table id="example" class="table" style="width:100%">
 								<thead>
-									<tr>
+									<tr style="background-color: #0000ff; color: #fff">
 										<th>s/n</th>
                                         <th>Image</th>
 										<th>Stock Name</th>
@@ -212,7 +212,8 @@
                         
 					</div>
 				</div>
-                
+			</div>
+		</div>
 
 
 </x-layout>

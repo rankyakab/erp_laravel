@@ -18,27 +18,27 @@
 				</div>
                 
 
-		<div class="card" style="padding: 20px;">
-			<div class="card-body">
-                <div class="row">
-						 	<div class="col-sm-6">
-								
-			                	<h6 class="mb-0 text-uppercase">ALl Stock Request Table</h6>
-							</div>
-						 	<div class="col-sm-6">
-								
-							</div>
+				<div class="card" >
+					<div class="card-body" style="padding: 20px;">
+						<div class="row">
+									<div class="col-sm-6">
+										
+										<h6 class="mb-0 text-uppercase">ALl Stock Request Table</h6>
+									</div>
+									<div class="col-sm-6">
+										
+									</div>
+						</div>
+
+
+					</div>
 				</div>
-
-
-			</div>
-		</div>
                 <br />
 
 
    
-				<div class="card" style="padding: 20px;">
-					<div class="card-body">
+				<div class="card" >
+					<div class="card-body" style="padding: 20px;">
                         <div class="card-title">
 							<x-flash-message />
 							<h4 class="mb-0">All Stocks Request </h4>
@@ -49,7 +49,7 @@
 
 							<table id="example" class="table" style="width:100%">
 								<thead>
-									<tr>
+									<tr  style="background-color: #0000ff; color: #fff">
 										<th>s/n</th>
                                         <th>Image</th>
 										<th>Stock Name</th>
@@ -82,7 +82,7 @@
 													@php
 									$image ="assets/images/signature.jpg";
 									
-									if($request && $request->stock){
+									if($request && !is_null($request->stock)){
 										$image = $request->stock->image;
                                                                 }
 									@endphp

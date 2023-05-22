@@ -128,6 +128,11 @@ use App\Models\User;
 													<select class="form-control" id="recipient_id" name="recipient_id">
 														<option value="">Select Request Recipient</option>
 														@foreach(User::all() as $user)
+														@php
+                                                         if($user->profileid == Auth::user()->profileid){
+															continue;
+														 }
+														@endphp
 														<option  value="{{$user->profileid}}" >{{ $user->name }} </option>
 														@endforeach
 														
@@ -142,6 +147,11 @@ use App\Models\User;
 													<select class="form-control" id="copy_id" name="copy_id[]" multiple>
 														<option value="">Select Request Copy(s)</option>
 														@foreach(User::all() as $user)
+														@php
+                                                         if($user->profileid == Auth::user()->profileid){
+															continue;
+														 }
+														@endphp
 														<option  value="{{$user->profileid}}" >{{ $user->name }} </option>
 														@endforeach
 														
