@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class LogisticController extends Controller
 {
@@ -179,8 +180,14 @@ class LogisticController extends Controller
                 $count++;
             }
 
-            //  dd($attachment);
+            $attachments_array = explode("*", $logistic->attachments);
+            foreach ($attachments_array as $attach) {
+                if (Storage::exists($attach)) {
+                    Storage::delete($attach);
+                }
+            }
 
+            // dd($attachments_array);
         }
 
         $formFields['attachments'] = $attachment;
@@ -195,7 +202,7 @@ class LogisticController extends Controller
         //dd($formFields);
         $logistic->update($formFields);
         $logistic->save();
-        //  dd($formFields);
+
         return redirect("/editlogistic{$logistic->id}")->with('message', 'Logistics Request Edited successfully!');
     }
 
