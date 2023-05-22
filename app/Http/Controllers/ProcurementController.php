@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Procurement;
 use App\Models\Stockrequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class ProcurementController extends Controller
 {
@@ -114,6 +116,25 @@ class ProcurementController extends Controller
 
         DB::table('procurements')->insert($formFields);
 
+
+
+        //send email to recipients
+        $username = $this->staffname($formFields['sent_to']);
+        $useremail = $this->staffemail($formFields['sent_to']);
+
+        try {
+            //send email to the person concerned
+            Mail::send('emails.procurementrequest', ['username' => $username, 'useremail' => $useremail], function ($message) use ($username, $useremail) {
+                $message->to($useremail, $username)->subject('New Procurement Request has been created at Relia Energy ERP.');
+                $message->from('erp@reliaenergy.com', 'ERP');
+            });
+        } catch (\Exception $e) {
+        }
+
+
+        //send notification message to every staff
+        $this->createnotification($formFields['sent_to'], 'Stock Request', "You have a Procurement Request is awaiting your action", 'Unread', 'myprocurements');
+
         return redirect('/myprocurements')->with('message', 'Procurement Request created successfully!');
     }
 
@@ -218,6 +239,23 @@ class ProcurementController extends Controller
         //    $procurement->update($formFields);
         $procurement->save();
 
+        $username = $this->staffname($procurement->requested_by);
+        $useremail = $this->staffemail($procurement->requested_by);
+
+        try {
+            //send email to the person concerned
+            Mail::send('emails.treatprocurement', ['username' => $username, 'useremail' => $useremail], function ($message) use ($username, $useremail) {
+                $message->to($useremail, $username)->subject('New Procurement Request has been acted on at Relia Energy ERP.');
+                $message->from('erp@reliaenergy.com', 'ERP');
+            });
+        } catch (\Exception $e) {
+        }
+
+
+        //send notification message to every staff
+        $this->createnotification($procurement->requested_by, 'Procurement Request', "Your procurement request has been acted on", 'Unread', 'myprocurements');
+
+
 
         return redirect("/procurement{$procurement->id}")->with('message', 'Procurement Request Treated successfully!');
     }
@@ -233,6 +271,6 @@ class ProcurementController extends Controller
     {
         $procurement->delete();
 
-        return redirect("procurements/")->with('message', 'Procurement Deleted successfully!');
+        return redirect("myprocurements/")->with('message', 'Procurement Deleted successfully!');
     }
 }

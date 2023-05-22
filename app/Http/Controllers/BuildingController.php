@@ -102,8 +102,9 @@ class BuildingController extends Controller
         ]);
 
         $formFields["requested_by"] = Auth::user()->profileid;
-
+        $mail_list = $formFields['trainees'];
         $formFields['trainees'] = implode(", ", $formFields['trainees']);
+
 
 
         //dd($formFields);

@@ -81,7 +81,7 @@ class StockrequestController extends Controller
 
 
         $stock = Stock::find($stock_id);
-        $user = User::find($data["recipient_id"]);
+        // $user = User::find($data["recipient_id"]);
 
         // dd($user->profile);
         if ($stock->qty_in_stock < $qty_requested) {
@@ -94,8 +94,8 @@ class StockrequestController extends Controller
 
 
         //send email to recipients
-        $username = $this->staffname($user->name);
-        $useremail = $this->staffemail($user->email);
+        $username = $this->staffname($data["recipient_id"]);
+        $useremail = $this->staffemail($data["recipient_id"]);
 
         try {
             //send email to the person concerned
@@ -108,17 +108,17 @@ class StockrequestController extends Controller
 
 
         //send notification message to every staff
-        $this->createnotification($user->profileid, 'Stock Request', "You have a Stock Request is awaiting your action", 'Unread', 'stockrequestlisttreat');
+        $this->createnotification($data["recipient_id"], 'Stock Request', "You have a Stock Request is awaiting your action", 'Unread', 'stockrequestlisttreat');
 
 
         if (!is_null($data['copy_id'])) {
             $formFields['copy_id'] =
                 implode(", ", $data['copy_id']);
             foreach ($data['copy_id'] as $value) {
-                $user = User::find($value);
+                // $user = User::find($value);
                 //send email to recipients
-                $username = $this->staffname($user->name);
-                $useremail = $this->staffemail($user->email);
+                $username = $this->staffname($value);
+                $useremail = $this->staffemail($value);
 
                 try {
                     //send email to the person concerned
@@ -272,6 +272,22 @@ class StockrequestController extends Controller
         // dd($srequest);
         $srequest->update($formFields);
         $srequest->save();
+        $username = $this->staffname($requester_id);
+        $useremail = $this->staffemail($requester_id);
+
+        try {
+            //send email to the person concerned
+            Mail::send('emails.treatstock', ['username' => $username, 'useremail' => $useremail], function ($message) use ($username, $useremail) {
+                $message->to($useremail, $username)->subject('New Stock Request has been acted on at Relia Energy ERP.');
+                $message->from('erp@reliaenergy.com', 'ERP');
+            });
+        } catch (\Exception $e) {
+        }
+
+
+        //send notification message to every staff
+        //   $this->createnotification($requester_id, 'Stock Request', "Your Stock request has been acted on", 'Unread', 'mystockrequest');
+
 
 
         return redirect("/stockrequestlisttreat{$stockrequest}")->with('message', 'Approval Action Executed  successfully!');
@@ -306,6 +322,24 @@ class StockrequestController extends Controller
 
         // dd($srequest);
         DB::table('stores')->insert(["stock_id" => $stock->id, "actor_id" => Auth::user()->profileid, "request_id" => $srequest->id, "qty" => $srequest->qty_requested, "action" => "disburse"]);
+
+        $username = $this->staffname($srequest->requested_by);
+        $useremail = $this->staffemail($srequest->requested_by);
+
+        try {
+            //send email to the person concerned
+            Mail::send('emails.disbursestock', ['username' => $username, 'useremail' => $useremail], function ($message) use ($username, $useremail) {
+                $message->to($useremail, $username)->subject('New Stock Request has been acted on at Relia Energy ERP.');
+                $message->from('erp@reliaenergy.com', 'ERP');
+            });
+        } catch (\Exception $e) {
+        }
+
+
+        //send notification message to every staff
+        $this->createnotification($srequest->requested_by, 'Stock Request', "Your Stock request has been Disbursed", 'Unread', 'mystockrequest');
+
+
 
         return redirect("/mystockrequest{$srequest->id}")->with('message', 'Disbursed Action Executed  successfully!');
     }

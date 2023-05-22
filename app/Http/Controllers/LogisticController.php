@@ -6,6 +6,7 @@ use App\Models\Logistic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class LogisticController extends Controller
 {
@@ -95,7 +96,23 @@ class LogisticController extends Controller
             $formFields['attachments'] = $attachment;
         }
         DB::table('logistics')->insert($formFields);
+        $username = $this->staffname($formFields['sent_to']);
+        $useremail = $this->staffemail($formFields['sent_to']);
+
+        try {
+            //send email to the person concerned
+            Mail::send('emails.logisticrequest', ['username' => $username, 'useremail' => $useremail], function ($message) use ($username, $useremail) {
+                $message->to($useremail, $username)->subject('New Logistic Request has been created at Relia Energy ERP.');
+                $message->from('erp@reliaenergy.com', 'ERP');
+            });
+        } catch (\Exception $e) {
+        }
+
+
+        //send notification message to every staff
+        $this->createnotification($formFields['sent_to'], 'Stock Request', "You have a Logistics Request is awaiting your action", 'Unread', 'alllogistics');
         //  dd($formFields);
+
         return redirect('/logisticrequest')->with('message', 'Logistics Request created successfully!');
     }
 
@@ -214,6 +231,22 @@ class LogisticController extends Controller
         // dd($srequest);
         $logistic->update($formFields);
         $logistic->save();
+        $username = $this->staffname($logistic->requested_by);
+        $useremail = $this->staffemail($logistic->requested_by);
+
+        try {
+            //send email to the person concerned
+            Mail::send('emails.treatlogistics', ['username' => $username, 'useremail' => $useremail], function ($message) use ($username, $useremail) {
+                $message->to($useremail, $username)->subject('New Logistic Request has been acted on at Relia Energy ERP.');
+                $message->from('erp@reliaenergy.com', 'ERP');
+            });
+        } catch (\Exception $e) {
+        }
+
+
+        //send notification message to every staff
+        $this->createnotification($logistic->requested_by, 'Logistics Request', "Your Logistics request has been acted on", 'Unread', '/logisticrequest}');
+
 
 
         return redirect("/logistic{$logistic->id}")->with('message', 'Approval Action Executed  successfully!');
@@ -275,7 +308,25 @@ class LogisticController extends Controller
 
         $logistic->save();
 
-        $this->createnotification($logistic->requested_by, 'Logistic Request Retired', "You have an Retired A Logistic Request", 'Unread', 'mystockrequest');
+        $username = $this->staffname($logistic->treated_by);
+        $useremail = $this->staffemail($logistic->treated_by);
+
+        try {
+            //send email to the person concerned
+            Mail::send('emails.retirelogistics', ['username' => $username, 'useremail' => $useremail], function ($message) use ($username, $useremail) {
+                $message->to($useremail, $username)->subject('A Logistic Request has been retired on at Relia Energy ERP.');
+                $message->from('erp@reliaenergy.com', 'ERP');
+            });
+        } catch (\Exception $e) {
+        }
+
+
+        //send notification message to every staff
+        $this->createnotification($logistic->treated_by, 'Logistic Request', "A Logistic request has been Retired", 'Unread', 'alllogistics');
+
+
+
+        //  $this->createnotification($logistic->requested_by, 'Logistic Request Retired', "You have an Retired A Logistic Request", 'Unread', 'mystockrequest');
 
 
         return redirect("/logistic{$logistic->id}")->with('message', 'Retire Action Executed  successfully!');
