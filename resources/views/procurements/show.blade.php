@@ -275,6 +275,30 @@
                                                     </div>
                                             </div>
 
+              @if($procurement->attachment)
+                                       <div class="col-lg-12 col-sm-12" style="padding: 30px;">
+											<div class="row">
+												<h1>Attachment(s)</h1>
+
+
+												<div class="row">
+													@foreach (explode("*",$procurement->attachment) as $attach)
+
+                                                     <div class="col-sm-4">
+															@if (Str::endsWith($attach, ['.pdf', '.doc', '.docx'])) <!-- Add supported document extensions here -->
+																<iframe src="{{ asset($attach) }}" width="100%" height="400px"></iframe>
+															@elseif (Str::endsWith($attach, ['.jpg', '.jpeg', '.png', '.gif'])) <!-- Add supported image extensions here -->
+																<img src="{{ asset($attach) }}" alt="Image"height="400">
+															@endif
+													 </div>
+													@endforeach
+													</div>
+													
+											</div>
+                                       </div>
+				@endif
+                                           
+
                                             @endif
                                             <div class="row">
                                                 <div class="col-lg-2">
