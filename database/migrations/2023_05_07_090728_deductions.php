@@ -18,7 +18,6 @@ class Deductions extends Migration
             $table->string('staff');
             $table->string('deduction');
             $table->double('amount');
-            $table->double('amount');
             $table->string('status');
             $table->string('created_by');
             $table->timestamps();
